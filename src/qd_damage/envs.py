@@ -13,6 +13,17 @@ from qdax.tasks.brax.v1.wrappers.reward_wrappers import ClipRewardWrapper, Offse
 
 from qd_damage.config import load_yaml
 
+# (hip, ankle) actions of each leg. Checked from the actuator order in the Brax config, from the motion
+# produced by each action alone, and on video (media/checks/leg_mapping/).
+# The robot walks towards +x; leg 1 front left, 2 hind left, 3 hind right, 4 front right.
+LEG_ACTIONS = {
+    "leg_1": (0, 1),
+    "leg_2": (2, 3),
+    "leg_3": (4, 5),
+    "leg_4": (6, 7),  # the leg damaged by Chalumeau et al. (ICLR 2023)
+}
+
+
 def make_env(common: dict, physics: dict | None = None):
     """Environment shared by the three algorithms, built from common.yaml only.
 
@@ -29,5 +40,52 @@ def make_env(common: dict, physics: dict | None = None):
         env = OffsetRewardWrapper(env, offset=qdax_envs.reward_offset[name])
         env = ClipRewardWrapper(env, clip_min=0.0)
     return env
+
+
+def _set_physics(env, physics: dict):
+    """Rebuild the Brax system of the innermost environment with modified physical parameters."""
+    inner = env
+    while hasattr(inner, "env"):
+        inner = inner.env
+    config = copy.deepcopy(inner.sys.config)
+    for key, value in physics.items():
+        if key == "friction":  # Brax v1 uses the per-collider material friction
+            config.friction = value
+            for body in config.bodies:
+                for collider in body.colliders:
+                    collider.material.friction = value
+        elif key == "torso_mass":
+            next(b for b in config.bodies if b.name == "$ Torso").mass = value
+        elif key == "gear_scale":
+            for actuator in config.actuators:
+                actuator.strength *= value
+        else:
+            raise ValueError(f"unknown physics parameter {key!r}")
+    inner.sys = QDSystem(config)
+
+
+def descriptor_extractor(common: dict):
+    return qdax_envs.descriptor_extractor[common["env"]["name"]]
+
+
+class DamageWrapper:
+    """Damage: each action is multiplied by a factor (0 = paralysed joint, 0.5 = weakened).
+
+    For Ant, actuator torque is action x strength, so this is the same as scaling the actuator strength.
+    Observations, reward and descriptor are unchanged.
+    """
+
+    def __init__(self, env, action_scale):
+        self.env = env
+        self.action_scale = jnp.asarray(action_scale, dtype=jnp.float32)
+
+    def reset(self, rng):
+        return self.env.reset(rng)
+
+    def step(self, state, action):
+        return self.env.step(state, action * self.action_scale)
+
+    def __getattr__(self, name):
+        return getattr(self.env, name)
 
 
