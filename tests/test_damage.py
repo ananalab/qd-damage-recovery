@@ -11,6 +11,12 @@ from qd_damage.config import load_run_config
 from qd_damage.envs import LEG_ACTIONS, DamageWrapper, damage_scale, load_damages, make_env
 
 
+def test_leg_mapping_matches_config():
+    damages = load_damages()
+    for leg, (hip, ankle) in LEG_ACTIONS.items():
+        assert (damages["legs"][leg]["hip"], damages["legs"][leg]["ankle"]) == (hip, ankle)
+
+
 def test_damage_scale():
     damages = load_damages()
     by_name = {s["name"]: s for s in damages["scenarios"]}

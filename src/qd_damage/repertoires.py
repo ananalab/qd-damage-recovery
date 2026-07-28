@@ -44,3 +44,6 @@ from qdax.tasks.brax.v1 import reward_offset
 from qdax.tasks.brax.v1.env_creators import scoring_function_brax_envs
 from qdax.utils.metrics import default_qd_metrics
 
+from qd_damage.config import ALGOS, load_run_config
+from qd_damage.envs import descriptor_extractor, make_env
+

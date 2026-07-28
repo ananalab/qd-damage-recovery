@@ -2,6 +2,8 @@
 
 from importlib.metadata import version
 
+import pytest
+
 from qd_damage.config import ALGOS, load_run_config, load_yaml
 
 
