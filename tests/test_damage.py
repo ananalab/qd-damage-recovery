@@ -26,6 +26,19 @@ def test_damage_scale():
     np.testing.assert_array_equal(damage_scale(by_name["ankle1_paralysed"], damages), [1, 0, 1, 1, 1, 1, 1, 1])
 
 
+def test_paralysed_joints_ignore_their_actions():
+    """With leg 4 paralysed, changing actions 6-7 has no effect; changing action 0 does."""
+    common = load_run_config("me", "smoke")["common"]
+    env = DamageWrapper(make_env(common), [1, 1, 1, 1, 1, 1, 0, 0])
+    state = jax.jit(env.reset)(jax.random.key(0))
+    step = jax.jit(env.step)
+    base = step(state, jnp.zeros(8)).qp.pos
+    same = step(state, jnp.zeros(8).at[6].set(1.0).at[7].set(-1.0)).qp.pos
+    moved = step(state, jnp.zeros(8).at[0].set(1.0)).qp.pos
+    np.testing.assert_allclose(base, same)
+    assert not np.allclose(base, moved)
+
+
 @pytest.mark.slow
 def test_oracle_outputs(tmp_path):
     from qd_damage.oracle import run_oracle
@@ -41,5 +54,23 @@ def test_oracle_outputs(tmp_path):
     rows = list(csv.DictReader(open(out / "summary.csv")))
     assert [r["scenario"] for r in rows] == ["intact", "leg4_paralysed"]
     assert float(rows[0]["resilience"]) == pytest.approx(1.0)
+
+
+@pytest.mark.slow
+def test_adaptation_end_to_end(tmp_path):
+    from qd_damage.adaptation import METHODS, run_adaptation
+    from qd_damage.oracle import run_oracle
+    from qd_damage.repertoires import build
+
+    run_dir = build("me", seed=0, profile="smoke", out_root=tmp_path / "rep")
+    run_oracle(run_dir, tmp_path / "oracle", n_episodes=1, scenarios=["intact", "leg4_paralysed"])
+    out = run_adaptation(run_dir, tmp_path / "oracle", tmp_path / "adapt", scenarios=["leg4_paralysed"], n_repeats=1)
+    summary = list(csv.DictReader(open(out / "summary.csv")))
+    assert sorted(r["method"] for r in summary) == sorted(METHODS)
+    for r in summary:
+        assert 1 <= int(r["trials_used"]) <= 20
+        assert float(r["pct_oracle"]) <= 100.0 + 1e-6  # the recommendation cannot beat the oracle
+    trials = list(csv.DictReader(open(out / "trials.csv")))
+    assert max(int(t["trial"]) for t in trials if t["method"] == "best_intact") == 1
 
 

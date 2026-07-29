@@ -89,3 +89,7 @@ class DamageWrapper:
         return getattr(self.env, name)
 
 
+def load_damages() -> dict:
+    return load_yaml("damages")
+
+
