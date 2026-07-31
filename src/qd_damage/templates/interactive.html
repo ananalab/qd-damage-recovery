@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$title</title>
+<style>
+  html, body { margin:0; height:100%; background:#fff; font:14px/1.4 system-ui, sans-serif; }
+  #brax-viewer { position:relative; height:100vh; }
+  #caption { position:absolute; left:10px; bottom:10px; z-index:10; background:rgba(255,255,255,.85);
+             padding:6px 10px; border-radius:6px; color:#222; max-width:70%; pointer-events:none; }
+</style></head><body>
+<div id="brax-viewer"><div id="caption"><b>$title</b><br>$caption<br>
+<small>Souris : tourner · molette : zoomer · clic droit : déplacer</small></div></div>
+<script>var system = $system_json;</script>
+<script>$viewer_js</script>
+<script>new BraxViewer(document.getElementById("brax-viewer"), system);</script>
+</body></html>

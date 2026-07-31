@@ -74,3 +74,16 @@ def test_adaptation_end_to_end(tmp_path):
     assert max(int(t["trial"]) for t in trials if t["method"] == "best_intact") == 1
 
 
+@pytest.mark.slow
+def test_continuous_ite_end_to_end(tmp_path):
+    from qd_damage.ite_continuous import run_continuous
+    from qd_damage.repertoires import build
+
+    run_dir = build("dcrlme", seed=0, profile="smoke", out_root=tmp_path / "rep")
+    out = run_continuous(
+        run_dir, n_candidates=64, n_episodes=1, scenarios=["leg4_paralysed"], n_repeats=1, out_root=tmp_path / "cont"
+    )
+    data = np.load(out / "candidates.npz")
+    assert data["fitness"].shape == (2, 64, 1) and data["achieved"].shape == (64, 4)
+    rows = list(csv.DictReader(open(out / "summary.csv")))
+    assert len(rows) == 1 and 1 <= int(rows[0]["trials_used"]) <= 20

@@ -61,3 +61,17 @@ def test_resume_from_checkpoint_gives_same_repertoire(tmp_path, algo):
     assert len(rows) == 1 + 3  # header + iterations 0, 2, 4
 
 
+@pytest.mark.slow
+def test_dcrlme_saves_conditioned_actor(tmp_path):
+    import jax.numpy as jnp
+
+    from qd_damage.config import load_run_config
+    from qd_damage.envs import make_env
+    from qd_damage.repertoires import load_dc_actor
+
+    out = build("dcrlme", seed=0, profile="smoke", out_root=tmp_path)
+    common = load_run_config("dcrlme", "smoke")["common"]
+    env = make_env(common)
+    actor, params = load_dc_actor(out, common, env)
+    a = actor.apply(params, jnp.zeros(env.observation_size), jnp.full(env.descriptor_length, 0.5))
+    assert a.shape == (env.action_size,) and bool(jnp.all(jnp.abs(a) <= 1.0))
