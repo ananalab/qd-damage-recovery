@@ -10,5 +10,7 @@ A four-legged robot (the Brax Ant) loses the use of a leg. What lets it walk aga
 | PGA-ME / DCRL-ME (evolution + RL) | Same, but the repertoire is built with the help of a TD3 critic |
 | RL re-training | Train the gait again, directly on the damaged robot |
 
+## Protocol
+
 ## Rules followed
 

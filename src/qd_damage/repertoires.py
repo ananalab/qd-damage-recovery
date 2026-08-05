@@ -204,3 +204,166 @@ class _Key:
         self.data = data
 
 
+def _to_host(tree):
+    def leaf(x):
+        if isinstance(x, jax.Array) and jnp.issubdtype(x.dtype, jax.dtypes.prng_key):
+            return _Key(np.asarray(jax.random.key_data(x)))
+        return np.asarray(x) if isinstance(x, jax.Array) else x
+
+    return jax.tree.map(leaf, tree)
+
+
+def _to_device(tree):
+    def leaf(x):
+        if isinstance(x, _Key):
+            return jax.random.wrap_key_data(jnp.asarray(x.data))
+        return jnp.asarray(x) if isinstance(x, np.ndarray) else x
+
+    return jax.tree.map(leaf, tree, is_leaf=lambda x: isinstance(x, _Key))
+
+
+def _save_checkpoint(path: Path, carry, iteration: int, rows: list, elapsed_s: float):
+    """Write to a temporary file, then rename it, so that an interruption never leaves a corrupt checkpoint."""
+    tmp = path.with_suffix(".tmp")
+    with open(tmp, "wb") as f:
+        pickle.dump({"carry": _to_host(carry), "iteration": iteration, "rows": rows, "elapsed_s": elapsed_s}, f)
+    os.replace(tmp, path)
+
+
+def build(
+    algo: str,
+    seed: int,
+    profile=None,
+    out_root: Path = REPO_ROOT / "results" / "repertoires",
+    stop_after=None,
+):
+    """Build a repertoire, write repertoire.npz, metrics.csv and run.json, and return the output folder.
+
+    Resumes from <out>/checkpoint.pkl when it exists (interrupted session).
+    `stop_after` (iterations) stops the run on purpose after a checkpoint; used by the resume test.
+    """
+    cfg, env, policy_network, map_elites = setup(algo, profile)
+    common = cfg["common"]
+    budget, rep = common["budget"], common["repertoire"]
+    if budget["num_iterations"] is None:
+        raise ValueError("budget.num_iterations is not set in common.yaml")
+    log_period = budget["log_period"]
+    checkpoint_every = budget.get("checkpoint_every") or budget["num_iterations"]
+    if budget["num_iterations"] % log_period or checkpoint_every % log_period:
+        raise ValueError("budget.num_iterations and budget.checkpoint_every must be multiples of budget.log_period")
+
+    run_name = f"{algo}_seed{seed}" + (f"_{profile}" if profile else "")
+    out_dir = Path(out_root) / run_name
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    key = jax.random.key(seed)
+    key, subkey = jax.random.split(key)
+    keys = jax.random.split(subkey, num=budget["batch_size"])
+    init_params = jax.vmap(policy_network.init)(keys, jnp.zeros((budget["batch_size"], env.observation_size)))
+
+    key, subkey = jax.random.split(key)
+    centroids = compute_cvt_centroids(
+        num_descriptors=env.descriptor_length,
+        num_init_cvt_samples=rep["num_init_cvt_samples"],
+        num_centroids=rep["num_centroids"],
+        minval=rep["min_descriptor"],
+        maxval=rep["max_descriptor"],
+        key=subkey,
+    )
+
+    t0 = time.time()
+    key, subkey = jax.random.split(key)
+    repertoire, emitter_state, init_metrics = map_elites.init(init_params, centroids, subkey)
+    rows = [
+        {
+            "iteration": 0,
+            "evaluations": budget["batch_size"],
+            **{k: float(init_metrics[k]) for k in ("qd_score", "coverage", "max_fitness")},
+            "time_s": time.time() - t0,
+        }
+    ]
+
+    num_loops = budget["num_iterations"] // log_period
+    checkpoint_path = out_dir / "checkpoint.pkl"
+    start_loop, previous_elapsed = 0, 0.0
+    if checkpoint_path.exists():
+        # The init above only provides the structure and the compiled functions; it is replaced here.
+        with open(checkpoint_path, "rb") as f:
+            ckpt = pickle.load(f)
+        repertoire, emitter_state, key = _to_device(ckpt["carry"])
+        rows, previous_elapsed = ckpt["rows"], ckpt["elapsed_s"]
+        start_loop = ckpt["iteration"] // log_period
+        print(f"[{run_name}] resuming from iteration {ckpt['iteration']}", flush=True)
+    else:
+        print(f"[{run_name}] init : {rows[-1]}", flush=True)
+
+    # Compiled once. Calling jax.lax.scan(map_elites.scan_update, ...) directly in the loop recompiles at
+    # every block, because `map_elites.scan_update` is a new bound-method object at each access.
+    @jax.jit
+    def run_block(carry):
+        return jax.lax.scan(map_elites.scan_update, carry, (), length=log_period)
+
+    for i in range(start_loop, num_loops):
+        start = time.time()
+        (repertoire, emitter_state, key), metrics = run_block((repertoire, emitter_state, key))
+        jax.block_until_ready(repertoire.fitnesses)
+        iteration = log_period * (i + 1)
+        rows.append(
+            {
+                "iteration": iteration,
+                "evaluations": budget["batch_size"] * (iteration + 1),  # +1: the initial batch
+                **{k: float(metrics[k][-1]) for k in ("qd_score", "coverage", "max_fitness")},
+                "time_s": time.time() - start,  # the first block includes JIT compilation
+            }
+        )
+        print(f"[{run_name}] {rows[-1]}", flush=True)
+        if iteration % checkpoint_every == 0 and iteration < budget["num_iterations"]:
+            _save_checkpoint(
+                checkpoint_path,
+                (repertoire, emitter_state, key),
+                iteration,
+                rows,
+                previous_elapsed + time.time() - t0,
+            )
+            if stop_after is not None and iteration >= stop_after:
+                print(f"[{run_name}] stopped on purpose at iteration {iteration}", flush=True)
+                return out_dir
+    total_time = previous_elapsed + time.time() - t0
+
+    with open(out_dir / "metrics.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+    flat_genotypes = jax.vmap(lambda p: ravel_pytree(p)[0])(repertoire.genotypes)
+    np.savez_compressed(
+        out_dir / "repertoire.npz",
+        genotypes=np.asarray(flat_genotypes),
+        fitnesses=np.asarray(repertoire.fitnesses).reshape(-1),
+        descriptors=np.asarray(repertoire.descriptors),
+        centroids=np.asarray(repertoire.centroids),
+    )
+
+    if algo == "dcrlme":
+        # Descriptor-conditioned actor pi(a | obs, d), used by the continuous-ITE experiment.
+        dcrl_state = next(st for st in emitter_state.emitter_states if hasattr(st, "actor_params"))
+        np.savez_compressed(out_dir / "actor.npz", params=np.asarray(ravel_pytree(dcrl_state.actor_params)[0]))
+
+    run_info = {
+        "algo": algo,
+        "seed": seed,
+        "profile": profile,
+        "config": cfg,
+        "git_commit": git_commit(),
+        "versions": {p: version(p) for p in ("qdax", "jax", "jaxlib", "brax", "flax")},
+        "devices": [f"{d} ({d.device_kind})" for d in jax.devices()],
+        "total_time_s": total_time,
+        "total_evaluations": rows[-1]["evaluations"],
+    }
+    with open(out_dir / "run.json", "w") as f:
+        json.dump(run_info, f, indent=2)
+    checkpoint_path.unlink(missing_ok=True)  # the run is complete: the (large) checkpoint is no longer needed
+    print(f"[{run_name}] done in {total_time:.0f} s -> {out_dir}", flush=True)
+    return out_dir
+
+
