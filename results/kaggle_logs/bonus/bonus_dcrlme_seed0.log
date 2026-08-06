@@ -1,0 +1,305 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[dcrlme_seed0] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 112750.421875, 'coverage': 11.1328125, 'max_fitness': 1044.0687255859375, 'time_s': 16.290451288223267}
+[dcrlme_seed0] {'iteration': 10, 'evaluations': 2816, 'qd_score': 358987.84375, 'coverage': 38.96484375, 'max_fitness': 1059.602294921875, 'time_s': 49.53197407722473}
+[dcrlme_seed0] {'iteration': 20, 'evaluations': 5376, 'qd_score': 450971.25, 'coverage': 47.0703125, 'max_fitness': 1062.03955078125, 'time_s': 23.374648094177246}
+[dcrlme_seed0] {'iteration': 30, 'evaluations': 7936, 'qd_score': 501399.75, 'coverage': 51.171875, 'max_fitness': 1113.8988037109375, 'time_s': 24.23927068710327}
+[dcrlme_seed0] {'iteration': 40, 'evaluations': 10496, 'qd_score': 534024.4375, 'coverage': 54.1015625, 'max_fitness': 1113.8988037109375, 'time_s': 25.390840768814087}
+[dcrlme_seed0] {'iteration': 50, 'evaluations': 13056, 'qd_score': 564808.125, 'coverage': 56.4453125, 'max_fitness': 1150.175048828125, 'time_s': 25.670336723327637}
+[dcrlme_seed0] {'iteration': 60, 'evaluations': 15616, 'qd_score': 597631.375, 'coverage': 58.984375, 'max_fitness': 1201.218994140625, 'time_s': 24.62522554397583}
+[dcrlme_seed0] {'iteration': 70, 'evaluations': 18176, 'qd_score': 620738.875, 'coverage': 60.44921875, 'max_fitness': 1201.218994140625, 'time_s': 24.64377999305725}
+[dcrlme_seed0] {'iteration': 80, 'evaluations': 20736, 'qd_score': 639373.125, 'coverage': 61.62109375, 'max_fitness': 1233.763916015625, 'time_s': 25.02685046195984}
+[dcrlme_seed0] {'iteration': 90, 'evaluations': 23296, 'qd_score': 657262.875, 'coverage': 62.79296875, 'max_fitness': 1233.763916015625, 'time_s': 24.929968118667603}
+[dcrlme_seed0] {'iteration': 100, 'evaluations': 25856, 'qd_score': 667509.25, 'coverage': 63.18359375, 'max_fitness': 1301.9930419921875, 'time_s': 24.98250389099121}
+[dcrlme_seed0] {'iteration': 110, 'evaluations': 28416, 'qd_score': 688509.5, 'coverage': 64.6484375, 'max_fitness': 1301.9930419921875, 'time_s': 24.810680627822876}
+[dcrlme_seed0] {'iteration': 120, 'evaluations': 30976, 'qd_score': 703551.1875, 'coverage': 65.625, 'max_fitness': 1301.9930419921875, 'time_s': 24.848313331604004}
+[dcrlme_seed0] {'iteration': 130, 'evaluations': 33536, 'qd_score': 718012.0, 'coverage': 66.69921875, 'max_fitness': 1301.9930419921875, 'time_s': 24.74860191345215}
+[dcrlme_seed0] {'iteration': 140, 'evaluations': 36096, 'qd_score': 731892.875, 'coverage': 67.578125, 'max_fitness': 1301.9930419921875, 'time_s': 24.83325958251953}
+[dcrlme_seed0] {'iteration': 150, 'evaluations': 38656, 'qd_score': 739649.5, 'coverage': 67.87109375, 'max_fitness': 1391.7877197265625, 'time_s': 24.819191932678223}
+[dcrlme_seed0] {'iteration': 160, 'evaluations': 41216, 'qd_score': 753478.25, 'coverage': 68.84765625, 'max_fitness': 1391.7877197265625, 'time_s': 24.6895489692688}
+[dcrlme_seed0] {'iteration': 170, 'evaluations': 43776, 'qd_score': 763185.1875, 'coverage': 69.43359375, 'max_fitness': 1391.7877197265625, 'time_s': 24.761555671691895}
+[dcrlme_seed0] {'iteration': 180, 'evaluations': 46336, 'qd_score': 769964.6875, 'coverage': 69.62890625, 'max_fitness': 1391.7877197265625, 'time_s': 24.821533203125}
+[dcrlme_seed0] {'iteration': 190, 'evaluations': 48896, 'qd_score': 780628.75, 'coverage': 70.3125, 'max_fitness': 1391.7877197265625, 'time_s': 24.733551502227783}
+[dcrlme_seed0] {'iteration': 200, 'evaluations': 51456, 'qd_score': 787445.375, 'coverage': 70.60546875, 'max_fitness': 1419.390380859375, 'time_s': 24.59871244430542}
+[dcrlme_seed0] {'iteration': 210, 'evaluations': 54016, 'qd_score': 801716.0625, 'coverage': 71.484375, 'max_fitness': 1419.390380859375, 'time_s': 24.689566373825073}
+[dcrlme_seed0] {'iteration': 220, 'evaluations': 56576, 'qd_score': 810273.25, 'coverage': 72.0703125, 'max_fitness': 1452.1075439453125, 'time_s': 24.82376766204834}
+[dcrlme_seed0] {'iteration': 230, 'evaluations': 59136, 'qd_score': 817816.875, 'coverage': 72.36328125, 'max_fitness': 1458.294921875, 'time_s': 24.608777046203613}
+[dcrlme_seed0] {'iteration': 240, 'evaluations': 61696, 'qd_score': 827094.0625, 'coverage': 72.8515625, 'max_fitness': 1476.4276123046875, 'time_s': 24.65719485282898}
+[dcrlme_seed0] {'iteration': 250, 'evaluations': 64256, 'qd_score': 834126.1875, 'coverage': 73.14453125, 'max_fitness': 1476.4276123046875, 'time_s': 24.741490364074707}
+[dcrlme_seed0] {'iteration': 260, 'evaluations': 66816, 'qd_score': 840183.9375, 'coverage': 73.53515625, 'max_fitness': 1476.4276123046875, 'time_s': 24.822893619537354}
+[dcrlme_seed0] {'iteration': 270, 'evaluations': 69376, 'qd_score': 846883.3125, 'coverage': 73.73046875, 'max_fitness': 1476.4276123046875, 'time_s': 24.756041049957275}
+[dcrlme_seed0] {'iteration': 280, 'evaluations': 71936, 'qd_score': 849882.625, 'coverage': 73.73046875, 'max_fitness': 1490.4263916015625, 'time_s': 24.691582918167114}
+[dcrlme_seed0] {'iteration': 290, 'evaluations': 74496, 'qd_score': 853547.25, 'coverage': 73.828125, 'max_fitness': 1490.4263916015625, 'time_s': 24.729225158691406}
+[dcrlme_seed0] {'iteration': 300, 'evaluations': 77056, 'qd_score': 860862.5625, 'coverage': 74.21875, 'max_fitness': 1490.4263916015625, 'time_s': 24.692991495132446}
+[dcrlme_seed0] {'iteration': 310, 'evaluations': 79616, 'qd_score': 867762.3125, 'coverage': 74.609375, 'max_fitness': 1493.87841796875, 'time_s': 24.606394290924072}
+[dcrlme_seed0] {'iteration': 320, 'evaluations': 82176, 'qd_score': 872402.75, 'coverage': 74.8046875, 'max_fitness': 1493.87841796875, 'time_s': 24.65613341331482}
+[dcrlme_seed0] {'iteration': 330, 'evaluations': 84736, 'qd_score': 877175.875, 'coverage': 75.0, 'max_fitness': 1493.87841796875, 'time_s': 24.706017017364502}
+[dcrlme_seed0] {'iteration': 340, 'evaluations': 87296, 'qd_score': 883583.3125, 'coverage': 75.29296875, 'max_fitness': 1493.87841796875, 'time_s': 24.720526933670044}
+[dcrlme_seed0] {'iteration': 350, 'evaluations': 89856, 'qd_score': 888389.0625, 'coverage': 75.5859375, 'max_fitness': 1493.87841796875, 'time_s': 24.71495032310486}
+[dcrlme_seed0] {'iteration': 360, 'evaluations': 92416, 'qd_score': 892636.5, 'coverage': 75.68359375, 'max_fitness': 1496.9715576171875, 'time_s': 24.68680477142334}
+[dcrlme_seed0] {'iteration': 370, 'evaluations': 94976, 'qd_score': 896653.5, 'coverage': 75.9765625, 'max_fitness': 1496.9715576171875, 'time_s': 24.67745804786682}
+[dcrlme_seed0] {'iteration': 380, 'evaluations': 97536, 'qd_score': 900498.875, 'coverage': 76.07421875, 'max_fitness': 1496.9715576171875, 'time_s': 24.639480352401733}
+[dcrlme_seed0] {'iteration': 390, 'evaluations': 100096, 'qd_score': 906188.125, 'coverage': 76.3671875, 'max_fitness': 1496.9715576171875, 'time_s': 24.676097631454468}
+[dcrlme_seed0] {'iteration': 400, 'evaluations': 102656, 'qd_score': 910861.9375, 'coverage': 76.5625, 'max_fitness': 1496.9715576171875, 'time_s': 24.675559282302856}
+[dcrlme_seed0] {'iteration': 410, 'evaluations': 105216, 'qd_score': 913975.9375, 'coverage': 76.66015625, 'max_fitness': 1496.9715576171875, 'time_s': 24.69180178642273}
+[dcrlme_seed0] {'iteration': 420, 'evaluations': 107776, 'qd_score': 918788.25, 'coverage': 76.85546875, 'max_fitness': 1496.9715576171875, 'time_s': 24.668715476989746}
+[dcrlme_seed0] {'iteration': 430, 'evaluations': 110336, 'qd_score': 923166.625, 'coverage': 77.1484375, 'max_fitness': 1496.9715576171875, 'time_s': 24.66334104537964}
+[dcrlme_seed0] {'iteration': 440, 'evaluations': 112896, 'qd_score': 927630.9375, 'coverage': 77.24609375, 'max_fitness': 1499.088134765625, 'time_s': 24.64865255355835}
+[dcrlme_seed0] {'iteration': 450, 'evaluations': 115456, 'qd_score': 929556.1875, 'coverage': 77.24609375, 'max_fitness': 1514.4482421875, 'time_s': 24.692190170288086}
+[dcrlme_seed0] {'iteration': 460, 'evaluations': 118016, 'qd_score': 935508.3125, 'coverage': 77.5390625, 'max_fitness': 1525.10400390625, 'time_s': 24.656152725219727}
+[dcrlme_seed0] {'iteration': 470, 'evaluations': 120576, 'qd_score': 939799.75, 'coverage': 77.63671875, 'max_fitness': 1525.10400390625, 'time_s': 24.678749084472656}
+[dcrlme_seed0] {'iteration': 480, 'evaluations': 123136, 'qd_score': 942674.25, 'coverage': 77.734375, 'max_fitness': 1525.10400390625, 'time_s': 24.522160053253174}
+[dcrlme_seed0] {'iteration': 490, 'evaluations': 125696, 'qd_score': 944660.375, 'coverage': 77.734375, 'max_fitness': 1525.10400390625, 'time_s': 24.664400815963745}
+[dcrlme_seed0] {'iteration': 500, 'evaluations': 128256, 'qd_score': 947687.9375, 'coverage': 77.83203125, 'max_fitness': 1530.96435546875, 'time_s': 24.705060243606567}
+[dcrlme_seed0] {'iteration': 510, 'evaluations': 130816, 'qd_score': 950981.125, 'coverage': 78.02734375, 'max_fitness': 1530.96435546875, 'time_s': 24.597970962524414}
+[dcrlme_seed0] {'iteration': 520, 'evaluations': 133376, 'qd_score': 953221.375, 'coverage': 78.125, 'max_fitness': 1530.96435546875, 'time_s': 24.670939207077026}
+[dcrlme_seed0] {'iteration': 530, 'evaluations': 135936, 'qd_score': 955418.0, 'coverage': 78.22265625, 'max_fitness': 1536.01025390625, 'time_s': 24.701485633850098}
+[dcrlme_seed0] {'iteration': 540, 'evaluations': 138496, 'qd_score': 958407.5, 'coverage': 78.22265625, 'max_fitness': 1536.01025390625, 'time_s': 24.53719711303711}
+[dcrlme_seed0] {'iteration': 550, 'evaluations': 141056, 'qd_score': 959685.875, 'coverage': 78.3203125, 'max_fitness': 1544.7764892578125, 'time_s': 24.580801486968994}
+[dcrlme_seed0] {'iteration': 560, 'evaluations': 143616, 'qd_score': 960804.25, 'coverage': 78.41796875, 'max_fitness': 1544.7764892578125, 'time_s': 24.654515266418457}
+[dcrlme_seed0] {'iteration': 570, 'evaluations': 146176, 'qd_score': 963628.1875, 'coverage': 78.61328125, 'max_fitness': 1544.7764892578125, 'time_s': 24.60233497619629}
+[dcrlme_seed0] {'iteration': 580, 'evaluations': 148736, 'qd_score': 966268.0625, 'coverage': 78.7109375, 'max_fitness': 1544.7764892578125, 'time_s': 24.55216908454895}
+[dcrlme_seed0] {'iteration': 590, 'evaluations': 151296, 'qd_score': 968721.875, 'coverage': 78.90625, 'max_fitness': 1559.4564208984375, 'time_s': 24.638468503952026}
+[dcrlme_seed0] {'iteration': 600, 'evaluations': 153856, 'qd_score': 970139.5, 'coverage': 78.90625, 'max_fitness': 1610.13134765625, 'time_s': 24.63485598564148}
+[dcrlme_seed0] {'iteration': 610, 'evaluations': 156416, 'qd_score': 972053.875, 'coverage': 78.90625, 'max_fitness': 1610.13134765625, 'time_s': 24.64596915245056}
+[dcrlme_seed0] {'iteration': 620, 'evaluations': 158976, 'qd_score': 974291.625, 'coverage': 79.00390625, 'max_fitness': 1610.13134765625, 'time_s': 24.597146034240723}
+[dcrlme_seed0] {'iteration': 630, 'evaluations': 161536, 'qd_score': 975318.5, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.634767770767212}
+[dcrlme_seed0] {'iteration': 640, 'evaluations': 164096, 'qd_score': 977323.5, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.75398898124695}
+[dcrlme_seed0] {'iteration': 650, 'evaluations': 166656, 'qd_score': 978878.75, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.578430652618408}
+[dcrlme_seed0] {'iteration': 660, 'evaluations': 169216, 'qd_score': 979845.5625, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.613342761993408}
+[dcrlme_seed0] {'iteration': 670, 'evaluations': 171776, 'qd_score': 982126.3125, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.639866828918457}
+[dcrlme_seed0] {'iteration': 680, 'evaluations': 174336, 'qd_score': 983134.1875, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.62316370010376}
+[dcrlme_seed0] {'iteration': 690, 'evaluations': 176896, 'qd_score': 984295.1875, 'coverage': 79.19921875, 'max_fitness': 1610.13134765625, 'time_s': 24.6340651512146}
+[dcrlme_seed0] {'iteration': 700, 'evaluations': 179456, 'qd_score': 985933.625, 'coverage': 79.296875, 'max_fitness': 1610.13134765625, 'time_s': 24.659135580062866}
+[dcrlme_seed0] {'iteration': 710, 'evaluations': 182016, 'qd_score': 987025.875, 'coverage': 79.39453125, 'max_fitness': 1610.13134765625, 'time_s': 24.5361750125885}
+[dcrlme_seed0] {'iteration': 720, 'evaluations': 184576, 'qd_score': 988396.25, 'coverage': 79.39453125, 'max_fitness': 1610.13134765625, 'time_s': 24.605609893798828}
+[dcrlme_seed0] {'iteration': 730, 'evaluations': 187136, 'qd_score': 988973.625, 'coverage': 79.39453125, 'max_fitness': 1610.13134765625, 'time_s': 24.66809892654419}
+[dcrlme_seed0] {'iteration': 740, 'evaluations': 189696, 'qd_score': 990824.8125, 'coverage': 79.4921875, 'max_fitness': 1610.13134765625, 'time_s': 24.60988450050354}
+[dcrlme_seed0] {'iteration': 750, 'evaluations': 192256, 'qd_score': 992741.125, 'coverage': 79.58984375, 'max_fitness': 1610.13134765625, 'time_s': 24.545742988586426}
+[dcrlme_seed0] {'iteration': 760, 'evaluations': 194816, 'qd_score': 993740.125, 'coverage': 79.6875, 'max_fitness': 1613.2742919921875, 'time_s': 24.728971004486084}
+[dcrlme_seed0] {'iteration': 770, 'evaluations': 197376, 'qd_score': 994630.4375, 'coverage': 79.6875, 'max_fitness': 1613.2742919921875, 'time_s': 24.653701782226562}
+[dcrlme_seed0] {'iteration': 780, 'evaluations': 199936, 'qd_score': 998610.5, 'coverage': 80.078125, 'max_fitness': 1613.2742919921875, 'time_s': 24.605740547180176}
+[dcrlme_seed0] {'iteration': 790, 'evaluations': 202496, 'qd_score': 1000615.375, 'coverage': 80.17578125, 'max_fitness': 1613.2742919921875, 'time_s': 24.60615086555481}
+[dcrlme_seed0] {'iteration': 800, 'evaluations': 205056, 'qd_score': 1001580.75, 'coverage': 80.17578125, 'max_fitness': 1613.2742919921875, 'time_s': 24.576072931289673}
+[dcrlme_seed0] {'iteration': 810, 'evaluations': 207616, 'qd_score': 1002404.0, 'coverage': 80.2734375, 'max_fitness': 1613.2742919921875, 'time_s': 24.63842010498047}
+[dcrlme_seed0] {'iteration': 820, 'evaluations': 210176, 'qd_score': 1005205.6875, 'coverage': 80.46875, 'max_fitness': 1613.2742919921875, 'time_s': 24.696119785308838}
+[dcrlme_seed0] {'iteration': 830, 'evaluations': 212736, 'qd_score': 1006767.0625, 'coverage': 80.56640625, 'max_fitness': 1613.2742919921875, 'time_s': 24.626710653305054}
+[dcrlme_seed0] {'iteration': 840, 'evaluations': 215296, 'qd_score': 1010196.5, 'coverage': 80.6640625, 'max_fitness': 1613.2742919921875, 'time_s': 24.57477855682373}
+[dcrlme_seed0] {'iteration': 850, 'evaluations': 217856, 'qd_score': 1014079.8125, 'coverage': 80.95703125, 'max_fitness': 1613.2742919921875, 'time_s': 24.648784399032593}
+[dcrlme_seed0] {'iteration': 860, 'evaluations': 220416, 'qd_score': 1016732.4375, 'coverage': 81.15234375, 'max_fitness': 1613.2742919921875, 'time_s': 24.668102025985718}
+[dcrlme_seed0] {'iteration': 870, 'evaluations': 222976, 'qd_score': 1017828.5, 'coverage': 81.15234375, 'max_fitness': 1613.2742919921875, 'time_s': 24.62667441368103}
+[dcrlme_seed0] {'iteration': 880, 'evaluations': 225536, 'qd_score': 1020120.0625, 'coverage': 81.25, 'max_fitness': 1613.2742919921875, 'time_s': 24.618941068649292}
+[dcrlme_seed0] {'iteration': 890, 'evaluations': 228096, 'qd_score': 1021120.875, 'coverage': 81.25, 'max_fitness': 1613.2742919921875, 'time_s': 24.508228302001953}
+[dcrlme_seed0] {'iteration': 900, 'evaluations': 230656, 'qd_score': 1022394.0625, 'coverage': 81.34765625, 'max_fitness': 1613.2742919921875, 'time_s': 24.608048915863037}
+[dcrlme_seed0] {'iteration': 910, 'evaluations': 233216, 'qd_score': 1023827.6875, 'coverage': 81.4453125, 'max_fitness': 1613.2742919921875, 'time_s': 24.648210525512695}
+[dcrlme_seed0] {'iteration': 920, 'evaluations': 235776, 'qd_score': 1024822.875, 'coverage': 81.4453125, 'max_fitness': 1613.2742919921875, 'time_s': 24.61947464942932}
+[dcrlme_seed0] {'iteration': 930, 'evaluations': 238336, 'qd_score': 1025394.5, 'coverage': 81.4453125, 'max_fitness': 1613.2742919921875, 'time_s': 24.603307008743286}
+[dcrlme_seed0] {'iteration': 940, 'evaluations': 240896, 'qd_score': 1026066.5625, 'coverage': 81.4453125, 'max_fitness': 1613.2742919921875, 'time_s': 24.64649724960327}
+[dcrlme_seed0] {'iteration': 950, 'evaluations': 243456, 'qd_score': 1027257.125, 'coverage': 81.4453125, 'max_fitness': 1613.2742919921875, 'time_s': 24.616291999816895}
+[dcrlme_seed0] {'iteration': 960, 'evaluations': 246016, 'qd_score': 1029750.4375, 'coverage': 81.640625, 'max_fitness': 1613.2742919921875, 'time_s': 24.595312356948853}
+[dcrlme_seed0] {'iteration': 970, 'evaluations': 248576, 'qd_score': 1031531.75, 'coverage': 81.73828125, 'max_fitness': 1613.2742919921875, 'time_s': 24.66085648536682}
+[dcrlme_seed0] {'iteration': 980, 'evaluations': 251136, 'qd_score': 1033546.6875, 'coverage': 81.8359375, 'max_fitness': 1613.2742919921875, 'time_s': 24.570213079452515}
+[dcrlme_seed0] {'iteration': 990, 'evaluations': 253696, 'qd_score': 1034301.75, 'coverage': 81.8359375, 'max_fitness': 1613.2742919921875, 'time_s': 24.549556255340576}
+[dcrlme_seed0] {'iteration': 1000, 'evaluations': 256256, 'qd_score': 1035214.3125, 'coverage': 81.8359375, 'max_fitness': 1613.2742919921875, 'time_s': 24.7547345161438}
+[dcrlme_seed0] {'iteration': 1010, 'evaluations': 258816, 'qd_score': 1036831.875, 'coverage': 81.93359375, 'max_fitness': 1613.2742919921875, 'time_s': 24.66678237915039}
+[dcrlme_seed0] {'iteration': 1020, 'evaluations': 261376, 'qd_score': 1037848.875, 'coverage': 81.93359375, 'max_fitness': 1613.2742919921875, 'time_s': 24.528776168823242}
+[dcrlme_seed0] {'iteration': 1030, 'evaluations': 263936, 'qd_score': 1038502.3125, 'coverage': 81.93359375, 'max_fitness': 1613.2742919921875, 'time_s': 24.57559561729431}
+[dcrlme_seed0] {'iteration': 1040, 'evaluations': 266496, 'qd_score': 1039247.625, 'coverage': 82.03125, 'max_fitness': 1613.2742919921875, 'time_s': 24.598179817199707}
+[dcrlme_seed0] {'iteration': 1050, 'evaluations': 269056, 'qd_score': 1040922.375, 'coverage': 82.12890625, 'max_fitness': 1613.2742919921875, 'time_s': 24.567785024642944}
+[dcrlme_seed0] {'iteration': 1060, 'evaluations': 271616, 'qd_score': 1042012.4375, 'coverage': 82.2265625, 'max_fitness': 1613.2742919921875, 'time_s': 24.677677869796753}
+[dcrlme_seed0] {'iteration': 1070, 'evaluations': 274176, 'qd_score': 1042800.375, 'coverage': 82.2265625, 'max_fitness': 1613.2742919921875, 'time_s': 24.6358540058136}
+[dcrlme_seed0] {'iteration': 1080, 'evaluations': 276736, 'qd_score': 1043447.375, 'coverage': 82.2265625, 'max_fitness': 1613.2742919921875, 'time_s': 24.65653371810913}
+[dcrlme_seed0] {'iteration': 1090, 'evaluations': 279296, 'qd_score': 1043883.75, 'coverage': 82.32421875, 'max_fitness': 1613.2742919921875, 'time_s': 24.638708353042603}
+[dcrlme_seed0] {'iteration': 1100, 'evaluations': 281856, 'qd_score': 1045583.5, 'coverage': 82.71484375, 'max_fitness': 1613.2742919921875, 'time_s': 24.60866641998291}
+[dcrlme_seed0] {'iteration': 1110, 'evaluations': 284416, 'qd_score': 1047122.75, 'coverage': 82.71484375, 'max_fitness': 1613.2742919921875, 'time_s': 24.62911343574524}
+[dcrlme_seed0] {'iteration': 1120, 'evaluations': 286976, 'qd_score': 1048528.0, 'coverage': 82.8125, 'max_fitness': 1613.2742919921875, 'time_s': 24.606460571289062}
+[dcrlme_seed0] {'iteration': 1130, 'evaluations': 289536, 'qd_score': 1048990.75, 'coverage': 82.8125, 'max_fitness': 1613.2742919921875, 'time_s': 24.583350896835327}
+[dcrlme_seed0] {'iteration': 1140, 'evaluations': 292096, 'qd_score': 1049321.875, 'coverage': 82.8125, 'max_fitness': 1613.2742919921875, 'time_s': 24.54219126701355}
+[dcrlme_seed0] {'iteration': 1150, 'evaluations': 294656, 'qd_score': 1051158.875, 'coverage': 82.91015625, 'max_fitness': 1620.600830078125, 'time_s': 24.583478689193726}
+[dcrlme_seed0] {'iteration': 1160, 'evaluations': 297216, 'qd_score': 1051837.875, 'coverage': 82.91015625, 'max_fitness': 1620.600830078125, 'time_s': 24.666321754455566}
+[dcrlme_seed0] {'iteration': 1170, 'evaluations': 299776, 'qd_score': 1052731.375, 'coverage': 82.91015625, 'max_fitness': 1645.012939453125, 'time_s': 24.576480388641357}
+[dcrlme_seed0] {'iteration': 1180, 'evaluations': 302336, 'qd_score': 1053370.5, 'coverage': 82.91015625, 'max_fitness': 1645.012939453125, 'time_s': 24.555474758148193}
+[dcrlme_seed0] {'iteration': 1190, 'evaluations': 304896, 'qd_score': 1054080.5, 'coverage': 82.91015625, 'max_fitness': 1645.012939453125, 'time_s': 24.621623039245605}
+[dcrlme_seed0] {'iteration': 1200, 'evaluations': 307456, 'qd_score': 1054416.0, 'coverage': 82.91015625, 'max_fitness': 1645.012939453125, 'time_s': 24.622459888458252}
+[dcrlme_seed0] {'iteration': 1210, 'evaluations': 310016, 'qd_score': 1054966.0, 'coverage': 83.0078125, 'max_fitness': 1645.012939453125, 'time_s': 24.621288537979126}
+[dcrlme_seed0] {'iteration': 1220, 'evaluations': 312576, 'qd_score': 1055733.25, 'coverage': 83.0078125, 'max_fitness': 1645.012939453125, 'time_s': 24.54109263420105}
+[dcrlme_seed0] {'iteration': 1230, 'evaluations': 315136, 'qd_score': 1056084.5, 'coverage': 83.0078125, 'max_fitness': 1645.012939453125, 'time_s': 24.617552995681763}
+[dcrlme_seed0] {'iteration': 1240, 'evaluations': 317696, 'qd_score': 1056722.375, 'coverage': 83.0078125, 'max_fitness': 1645.012939453125, 'time_s': 24.710362434387207}
+[dcrlme_seed0] {'iteration': 1250, 'evaluations': 320256, 'qd_score': 1057055.75, 'coverage': 83.0078125, 'max_fitness': 1645.012939453125, 'time_s': 24.542765140533447}
+[dcrlme_seed0] {'iteration': 1260, 'evaluations': 322816, 'qd_score': 1057704.75, 'coverage': 83.10546875, 'max_fitness': 1645.012939453125, 'time_s': 24.7096164226532}
+[dcrlme_seed0] {'iteration': 1270, 'evaluations': 325376, 'qd_score': 1058345.25, 'coverage': 83.10546875, 'max_fitness': 1645.012939453125, 'time_s': 24.71845555305481}
+[dcrlme_seed0] {'iteration': 1280, 'evaluations': 327936, 'qd_score': 1059120.875, 'coverage': 83.10546875, 'max_fitness': 1645.012939453125, 'time_s': 24.536934852600098}
+[dcrlme_seed0] {'iteration': 1290, 'evaluations': 330496, 'qd_score': 1060661.25, 'coverage': 83.203125, 'max_fitness': 1645.012939453125, 'time_s': 24.54125428199768}
+[dcrlme_seed0] {'iteration': 1300, 'evaluations': 333056, 'qd_score': 1060924.5, 'coverage': 83.203125, 'max_fitness': 1645.012939453125, 'time_s': 24.716414213180542}
+[dcrlme_seed0] {'iteration': 1310, 'evaluations': 335616, 'qd_score': 1061404.25, 'coverage': 83.203125, 'max_fitness': 1645.012939453125, 'time_s': 24.443416357040405}
+[dcrlme_seed0] {'iteration': 1320, 'evaluations': 338176, 'qd_score': 1062025.75, 'coverage': 83.203125, 'max_fitness': 1645.012939453125, 'time_s': 24.566504955291748}
+[dcrlme_seed0] {'iteration': 1330, 'evaluations': 340736, 'qd_score': 1062513.75, 'coverage': 83.30078125, 'max_fitness': 1645.012939453125, 'time_s': 24.651994228363037}
+[dcrlme_seed0] {'iteration': 1340, 'evaluations': 343296, 'qd_score': 1063601.625, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.476321935653687}
+[dcrlme_seed0] {'iteration': 1350, 'evaluations': 345856, 'qd_score': 1063767.125, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.499111890792847}
+[dcrlme_seed0] {'iteration': 1360, 'evaluations': 348416, 'qd_score': 1064541.25, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.636396408081055}
+[dcrlme_seed0] {'iteration': 1370, 'evaluations': 350976, 'qd_score': 1065116.75, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.5436270236969}
+[dcrlme_seed0] {'iteration': 1380, 'evaluations': 353536, 'qd_score': 1065451.625, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.552929162979126}
+[dcrlme_seed0] {'iteration': 1390, 'evaluations': 356096, 'qd_score': 1065705.5, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.64655041694641}
+[dcrlme_seed0] {'iteration': 1400, 'evaluations': 358656, 'qd_score': 1065946.625, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.611979961395264}
+[dcrlme_seed0] {'iteration': 1410, 'evaluations': 361216, 'qd_score': 1066425.875, 'coverage': 83.49609375, 'max_fitness': 1645.012939453125, 'time_s': 24.50384783744812}
+[dcrlme_seed0] {'iteration': 1420, 'evaluations': 363776, 'qd_score': 1066784.875, 'coverage': 83.59375, 'max_fitness': 1645.012939453125, 'time_s': 24.62849187850952}
+[dcrlme_seed0] {'iteration': 1430, 'evaluations': 366336, 'qd_score': 1068489.5, 'coverage': 83.69140625, 'max_fitness': 1645.012939453125, 'time_s': 24.627345323562622}
+[dcrlme_seed0] {'iteration': 1440, 'evaluations': 368896, 'qd_score': 1070008.5, 'coverage': 83.7890625, 'max_fitness': 1645.012939453125, 'time_s': 24.507248878479004}
+[dcrlme_seed0] {'iteration': 1450, 'evaluations': 371456, 'qd_score': 1071397.75, 'coverage': 83.88671875, 'max_fitness': 1645.012939453125, 'time_s': 24.528533220291138}
+[dcrlme_seed0] {'iteration': 1460, 'evaluations': 374016, 'qd_score': 1071668.375, 'coverage': 83.88671875, 'max_fitness': 1645.012939453125, 'time_s': 24.682698965072632}
+[dcrlme_seed0] {'iteration': 1470, 'evaluations': 376576, 'qd_score': 1071960.75, 'coverage': 83.88671875, 'max_fitness': 1683.804931640625, 'time_s': 24.61605715751648}
+[dcrlme_seed0] {'iteration': 1480, 'evaluations': 379136, 'qd_score': 1073197.25, 'coverage': 84.08203125, 'max_fitness': 1683.804931640625, 'time_s': 24.599138975143433}
+[dcrlme_seed0] {'iteration': 1490, 'evaluations': 381696, 'qd_score': 1073760.125, 'coverage': 84.1796875, 'max_fitness': 1683.804931640625, 'time_s': 24.6038658618927}
+[dcrlme_seed0] {'iteration': 1500, 'evaluations': 384256, 'qd_score': 1074157.5, 'coverage': 84.1796875, 'max_fitness': 1683.804931640625, 'time_s': 24.666545152664185}
+[dcrlme_seed0] {'iteration': 1510, 'evaluations': 386816, 'qd_score': 1074685.75, 'coverage': 84.1796875, 'max_fitness': 1683.804931640625, 'time_s': 24.694114208221436}
+[dcrlme_seed0] {'iteration': 1520, 'evaluations': 389376, 'qd_score': 1075063.875, 'coverage': 84.1796875, 'max_fitness': 1683.804931640625, 'time_s': 24.49319815635681}
+[dcrlme_seed0] {'iteration': 1530, 'evaluations': 391936, 'qd_score': 1075674.5, 'coverage': 84.27734375, 'max_fitness': 1683.804931640625, 'time_s': 24.543802976608276}
+[dcrlme_seed0] {'iteration': 1540, 'evaluations': 394496, 'qd_score': 1076295.375, 'coverage': 84.27734375, 'max_fitness': 1683.804931640625, 'time_s': 24.6345534324646}
+[dcrlme_seed0] {'iteration': 1550, 'evaluations': 397056, 'qd_score': 1078065.625, 'coverage': 84.375, 'max_fitness': 1683.804931640625, 'time_s': 24.521398305892944}
+[dcrlme_seed0] {'iteration': 1560, 'evaluations': 399616, 'qd_score': 1078974.75, 'coverage': 84.375, 'max_fitness': 1683.804931640625, 'time_s': 24.571681261062622}
+[dcrlme_seed0] {'iteration': 1570, 'evaluations': 402176, 'qd_score': 1079638.75, 'coverage': 84.375, 'max_fitness': 1683.804931640625, 'time_s': 24.63560461997986}
+[dcrlme_seed0] {'iteration': 1580, 'evaluations': 404736, 'qd_score': 1081631.25, 'coverage': 84.47265625, 'max_fitness': 1683.804931640625, 'time_s': 24.426893711090088}
+[dcrlme_seed0] {'iteration': 1590, 'evaluations': 407296, 'qd_score': 1082212.75, 'coverage': 84.66796875, 'max_fitness': 1683.804931640625, 'time_s': 24.47597312927246}
+[dcrlme_seed0] {'iteration': 1600, 'evaluations': 409856, 'qd_score': 1082867.25, 'coverage': 84.86328125, 'max_fitness': 1683.804931640625, 'time_s': 24.67905330657959}
+[dcrlme_seed0] {'iteration': 1610, 'evaluations': 412416, 'qd_score': 1083332.25, 'coverage': 84.86328125, 'max_fitness': 1683.804931640625, 'time_s': 24.522064447402954}
+[dcrlme_seed0] {'iteration': 1620, 'evaluations': 414976, 'qd_score': 1083723.25, 'coverage': 84.86328125, 'max_fitness': 1683.804931640625, 'time_s': 24.530818939208984}
+[dcrlme_seed0] {'iteration': 1630, 'evaluations': 417536, 'qd_score': 1084438.875, 'coverage': 84.86328125, 'max_fitness': 1683.804931640625, 'time_s': 24.630293130874634}
+[dcrlme_seed0] {'iteration': 1640, 'evaluations': 420096, 'qd_score': 1084685.25, 'coverage': 84.9609375, 'max_fitness': 1683.804931640625, 'time_s': 24.51802635192871}
+[dcrlme_seed0] {'iteration': 1650, 'evaluations': 422656, 'qd_score': 1085533.25, 'coverage': 84.9609375, 'max_fitness': 1683.804931640625, 'time_s': 24.487303495407104}
+[dcrlme_seed0] {'iteration': 1660, 'evaluations': 425216, 'qd_score': 1086052.75, 'coverage': 84.9609375, 'max_fitness': 1683.804931640625, 'time_s': 24.717270374298096}
+[dcrlme_seed0] {'iteration': 1670, 'evaluations': 427776, 'qd_score': 1086667.25, 'coverage': 84.9609375, 'max_fitness': 1683.804931640625, 'time_s': 24.55614709854126}
+[dcrlme_seed0] {'iteration': 1680, 'evaluations': 430336, 'qd_score': 1086986.5, 'coverage': 84.9609375, 'max_fitness': 1683.804931640625, 'time_s': 24.53014636039734}
+[dcrlme_seed0] {'iteration': 1690, 'evaluations': 432896, 'qd_score': 1087616.0, 'coverage': 84.9609375, 'max_fitness': 1683.804931640625, 'time_s': 24.595701694488525}
+[dcrlme_seed0] {'iteration': 1700, 'evaluations': 435456, 'qd_score': 1087897.125, 'coverage': 85.15625, 'max_fitness': 1683.804931640625, 'time_s': 24.627580642700195}
+[dcrlme_seed0] {'iteration': 1710, 'evaluations': 438016, 'qd_score': 1089670.5, 'coverage': 85.25390625, 'max_fitness': 1683.804931640625, 'time_s': 24.608293294906616}
+[dcrlme_seed0] {'iteration': 1720, 'evaluations': 440576, 'qd_score': 1090138.25, 'coverage': 85.25390625, 'max_fitness': 1683.804931640625, 'time_s': 24.663002729415894}
+[dcrlme_seed0] {'iteration': 1730, 'evaluations': 443136, 'qd_score': 1092022.875, 'coverage': 85.44921875, 'max_fitness': 1683.804931640625, 'time_s': 24.637852430343628}
+[dcrlme_seed0] {'iteration': 1740, 'evaluations': 445696, 'qd_score': 1092446.75, 'coverage': 85.44921875, 'max_fitness': 1683.804931640625, 'time_s': 24.671569347381592}
+[dcrlme_seed0] {'iteration': 1750, 'evaluations': 448256, 'qd_score': 1093151.5, 'coverage': 85.546875, 'max_fitness': 1683.804931640625, 'time_s': 24.538191318511963}
+[dcrlme_seed0] {'iteration': 1760, 'evaluations': 450816, 'qd_score': 1094601.875, 'coverage': 85.7421875, 'max_fitness': 1683.804931640625, 'time_s': 24.62817931175232}
+[dcrlme_seed0] {'iteration': 1770, 'evaluations': 453376, 'qd_score': 1095009.5, 'coverage': 85.7421875, 'max_fitness': 1683.804931640625, 'time_s': 24.762858152389526}
+[dcrlme_seed0] {'iteration': 1780, 'evaluations': 455936, 'qd_score': 1095295.75, 'coverage': 85.7421875, 'max_fitness': 1683.804931640625, 'time_s': 24.545191049575806}
+[dcrlme_seed0] {'iteration': 1790, 'evaluations': 458496, 'qd_score': 1095972.0, 'coverage': 85.7421875, 'max_fitness': 1683.804931640625, 'time_s': 24.369795560836792}
+[dcrlme_seed0] {'iteration': 1800, 'evaluations': 461056, 'qd_score': 1096398.25, 'coverage': 85.7421875, 'max_fitness': 1683.804931640625, 'time_s': 24.549453496932983}
+[dcrlme_seed0] {'iteration': 1810, 'evaluations': 463616, 'qd_score': 1096679.5, 'coverage': 85.7421875, 'max_fitness': 1683.804931640625, 'time_s': 24.679137706756592}
+[dcrlme_seed0] {'iteration': 1820, 'evaluations': 466176, 'qd_score': 1097568.75, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.526129722595215}
+[dcrlme_seed0] {'iteration': 1830, 'evaluations': 468736, 'qd_score': 1098214.0, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.492412328720093}
+[dcrlme_seed0] {'iteration': 1840, 'evaluations': 471296, 'qd_score': 1098637.25, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.537205934524536}
+[dcrlme_seed0] {'iteration': 1850, 'evaluations': 473856, 'qd_score': 1099138.25, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.618027925491333}
+[dcrlme_seed0] {'iteration': 1860, 'evaluations': 476416, 'qd_score': 1099531.75, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.654072046279907}
+[dcrlme_seed0] {'iteration': 1870, 'evaluations': 478976, 'qd_score': 1099989.0, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.582253456115723}
+[dcrlme_seed0] {'iteration': 1880, 'evaluations': 481536, 'qd_score': 1100140.0, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.514686107635498}
+[dcrlme_seed0] {'iteration': 1890, 'evaluations': 484096, 'qd_score': 1101267.25, 'coverage': 85.9375, 'max_fitness': 1691.718505859375, 'time_s': 24.549142599105835}
+[dcrlme_seed0] {'iteration': 1900, 'evaluations': 486656, 'qd_score': 1101706.0, 'coverage': 86.03515625, 'max_fitness': 1691.718505859375, 'time_s': 24.655382871627808}
+[dcrlme_seed0] {'iteration': 1910, 'evaluations': 489216, 'qd_score': 1102165.75, 'coverage': 86.03515625, 'max_fitness': 1691.718505859375, 'time_s': 24.4783833026886}
+[dcrlme_seed0] {'iteration': 1920, 'evaluations': 491776, 'qd_score': 1102768.375, 'coverage': 86.03515625, 'max_fitness': 1691.718505859375, 'time_s': 24.567886352539062}
+[dcrlme_seed0] {'iteration': 1930, 'evaluations': 494336, 'qd_score': 1102967.0, 'coverage': 86.03515625, 'max_fitness': 1691.718505859375, 'time_s': 24.60262417793274}
+[dcrlme_seed0] {'iteration': 1940, 'evaluations': 496896, 'qd_score': 1103625.5, 'coverage': 86.03515625, 'max_fitness': 1691.718505859375, 'time_s': 24.518482446670532}
+[dcrlme_seed0] {'iteration': 1950, 'evaluations': 499456, 'qd_score': 1104889.5, 'coverage': 86.1328125, 'max_fitness': 1691.718505859375, 'time_s': 24.5890371799469}
+[dcrlme_seed0] {'iteration': 1960, 'evaluations': 502016, 'qd_score': 1105228.25, 'coverage': 86.1328125, 'max_fitness': 1691.718505859375, 'time_s': 24.485185623168945}
+[dcrlme_seed0] {'iteration': 1970, 'evaluations': 504576, 'qd_score': 1105525.125, 'coverage': 86.1328125, 'max_fitness': 1691.718505859375, 'time_s': 24.459553241729736}
+[dcrlme_seed0] {'iteration': 1980, 'evaluations': 507136, 'qd_score': 1106743.0, 'coverage': 86.1328125, 'max_fitness': 1691.718505859375, 'time_s': 24.65232491493225}
+[dcrlme_seed0] {'iteration': 1990, 'evaluations': 509696, 'qd_score': 1107228.5, 'coverage': 86.1328125, 'max_fitness': 1691.718505859375, 'time_s': 24.447688817977905}
+[dcrlme_seed0] {'iteration': 2000, 'evaluations': 512256, 'qd_score': 1107422.25, 'coverage': 86.1328125, 'max_fitness': 1691.718505859375, 'time_s': 24.471049785614014}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[dcrlme_seed0] terminé en 4984 s -> /kaggle/working/outputs/repertoires/dcrlme_seed0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[oracle dcrlme_seed0] intact             meilleur :  1655.1  (13 s)
+[oracle dcrlme_seed0] leg1_paralysed     meilleur :  1260.6  (15 s)
+[oracle dcrlme_seed0] leg2_paralysed     meilleur :  1281.1  (17 s)
+[oracle dcrlme_seed0] leg3_paralysed     meilleur :  1435.2  (20 s)
+[oracle dcrlme_seed0] leg4_paralysed     meilleur :  1235.3  (22 s)
+[oracle dcrlme_seed0] leg1_weak          meilleur :  1538.0  (25 s)
+[oracle dcrlme_seed0] leg2_weak          meilleur :  1479.3  (27 s)
+[oracle dcrlme_seed0] leg3_weak          meilleur :  1515.8  (30 s)
+[oracle dcrlme_seed0] leg4_weak          meilleur :  1525.2  (32 s)
+[oracle dcrlme_seed0] legs12_paralysed   meilleur :  1106.2  (34 s)
+[oracle dcrlme_seed0] legs14_paralysed   meilleur :  1095.6  (37 s)
+[oracle dcrlme_seed0] ankle1_paralysed   meilleur :  1562.9  (39 s)
+[oracle dcrlme_seed0] ankle3_paralysed   meilleur :  1548.8  (42 s)
+/kaggle/working/code/src/qd_damage/oracle.py:137: RuntimeWarning: Mean of empty slice
+  mean_fit = np.nanmean(data["fitness"], axis=2)  # (scénarios, cases)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/oracle/dcrlme_seed0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[adapt dcrlme_seed0] leg1_paralysed     ite         essais   9.6  % oracle 100.0  (27 s)
+[adapt dcrlme_seed0] leg1_paralysed     top_k       essais  20.0  % oracle  29.2  (41 s)
+[adapt dcrlme_seed0] leg1_paralysed     random      essais  20.0  % oracle  49.7  (55 s)
+[adapt dcrlme_seed0] leg1_paralysed     best_intact essais   1.0  % oracle  19.3  (56 s)
+[adapt dcrlme_seed0] leg2_paralysed     ite         essais  13.8  % oracle  32.0  (71 s)
+[adapt dcrlme_seed0] leg2_paralysed     top_k       essais  20.0  % oracle  36.6  (85 s)
+[adapt dcrlme_seed0] leg2_paralysed     random      essais  20.0  % oracle  55.4  (99 s)
+[adapt dcrlme_seed0] leg2_paralysed     best_intact essais   1.0  % oracle  22.1  (100 s)
+[adapt dcrlme_seed0] leg3_paralysed     ite         essais   6.0  % oracle  46.7  (115 s)
+[adapt dcrlme_seed0] leg3_paralysed     top_k       essais  20.0  % oracle  46.8  (129 s)
+[adapt dcrlme_seed0] leg3_paralysed     random      essais  20.0  % oracle  59.2  (143 s)
+[adapt dcrlme_seed0] leg3_paralysed     best_intact essais   1.0  % oracle   3.9  (144 s)
+[adapt dcrlme_seed0] leg4_paralysed     ite         essais  13.2  % oracle  33.2  (158 s)
+[adapt dcrlme_seed0] leg4_paralysed     top_k       essais  20.0  % oracle  35.2  (173 s)
+[adapt dcrlme_seed0] leg4_paralysed     random      essais  20.0  % oracle  73.4  (187 s)
+[adapt dcrlme_seed0] leg4_paralysed     best_intact essais   1.0  % oracle   4.0  (187 s)
+[adapt dcrlme_seed0] leg1_weak          ite         essais   2.0  % oracle  86.0  (202 s)
+[adapt dcrlme_seed0] leg1_weak          top_k       essais  20.0  % oracle  84.1  (216 s)
+[adapt dcrlme_seed0] leg1_weak          random      essais  20.0  % oracle  65.3  (230 s)
+[adapt dcrlme_seed0] leg1_weak          best_intact essais   1.0  % oracle  86.0  (231 s)
+[adapt dcrlme_seed0] leg2_weak          ite         essais   2.6  % oracle  83.2  (246 s)
+[adapt dcrlme_seed0] leg2_weak          top_k       essais  20.0  % oracle  83.7  (260 s)
+[adapt dcrlme_seed0] leg2_weak          random      essais  20.0  % oracle  56.6  (274 s)
+[adapt dcrlme_seed0] leg2_weak          best_intact essais   1.0  % oracle  83.2  (275 s)
+[adapt dcrlme_seed0] leg3_weak          ite         essais   2.0  % oracle  78.4  (289 s)
+[adapt dcrlme_seed0] leg3_weak          top_k       essais  20.0  % oracle  76.8  (304 s)
+[adapt dcrlme_seed0] leg3_weak          random      essais  20.0  % oracle  71.1  (318 s)
+[adapt dcrlme_seed0] leg3_weak          best_intact essais   1.0  % oracle  18.1  (319 s)
+[adapt dcrlme_seed0] leg4_weak          ite         essais   3.8  % oracle  62.4  (333 s)
+[adapt dcrlme_seed0] leg4_weak          top_k       essais  20.0  % oracle  74.9  (347 s)
+[adapt dcrlme_seed0] leg4_weak          random      essais  20.0  % oracle  75.4  (362 s)
+[adapt dcrlme_seed0] leg4_weak          best_intact essais   1.0  % oracle  62.4  (362 s)
+[adapt dcrlme_seed0] legs12_paralysed   ite         essais  20.0  % oracle   9.5  (377 s)
+[adapt dcrlme_seed0] legs12_paralysed   top_k       essais  20.0  % oracle  14.0  (392 s)
+[adapt dcrlme_seed0] legs12_paralysed   random      essais  20.0  % oracle  40.0  (406 s)
+[adapt dcrlme_seed0] legs12_paralysed   best_intact essais   1.0  % oracle  13.0  (406 s)
+[adapt dcrlme_seed0] legs14_paralysed   ite         essais  20.0  % oracle  67.1  (421 s)
+[adapt dcrlme_seed0] legs14_paralysed   top_k       essais  20.0  % oracle  88.8  (435 s)
+[adapt dcrlme_seed0] legs14_paralysed   random      essais  20.0  % oracle  24.3  (450 s)
+[adapt dcrlme_seed0] legs14_paralysed   best_intact essais   1.0  % oracle  27.7  (450 s)
+[adapt dcrlme_seed0] ankle1_paralysed   ite         essais   2.0  % oracle  84.2  (465 s)
+[adapt dcrlme_seed0] ankle1_paralysed   top_k       essais  20.0  % oracle  93.0  (479 s)
+[adapt dcrlme_seed0] ankle1_paralysed   random      essais  20.0  % oracle  60.0  (494 s)
+[adapt dcrlme_seed0] ankle1_paralysed   best_intact essais   1.0  % oracle  26.5  (494 s)
+[adapt dcrlme_seed0] ankle3_paralysed   ite         essais   2.8  % oracle  83.9  (509 s)
+[adapt dcrlme_seed0] ankle3_paralysed   top_k       essais  20.0  % oracle  95.3  (523 s)
+[adapt dcrlme_seed0] ankle3_paralysed   random      essais  20.0  % oracle  67.4  (537 s)
+[adapt dcrlme_seed0] ankle3_paralysed   best_intact essais   1.0  % oracle  39.7  (538 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/adaptation/dcrlme_seed0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[continu dcrlme_seed0] intact             meilleur :  1381.0 (14 s)
+[continu dcrlme_seed0] leg1_paralysed     meilleur :  1123.4 (18 s)
+[continu dcrlme_seed0] leg2_paralysed     meilleur :  1185.7 (21 s)
+[continu dcrlme_seed0] leg3_paralysed     meilleur :  1224.8 (25 s)
+[continu dcrlme_seed0] leg4_paralysed     meilleur :  1163.2 (29 s)
+[continu dcrlme_seed0] leg1_weak          meilleur :  1331.4 (32 s)
+[continu dcrlme_seed0] leg2_weak          meilleur :  1318.9 (36 s)
+[continu dcrlme_seed0] leg3_weak          meilleur :  1276.6 (40 s)
+[continu dcrlme_seed0] leg4_weak          meilleur :  1313.1 (43 s)
+[continu dcrlme_seed0] legs12_paralysed   meilleur :  1084.8 (47 s)
+[continu dcrlme_seed0] legs14_paralysed   meilleur :  1074.0 (51 s)
+[continu dcrlme_seed0] ankle1_paralysed   meilleur :  1161.8 (54 s)
+[continu dcrlme_seed0] ankle3_paralysed   meilleur :  1325.8 (58 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/continuous/dcrlme_seed0

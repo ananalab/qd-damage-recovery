@@ -10,6 +10,10 @@ A four-legged robot (the Brax Ant) loses the use of a leg. What lets it walk aga
 | PGA-ME / DCRL-ME (evolution + RL) | Same, but the repertoire is built with the help of a TD3 critic |
 | RL re-training | Train the gait again, directly on the damaged robot |
 
+We measure the number of trials on the damaged robot (what is expensive on a real robot) and the performance
+recovered. Adaptation uses Intelligent Trial & Error (ITE, Cully et al., Nature 2015): Bayesian optimisation
+with a Gaussian process over the repertoire.
+
 ## Protocol
 
 ## Rules followed

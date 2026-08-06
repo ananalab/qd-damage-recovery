@@ -28,6 +28,14 @@ import jax
 import jax.numpy as jnp
 import matplotlib
 
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
+from brax.v1.io import image  # noqa: E402  (software rendering, needs pytinyrenderer)
+from brax.v1.io.json import dumps as brax_dumps  # noqa: E402
+from matplotlib import font_manager  # noqa: E402
+from PIL import Image, ImageDraw, ImageFont  # noqa: E402
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""
