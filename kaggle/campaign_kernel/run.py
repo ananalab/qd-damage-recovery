@@ -41,3 +41,16 @@ def rl_cmd(scenario, variant, seed):
     )
 
 
+jobs = []
+for name, run_dir in by_name.items():
+    steps = [
+        f"{py} -m qd_damage.oracle --runs {run_dir} --out {OUT}/oracle",
+        f"{py} -m qd_damage.adaptation --runs {run_dir} --oracle-root {OUT}/oracle --out {OUT}/adaptation",
+    ]
+    if name in ("dcrlme_seed0", "dcrlme_seed1"):
+        steps += [rl_cmd(sc, "finetune", int(name[-1])) for sc in RL_SCENARIOS]
+    jobs.append((f"post_{name}", ["bash", "-c", " && ".join(steps)]))
+for scenario in RL_SCENARIOS:
+    for seed in [0, 1]:
+        jobs.append((f"rl_{scenario}_scratch_s{seed}", ["bash", "-c", rl_cmd(scenario, "scratch", seed)]))
+ku.run_jobs(jobs, CODE, env, log_dir="/kaggle/working/logs")

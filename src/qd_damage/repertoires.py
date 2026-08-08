@@ -367,3 +367,29 @@ def build(
     return out_dir
 
 
+def make_dc_actor_network(common: dict, action_size: int) -> MLPDC:
+    return MLPDC(
+        layer_sizes=tuple(common["policy"]["hidden_layer_sizes"]) + (action_size,),
+        kernel_init=jax.nn.initializers.lecun_uniform(),
+        final_activation=jnp.tanh,
+    )
+
+
+def load_dc_actor(run_dir: Path, common: dict, env):
+    """(network, parameters) of the conditioned actor saved by a DCRL-ME run (actor.npz)."""
+    actor = make_dc_actor_network(common, env.action_size)
+    template = actor.init(
+        jax.random.key(0), obs=jnp.zeros((env.observation_size,)), desc=jnp.zeros((env.descriptor_length,))
+    )
+    _, unravel = ravel_pytree(template)
+    return actor, unravel(jnp.asarray(np.load(Path(run_dir) / "actor.npz")["params"]))
+
+
+def load_policy_params(run_dir: Path, index: int, policy_network, observation_size: int):
+    """Rebuild the policy parameters of cell `index` from repertoire.npz."""
+    data = np.load(Path(run_dir) / "repertoire.npz")
+    template = policy_network.init(jax.random.key(0), jnp.zeros((observation_size,)))
+    _, unravel = ravel_pytree(template)
+    return unravel(jnp.asarray(data["genotypes"][index]))
+
+

@@ -1,0 +1,20 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[rl legs14_paralysed scratch s0] 144 épisodes : 1010.1 (84 s)
+[rl legs14_paralysed scratch s0] 304 épisodes : 1013.4 (138 s)
+[rl legs14_paralysed scratch s0] 464 épisodes : 1026.9 (192 s)
+[rl legs14_paralysed scratch s0] 624 épisodes : 1030.6 (247 s)
+[rl legs14_paralysed scratch s0] 784 épisodes : 1033.6 (301 s)
+[rl legs14_paralysed scratch s0] 944 épisodes : 1035.1 (355 s)
+[rl legs14_paralysed scratch s0] 1104 épisodes : 1036.9 (410 s)
+[rl legs14_paralysed scratch s0] 1264 épisodes : 1036.8 (464 s)
+[rl legs14_paralysed scratch s0] 1424 épisodes : 1040.9 (518 s)
+[rl legs14_paralysed scratch s0] 1584 épisodes : 1041.7 (573 s)
+[rl legs14_paralysed scratch s0] 1744 épisodes : 1043.0 (627 s)
+[rl legs14_paralysed scratch s0] 1904 épisodes : 1044.4 (682 s)
+[rl legs14_paralysed scratch s0] 2000 épisodes : 1046.4 (714 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/rl/legs14_paralysed_scratch_seed0
