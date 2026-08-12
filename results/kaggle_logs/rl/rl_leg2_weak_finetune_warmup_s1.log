@@ -1,0 +1,20 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[rl leg2_weak finetune_warmup s1] 144 episodes: 1215.8 (63 s)
+[rl leg2_weak finetune_warmup s1] 304 episodes: 1215.2 (126 s)
+[rl leg2_weak finetune_warmup s1] 464 episodes: 1350.0 (180 s)
+[rl leg2_weak finetune_warmup s1] 624 episodes: 1516.9 (234 s)
+[rl leg2_weak finetune_warmup s1] 784 episodes: 1625.7 (289 s)
+[rl leg2_weak finetune_warmup s1] 944 episodes: 1660.0 (343 s)
+[rl leg2_weak finetune_warmup s1] 1104 episodes: 1795.3 (397 s)
+[rl leg2_weak finetune_warmup s1] 1264 episodes: 1854.7 (452 s)
+[rl leg2_weak finetune_warmup s1] 1424 episodes: 1867.8 (506 s)
+[rl leg2_weak finetune_warmup s1] 1584 episodes: 1851.9 (561 s)
+[rl leg2_weak finetune_warmup s1] 1744 episodes: 1935.3 (615 s)
+[rl leg2_weak finetune_warmup s1] 1904 episodes: 1949.7 (669 s)
+[rl leg2_weak finetune_warmup s1] 2000 episodes: 1966.3 (702 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/rl/leg2_weak_finetune_warmup_seed1

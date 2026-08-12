@@ -36,6 +36,20 @@ from brax.v1.io.json import dumps as brax_dumps  # noqa: E402
 from matplotlib import font_manager  # noqa: E402
 from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
+from qd_damage.config import load_run_config  # noqa: E402
+from qd_damage.envs import LEG_ACTIONS, make_env  # noqa: E402
+from qd_damage.repertoires import REPO_ROOT, git_commit, load_policy_params, make_policy_network  # noqa: E402
+
+VIEWER_JS = Path(__file__).parent / "assets" / "brax_viewer_v0.1.0_three_r135.js"
+TEMPLATES = Path(__file__).parent / "templates"
+# Font shipped with matplotlib: handles accents, unlike the default PIL font.
+_FONT_PATH = font_manager.findfont("DejaVu Sans")
+
+ALGO_LABELS = {"me": "MAP-Elites", "pgame": "PGA-ME", "dcrlme": "DCRL-ME"}
+ALGO_COLORS = {"me": "#2a78d6", "pgame": "#e07b39", "dcrlme": "#3a9d5d"}
+CONDITION_COLORS = {"intact": "#2a78d6", "damaged": "#c8413b"}
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""

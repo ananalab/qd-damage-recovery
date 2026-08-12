@@ -1,0 +1,20 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[rl legs14_paralysed finetune_warmup s1] 144 episodes: 1052.0 (64 s)
+[rl legs14_paralysed finetune_warmup s1] 304 episodes: 1054.4 (126 s)
+[rl legs14_paralysed finetune_warmup s1] 464 episodes: 1054.8 (180 s)
+[rl legs14_paralysed finetune_warmup s1] 624 episodes: 1057.2 (234 s)
+[rl legs14_paralysed finetune_warmup s1] 784 episodes: 1069.8 (289 s)
+[rl legs14_paralysed finetune_warmup s1] 944 episodes: 1112.5 (343 s)
+[rl legs14_paralysed finetune_warmup s1] 1104 episodes: 1176.7 (398 s)
+[rl legs14_paralysed finetune_warmup s1] 1264 episodes: 1214.0 (453 s)
+[rl legs14_paralysed finetune_warmup s1] 1424 episodes: 1226.4 (507 s)
+[rl legs14_paralysed finetune_warmup s1] 1584 episodes: 1260.6 (562 s)
+[rl legs14_paralysed finetune_warmup s1] 1744 episodes: 1261.8 (617 s)
+[rl legs14_paralysed finetune_warmup s1] 1904 episodes: 1286.1 (671 s)
+[rl legs14_paralysed finetune_warmup s1] 2000 episodes: 1299.3 (704 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/rl/legs14_paralysed_finetune_warmup_seed1
