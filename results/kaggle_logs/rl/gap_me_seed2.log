@@ -1,0 +1,65 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[oracle me_seed2] intact             best:  1203.0  (12 s)
+[oracle me_seed2] leg1_paralysed     best:  1118.2  (14 s)
+[oracle me_seed2] leg2_paralysed     best:  1099.1  (17 s)
+[oracle me_seed2] leg3_paralysed     best:  1101.4  (19 s)
+[oracle me_seed2] leg4_paralysed     best:  1088.2  (21 s)
+[oracle me_seed2] leg1_weak          best:  1187.2  (24 s)
+[oracle me_seed2] leg2_weak          best:  1134.5  (26 s)
+[oracle me_seed2] leg3_weak          best:  1146.1  (28 s)
+[oracle me_seed2] leg4_weak          best:  1181.0  (31 s)
+[oracle me_seed2] legs12_paralysed   best:  1078.6  (33 s)
+[oracle me_seed2] legs14_paralysed   best:  1093.4  (36 s)
+[oracle me_seed2] ankle1_paralysed   best:  1145.2  (38 s)
+[oracle me_seed2] ankle3_paralysed   best:  1191.9  (40 s)
+/kaggle/working/code/src/qd_damage/oracle.py:163: RuntimeWarning: Mean of empty slice
+  mean_fit = np.nanmean(data["fitness"], axis=2)  # (scenarios, cells)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/oracle_gap/me_seed2
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[adapt me_seed2] leg1_paralysed     ite         trials   6.8  % oracle  36.9  (27 s)
+[adapt me_seed2] leg1_paralysed     top_k       trials  20.0  % oracle  32.5  (42 s)
+[adapt me_seed2] leg1_paralysed     best_intact trials   1.0  % oracle   8.9  (42 s)
+[adapt me_seed2] leg2_paralysed     ite         trials  11.0  % oracle   1.9  (57 s)
+[adapt me_seed2] leg2_paralysed     top_k       trials  20.0  % oracle  -2.1  (71 s)
+[adapt me_seed2] leg2_paralysed     best_intact trials   1.0  % oracle -26.5  (72 s)
+[adapt me_seed2] leg3_paralysed     ite         trials  12.2  % oracle  36.9  (86 s)
+[adapt me_seed2] leg3_paralysed     top_k       trials  20.0  % oracle  31.0  (100 s)
+[adapt me_seed2] leg3_paralysed     best_intact trials   1.0  % oracle   1.8  (101 s)
+[adapt me_seed2] leg4_paralysed     ite         trials   7.0  % oracle  77.9  (116 s)
+[adapt me_seed2] leg4_paralysed     top_k       trials  20.0  % oracle  81.7  (130 s)
+[adapt me_seed2] leg4_paralysed     best_intact trials   1.0  % oracle  15.5  (130 s)
+[adapt me_seed2] leg1_weak          ite         trials   2.0  % oracle  46.4  (145 s)
+[adapt me_seed2] leg1_weak          top_k       trials  20.0  % oracle  76.8  (159 s)
+[adapt me_seed2] leg1_weak          best_intact trials   1.0  % oracle  54.7  (160 s)
+[adapt me_seed2] leg2_weak          ite         trials   6.6  % oracle  32.7  (174 s)
+[adapt me_seed2] leg2_weak          top_k       trials  20.0  % oracle  70.6  (188 s)
+[adapt me_seed2] leg2_weak          best_intact trials   1.0  % oracle  15.4  (189 s)
+[adapt me_seed2] leg3_weak          ite         trials   6.2  % oracle  62.0  (203 s)
+[adapt me_seed2] leg3_weak          top_k       trials  20.0  % oracle  54.4  (218 s)
+[adapt me_seed2] leg3_weak          best_intact trials   1.0  % oracle  35.4  (218 s)
+[adapt me_seed2] leg4_weak          ite         trials   2.8  % oracle  69.2  (233 s)
+[adapt me_seed2] leg4_weak          top_k       trials  20.0  % oracle  91.3  (247 s)
+[adapt me_seed2] leg4_weak          best_intact trials   1.0  % oracle  61.6  (248 s)
+[adapt me_seed2] legs12_paralysed   ite         trials  10.6  % oracle  63.6  (262 s)
+[adapt me_seed2] legs12_paralysed   top_k       trials  20.0  % oracle  -3.6  (277 s)
+[adapt me_seed2] legs12_paralysed   best_intact trials   1.0  % oracle  -6.8  (277 s)
+[adapt me_seed2] legs14_paralysed   ite         trials   7.6  % oracle  36.0  (292 s)
+[adapt me_seed2] legs14_paralysed   top_k       trials  20.0  % oracle  57.4  (306 s)
+[adapt me_seed2] legs14_paralysed   best_intact trials   1.0  % oracle -29.5  (307 s)
+[adapt me_seed2] ankle1_paralysed   ite         trials   6.2  % oracle  41.0  (321 s)
+[adapt me_seed2] ankle1_paralysed   top_k       trials  20.0  % oracle  38.4  (335 s)
+[adapt me_seed2] ankle1_paralysed   best_intact trials   1.0  % oracle  35.9  (336 s)
+[adapt me_seed2] ankle3_paralysed   ite         trials   2.2  % oracle  79.0  (351 s)
+[adapt me_seed2] ankle3_paralysed   top_k       trials  20.0  % oracle  67.0  (365 s)
+[adapt me_seed2] ankle3_paralysed   best_intact trials   1.0  % oracle  50.1  (366 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/adaptation_gap/me_seed2

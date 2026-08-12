@@ -14,3 +14,11 @@ import argparse
 import json
 from pathlib import Path
 
+import jax
+import jax.numpy as jnp
+import numpy as np
+
+from qd_damage.config import load_run_config
+from qd_damage.oracle import evaluate_all, load_genotypes, make_evaluator
+from qd_damage.repertoires import REPO_ROOT
+

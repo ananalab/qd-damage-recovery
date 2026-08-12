@@ -50,6 +50,16 @@ ALGO_COLORS = {"me": "#2a78d6", "pgame": "#e07b39", "dcrlme": "#3a9d5d"}
 CONDITION_COLORS = {"intact": "#2a78d6", "damaged": "#c8413b"}
 
 
+# --------------------------------------------------------------------------- figures
+
+
+def _save(fig, stem: Path):
+    """Save as PNG (200 dpi) and vector PDF."""
+    fig.savefig(stem.with_suffix(".png"), dpi=200, bbox_inches="tight")
+    fig.savefig(stem.with_suffix(".pdf"), bbox_inches="tight", metadata={"CreationDate": None})  # reproducible files
+    plt.close(fig)
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""

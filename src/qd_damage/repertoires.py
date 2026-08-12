@@ -393,3 +393,5 @@ def load_policy_params(run_dir: Path, index: int, policy_network, observation_si
     return unravel(jnp.asarray(data["genotypes"][index]))
 
 
+if __name__ == "__main__":
+    main()
