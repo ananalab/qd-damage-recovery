@@ -13,3 +13,14 @@ The script also reports the likelihood of a model without any correlation betwee
 gap between the two measures how much one trial tells about the other cells, i.e. how much ITE can generalise.
 """
 
+def calibrate(oracle_dirs, n_cells: int = 300, seed: int = 0, joint_usage: bool = False):
+    sets = residual_sets(oracle_dirs, n_cells, seed, joint_usage)
+    results = []
+    for ls, sv, nv in itertools.product(GRID["lengthscale"], GRID["signal_variance"], GRID["noise_variance"]):
+        gp = GaussianProcess(ls, nv, sv)
+        ll = sum(gp.log_marginal_likelihood(x, r) for _, _, x, r in sets)
+        results.append((ll, ls, sv, nv))
+    results.sort(reverse=True)
+    return results, sets
+
+

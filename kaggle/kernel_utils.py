@@ -47,3 +47,11 @@ def install(code_dir: str) -> dict:
     return env
 
 
+def num_gpus() -> int:
+    try:
+        out = subprocess.run(["nvidia-smi", "-L"], capture_output=True, text=True).stdout
+    except FileNotFoundError:  # no NVIDIA GPU (e.g. local test)
+        return 1
+    return max(1, sum(line.startswith("GPU") for line in out.splitlines()))
+
+

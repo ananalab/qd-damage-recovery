@@ -60,6 +60,12 @@ def _save(fig, stem: Path):
     plt.close(fig)
 
 
+def read_metrics(run_dir: Path) -> dict:
+    with open(Path(run_dir) / "metrics.csv") as f:
+        rows = list(csv.DictReader(f))
+    return {k: np.array([float(r[k]) for r in rows]) for k in rows[0]}
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""

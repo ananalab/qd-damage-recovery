@@ -13,3 +13,12 @@ Variants trained on the damaged robot:
 - finetune_pretrained: same, but the critic is first trained in simulation on the INTACT robot with the actor
   frozen (`pretrain_episodes`, not counted: no damaged robot is involved).
 
+Performance (deterministic evaluation, same fitness as the repertoires) is recorded against the number of EPISODES
+played on the damaged robot, which is what costs on a real robot. `n_envs` robots play in parallel; one round =
+`episode_length` steps = `n_envs` episodes. Outputs in results/rl/<scenario>_<variant>_seed<seed>[_smoke]/.
+
+The robust policy is trained in simulation with a random damage drawn for every episode (each joint independently
+paralysed or weakened with probability `robust.p_damaged`), then evaluated without any adaptation on every damage
+scenario: zero trials on the damaged robot. Outputs in results/rl_robust/seed<seed>[_smoke]/.
+"""
+
