@@ -14,6 +14,13 @@ We measure the number of trials on the damaged robot (what is expensive on a rea
 recovered. Adaptation uses Intelligent Trial & Error (ITE, Cully et al., Nature 2015): Bayesian optimisation
 with a Gaussian process over the repertoire.
 
+## Prior work and what this project adds
+
+Chalumeau et al. (ICLR 2023) tested Ant-uni with a weakened or paralysed leg (MAP-Elites, PGA-ME and
+skill-discovery RL). Their post-damage selection is an oracle: every skill is evaluated 100 times on the damaged
+robot and the best one is kept. They found that PGA-ME adapts better than MAP-Elites, and that QD methods are
+more robust to large perturbations.
+
 ## Protocol
 
 ## Rules followed

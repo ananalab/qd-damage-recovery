@@ -55,3 +55,10 @@ def load_run_config(algo: str, profile: str | None = None) -> dict:
     return {"common": common, "algo": algo_cfg, "profile": profile}
 
 
+def performance_reference(episode_length: int) -> tuple:
+    """(f0, scale) for this episode length: return of a standing robot, and the fixed performance scale.
+
+    Normalised performance is p = (F - f0) / scale (configs/adaptation.yaml).
+    """
+    perf = load_yaml("adaptation")["performance"]
+    return perf["f0_still_per_step"] * episode_length, perf["scale_per_step"] * episode_length
