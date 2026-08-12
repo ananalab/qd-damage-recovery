@@ -11,6 +11,25 @@ def test_qdax_version_is_pinned():
     assert version("qdax") == "0.5.0"
 
 
+def test_jax_brax_qdax_import():
+    import brax  # noqa: F401
+    import jax
+    import qdax  # noqa: F401
+
+    # Without a GPU, JAX must at least see the CPU.
+    assert len(jax.devices()) >= 1
+
+
+def test_ant_uni_env_exists():
+    # The official MAP-Elites, PGA-ME and DCRL-ME notebooks of QDax 0.5.0 all use the v1 module.
+    from qdax.tasks.brax import v1 as qdax_envs
+
+    assert "ant_uni" in qdax_envs.descriptor_extractor
+    env = qdax_envs.create("ant_uni", episode_length=10)
+    # Ant: 8 joints (4 legs x hip + ankle), hence 8 actions.
+    assert env.action_size == 8
+
+
 def test_damage_scenarios_are_unique_and_valid():
     damages = load_yaml("damages")
     names = [s["name"] for s in damages["scenarios"]]

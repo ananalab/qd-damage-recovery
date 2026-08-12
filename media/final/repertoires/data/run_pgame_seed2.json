@@ -1,0 +1,78 @@
+{
+  "algo": "pgame",
+  "seed": 2,
+  "profile": null,
+  "config": {
+    "common": {
+      "env": {
+        "name": "ant_uni",
+        "episode_length": 250,
+        "positive_rewards": true
+      },
+      "policy": {
+        "hidden_layer_sizes": [
+          128,
+          128
+        ]
+      },
+      "repertoire": {
+        "num_centroids": 1024,
+        "num_init_cvt_samples": 50000,
+        "min_descriptor": 0.0,
+        "max_descriptor": 1.0
+      },
+      "budget": {
+        "batch_size": 256,
+        "num_iterations": 2000,
+        "log_period": 10,
+        "checkpoint_every": 250
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    "algo": {
+      "algo": "pgame",
+      "emitter": {
+        "iso_sigma": 0.005,
+        "line_sigma": 0.05,
+        "proportion_mutation_ga": 0.5
+      },
+      "td3": {
+        "critic_hidden_layer_size": [
+          256,
+          256
+        ],
+        "critic_learning_rate": 0.0003,
+        "greedy_learning_rate": 0.0003,
+        "policy_learning_rate": 0.001,
+        "noise_clip": 0.5,
+        "policy_noise": 0.2,
+        "discount": 0.99,
+        "reward_scaling": 1.0,
+        "transitions_batch_size": 256,
+        "soft_tau_update": 0.005,
+        "replay_buffer_size": 1000000,
+        "num_critic_training_steps": 300,
+        "num_pg_training_steps": 100,
+        "policy_delay": 2
+      }
+    },
+    "profile": null
+  },
+  "git_commit": "577ffad",
+  "versions": {
+    "qdax": "0.5.0",
+    "jax": "0.4.28",
+    "jaxlib": "0.4.28",
+    "brax": "0.10.4",
+    "flax": "0.8.5"
+  },
+  "devices": [
+    "cuda:0 (Tesla T4)"
+  ],
+  "total_time_s": 3138.8102629184723,
+  "total_evaluations": 512256
+}

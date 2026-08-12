@@ -21,6 +21,13 @@ skill-discovery RL). Their post-damage selection is an oracle: every skill is ev
 robot and the best one is kept. They found that PGA-ME adapts better than MAP-Elites, and that QD methods are
 more robust to large perturbations.
 
+This project adds:
+1. the actual cost in trials, with ITE, depending on whether the repertoire was built with or without RL;
+2. DCRL-ME (Faldor et al., ACM TELO 2024);
+3. a comparison with RL re-training, counted in episodes on the damaged robot;
+4. as a side experiment, ITE in the continuous descriptor space of the DCRL-ME conditioned actor, instead of the
+   repertoire cells.
+
 ## Protocol
 
 ## Rules followed

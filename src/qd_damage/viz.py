@@ -66,6 +66,10 @@ def read_metrics(run_dir: Path) -> dict:
     return {k: np.array([float(r[k]) for r in rows]) for k in rows[0]}
 
 
+def _run_info(run_dir: Path) -> dict:
+    return json.loads((Path(run_dir) / "run.json").read_text())
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""

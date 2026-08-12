@@ -22,3 +22,21 @@ paralysed or weakened with probability `robust.p_damaged`), then evaluated witho
 scenario: zero trials on the damaged robot. Outputs in results/rl_robust/seed<seed>[_smoke]/.
 """
 
+import argparse
+import csv
+import json
+import time
+from pathlib import Path
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+from jax.flatten_util import ravel_pytree
+from qdax.baselines.td3 import TD3, TD3Config
+from qdax.core.neuroevolution.buffers.buffer import ReplayBuffer, Transition
+
+from qd_damage.config import load_run_config, load_yaml
+from qd_damage.envs import DamageWrapper, damage_scale, get_scenario, load_damages, make_env
+from qd_damage.oracle import make_evaluator
+from qd_damage.repertoires import REPO_ROOT, git_commit, load_policy_params
+

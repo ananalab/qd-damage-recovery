@@ -93,3 +93,14 @@ def load_damages() -> dict:
     return load_yaml("damages")
 
 
+def get_scenario(name: str, damages: dict) -> dict:
+    return next(s for s in damages["scenarios"] if s["name"] == name)
+
+
+def damage_scale(scenario: dict, damages: dict, action_size: int = 8) -> np.ndarray:
+    """Per-action factors for a scenario of configs/damages.yaml."""
+    scale = np.ones(action_size, dtype=np.float32)
+    for joint in scenario["joints"]:
+        leg, part = joint.split(".")
+        scale[damages["legs"][leg][part]] = scenario["factor"]
+    return scale

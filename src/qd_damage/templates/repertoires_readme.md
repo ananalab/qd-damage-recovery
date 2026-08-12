@@ -2,6 +2,8 @@
 
 Généré le $generated (code `$code`). $status
 
+Régénérer : `$command`
+
 Meilleure démarche : $best_algo, case $best_cell.
 Intact : $d_intact m vers l'avant en $duration s.
 Patte 4 paralysée (actions $paralysed à 0) : $d_damaged m.
