@@ -55,3 +55,45 @@ def num_gpus() -> int:
     return max(1, sum(line.startswith("GPU") for line in out.splitlines()))
 
 
+def run_jobs(jobs, code_dir: str, env: dict, log_dir: str):
+    """Run the `jobs` commands in order (longest first), one per GPU at a time.
+
+    Each GPU has a thread that takes the next job from the queue. A failure does not stop the other jobs;
+    an error is raised at the end if any job failed.
+    """
+    os.makedirs(log_dir, exist_ok=True)
+    todo = queue.Queue()
+    for name, cmd in jobs:
+        todo.put((name, cmd))
+    failures, lock = [], threading.Lock()
+
+    def worker(gpu: int):
+        while True:
+            try:
+                name, cmd = todo.get_nowait()
+            except queue.Empty:
+                return
+            start = time.time()
+            print(f"[GPU {gpu}] start {name}", flush=True)
+            with open(os.path.join(log_dir, f"{name}.log"), "w") as log:
+                proc = subprocess.run(
+                    cmd,
+                    cwd=code_dir,
+                    env={**env, "CUDA_VISIBLE_DEVICES": str(gpu)},
+                    stdout=log,
+                    stderr=subprocess.STDOUT,
+                )
+            status = "ok" if proc.returncode == 0 else f"FAILED (code {proc.returncode})"
+            print(f"[GPU {gpu}] end {name}: {status} in {(time.time() - start) / 60:.1f} min", flush=True)
+            if proc.returncode:
+                with lock:
+                    failures.append(name)
+
+    threads = [threading.Thread(target=worker, args=(g,)) for g in range(num_gpus())]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    if failures:
+        raise RuntimeError(f"failed jobs: {failures}")
+    print("ALL_DONE", flush=True)

@@ -30,5 +30,16 @@ This project adds:
 
 ## Protocol
 
+- Environment: `ant_uni` (descriptor: fraction of time each foot touches the ground), same Brax version for all.
+- Policies: the same MLP for the three algorithms.
+- Budget: the same number of evaluations; 3 seeds per algorithm.
+- Damages: 12 scenarios fixed in advance in `configs/damages.yaml`.
+- ITE: kappa, alpha and the maximum number of trials fixed in advance (`configs/adaptation.yaml`); Gaussian-process
+  hyper-parameters fitted on development repertoires (200-iteration demo runs) only, then frozen; 5 repetitions
+  per (repertoire, damage) pair.
+- RL: counted in episodes on the damaged robot, not in compute time.
+- Statistics: repetitions are averaged first; the unit is a (repertoire, damage) pair. Mann-Whitney tests between
+  algorithms, paired Wilcoxon tests between adaptation methods.
+
 ## Rules followed
 

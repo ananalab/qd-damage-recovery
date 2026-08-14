@@ -70,6 +70,34 @@ def _run_info(run_dir: Path) -> dict:
     return json.loads((Path(run_dir) / "run.json").read_text())
 
 
+def plot_progress(runs: dict, stem: Path):
+    """QD-score, coverage and max fitness against the number of evaluations (one line per run)."""
+    panels = [("qd_score", "QD-score"), ("coverage", "Couverture (%)"), ("max_fitness", "Meilleure fitness")]
+    fig, axes = plt.subplots(1, 3, figsize=(13, 3.6))
+    labelled = set()
+    for run_dir in runs.values():
+        algo = _run_info(run_dir)["algo"]
+        m = read_metrics(run_dir)
+        for ax, (key, _) in zip(axes, panels, strict=False):
+            ax.plot(
+                m["evaluations"],
+                m[key],
+                color=ALGO_COLORS[algo],
+                lw=2,
+                alpha=0.85,
+                label=None if algo in labelled else ALGO_LABELS[algo],
+            )
+        labelled.add(algo)
+    for ax, (_, title) in zip(axes, panels, strict=False):
+        ax.set_title(title)
+        ax.set_xlabel("Évaluations (épisodes)")
+        ax.grid(alpha=0.3)
+        ax.spines[["top", "right"]].set_visible(False)
+    axes[0].legend(frameon=False)
+    fig.tight_layout()
+    _save(fig, stem)
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""

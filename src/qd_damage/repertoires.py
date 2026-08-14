@@ -393,5 +393,15 @@ def load_policy_params(run_dir: Path, index: int, policy_network, observation_si
     return unravel(jnp.asarray(data["genotypes"][index]))
 
 
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--algo", choices=ALGOS, required=True)
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--profile", choices=["smoke", "local", "demo"], default=None)
+    parser.add_argument("--out", type=Path, default=REPO_ROOT / "results" / "repertoires")
+    args = parser.parse_args()
+    build(args.algo, args.seed, args.profile, args.out)
+
+
 if __name__ == "__main__":
     main()
