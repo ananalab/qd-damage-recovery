@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Répertoires finaux — 3 algos × 3 seeds, 2000 itérations</title>
+<style>
+  :root { --bg:#fbfaf7; --fg:#1d1d1b; --muted:#6b6b66; --card:#ffffff; --line:#e4e2dc; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161614; --fg:#ecebe6; --muted:#a3a29b; --card:#1f1f1c; --line:#33332f; } }
+  body { background:var(--bg); color:var(--fg); font:16px/1.55 system-ui, sans-serif; margin:0; padding:24px 16px 64px; }
+  main { max-width:1100px; margin:0 auto; }
+  h1 { font-size:28px; margin:0 0 4px; } h2 { font-size:20px; margin:40px 0 8px; }
+  a { color:inherit; }
+  .lead, .note { color:var(--muted); } .note { font-size:14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin:12px 0; overflow-x:auto; }
+  img, video { max-width:100%; height:auto; background:#fff; border-radius:6px; display:block; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; }
+  iframe { width:100%; height:420px; border:0; border-radius:8px; background:#fff; }
+  table { border-collapse:collapse; width:100%; } td, th { padding:6px 10px; border-bottom:1px solid var(--line); text-align:left; }
+</style></head><body><main>
+<h1>Répertoires finaux — 3 algos × 3 seeds, 2000 itérations</h1>
+<p class="lead">Runs complets sur un GPU Tesla T4 sur Kaggle (2000 itérations par run, 3 algorithmes × 3 seeds) : résultats finaux, avant blessure. Tous les fichiers sont listés dans <a href="README.md">README.md</a>.</p>
+
+<h2>1. Le robot, avec sa meilleure démarche</h2>
+<p>Meilleure démarche trouvée (PGA-ME, fitness 2158). À gauche intact ; à droite <b>la même démarche avec la patte 4 paralysée</b>. C'est le problème que le projet va résoudre.</p>
+<div class="card"><video src="videos/intact_vs_patte4_camera_fixe.mp4" autoplay muted loop playsinline controls></video></div>
+<div class="grid">
+  <div class="card"><video src="videos/intact_camera_suiveuse.mp4" autoplay muted loop playsinline controls></video></div>
+  <div class="card"><video src="videos/patte4_paralysee_camera_suiveuse.mp4" autoplay muted loop playsinline controls></video></div>
+</div>
+<div class="card"><img src="figures/trajets_vus_de_dessus.png" alt="Trajets vus de dessus">
+<p class="note">Trajet vu de dessus pendant les 12.5 s de l'épisode. La fitness récompense l'avancée selon x.</p></div>
+
+<h2>2. En 3D interactive</h2>
+<p>Tourne la caméra à la souris, zoome à la molette. Chaque vue est aussi une page autonome dans <code>interactive/</code>, qui marche hors ligne.</p>
+<div class="grid">
+  <div class="card"><b>Intact</b> — 39.7 m <a href="interactive/intact.html">plein écran ↗</a><iframe src="interactive/intact.html" loading="lazy"></iframe></div>
+  <div class="card"><b>Patte 4 paralysée</b> — 12.9 m <a href="interactive/patte4_paralysee.html">plein écran ↗</a><iframe src="interactive/patte4_paralysee.html" loading="lazy"></iframe></div>
+</div>
+<div class="card"><img src="figures/contacts_pieds.png" alt="Profil de contact des pieds">
+<p class="note">Chaque ligne est un pied, noir = le pied touche le sol. C'est ce que mesure le descripteur (fraction du temps en noir, pour chaque pied).</p></div>
+
+<h2>3. L'album se remplit</h2>
+<div class="card"><img src="figures/progression_qd.png" alt="Progression QD"></div>
+<div class="card"><table><tr><th>Algo</th><th>Évaluations</th><th>Couverture</th><th>Meilleure fitness</th><th>Temps de calcul</th></tr><tr><td>MAP-Elites (seed 0)</td><td>512 256</td><td>71.4 %</td><td>1235</td><td>7.6 min</td></tr><tr><td>MAP-Elites (seed 1)</td><td>512 256</td><td>74.2 %</td><td>1233</td><td>7.7 min</td></tr><tr><td>MAP-Elites (seed 2)</td><td>512 256</td><td>72.3 %</td><td>1294</td><td>7.7 min</td></tr><tr><td>PGA-ME (seed 0)</td><td>512 256</td><td>76.8 %</td><td>1867</td><td>52.4 min</td></tr><tr><td>PGA-ME (seed 1)</td><td>512 256</td><td>77.6 %</td><td>2158</td><td>53.1 min</td></tr><tr><td>PGA-ME (seed 2)</td><td>512 256</td><td>75.8 %</td><td>1922</td><td>52.3 min</td></tr><tr><td>DCRL-ME (seed 0)</td><td>512 256</td><td>84.2 %</td><td>1610</td><td>81.7 min</td></tr><tr><td>DCRL-ME (seed 1)</td><td>512 256</td><td>83.8 %</td><td>1655</td><td>81.5 min</td></tr><tr><td>DCRL-ME (seed 2)</td><td>512 256</td><td>83.4 %</td><td>1625</td><td>83.2 min</td></tr></table>
+<p class="note">Même robot, même réseau, même nombre d'évaluations pour les trois (vérifié par les tests).</p></div>
+
+<h2>4. À quoi ressemblent les albums</h2>
+<div class="card"><img src="figures/repertoire_me_seed0.png" alt="Répertoire me_seed0"></div><div class="card"><img src="figures/repertoire_me_seed1.png" alt="Répertoire me_seed1"></div><div class="card"><img src="figures/repertoire_me_seed2.png" alt="Répertoire me_seed2"></div><div class="card"><img src="figures/repertoire_pgame_seed0.png" alt="Répertoire pgame_seed0"></div><div class="card"><img src="figures/repertoire_pgame_seed1.png" alt="Répertoire pgame_seed1"></div><div class="card"><img src="figures/repertoire_pgame_seed2.png" alt="Répertoire pgame_seed2"></div><div class="card"><img src="figures/repertoire_dcrlme_seed0.png" alt="Répertoire dcrlme_seed0"></div><div class="card"><img src="figures/repertoire_dcrlme_seed1.png" alt="Répertoire dcrlme_seed1"></div><div class="card"><img src="figures/repertoire_dcrlme_seed2.png" alt="Répertoire dcrlme_seed2"></div>
+<p class="note">Chaque point est une démarche. Les points près de 0 sur un axe n'utilisent presque pas ce pied : ce sont elles qui serviront après une blessure.</p>
+<p class="note">Généré le 2026-10-01T02:33:42 · code cbec89b</p>
+</main></body></html>

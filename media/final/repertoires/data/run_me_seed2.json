@@ -1,0 +1,58 @@
+{
+  "algo": "me",
+  "seed": 2,
+  "profile": null,
+  "config": {
+    "common": {
+      "env": {
+        "name": "ant_uni",
+        "episode_length": 250,
+        "positive_rewards": true
+      },
+      "policy": {
+        "hidden_layer_sizes": [
+          128,
+          128
+        ]
+      },
+      "repertoire": {
+        "num_centroids": 1024,
+        "num_init_cvt_samples": 50000,
+        "min_descriptor": 0.0,
+        "max_descriptor": 1.0
+      },
+      "budget": {
+        "batch_size": 256,
+        "num_iterations": 2000,
+        "log_period": 10,
+        "checkpoint_every": 250
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    "algo": {
+      "algo": "me",
+      "emitter": {
+        "iso_sigma": 0.005,
+        "line_sigma": 0.05
+      }
+    },
+    "profile": null
+  },
+  "git_commit": "577ffad",
+  "versions": {
+    "qdax": "0.5.0",
+    "jax": "0.4.28",
+    "jaxlib": "0.4.28",
+    "brax": "0.10.4",
+    "flax": "0.8.5"
+  },
+  "devices": [
+    "cuda:0 (Tesla T4)"
+  ],
+  "total_time_s": 460.02119851112366,
+  "total_evaluations": 512256
+}

@@ -13,6 +13,15 @@ The script also reports the likelihood of a model without any correlation betwee
 gap between the two measures how much one trial tells about the other cells, i.e. how much ITE can generalise.
 """
 
+def independent_log_likelihood(sets) -> float:
+    """Log-likelihood of independent Gaussian residuals (no correlation between cells), variance fitted per pair."""
+    total = 0.0
+    for _, _, _, r in sets:
+        var = float(np.mean(r**2))
+        total += -0.5 * len(r) * (np.log(2 * np.pi * var) + 1.0)
+    return total
+
+
 def calibrate(oracle_dirs, n_cells: int = 300, seed: int = 0, joint_usage: bool = False):
     sets = residual_sets(oracle_dirs, n_cells, seed, joint_usage)
     results = []

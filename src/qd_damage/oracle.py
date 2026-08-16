@@ -10,6 +10,16 @@ are played and averaged. This gives:
 - the performance of the best intact policy replayed on the damaged robot (no adaptation);
 - the resilience of the repertoire: (damaged oracle - F0) / (intact oracle - F0), F0 = standing robot.
 
+The intact scenario is also the re-evaluated prior used by ITE (see qd_damage.adaptation).
+Outputs in results/oracle/<run>/: oracle.npz (everything), summary.csv (one row per damage), oracle.json.
+"""
+
+import argparse
+import csv
+import json
+import time
+from pathlib import Path
+
 def make_evaluator(common: dict, policy_network=None, physics: dict | None = None, extractor=None):
     """Return (env, network, evaluate) with evaluate(params_batch, key, scale) -> (fitnesses, descriptors).
 
