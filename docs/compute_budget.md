@@ -18,6 +18,8 @@ Measured values only. Used to choose the number of evaluations so that one run f
 
 The T4 timings come from the `time_s` column of `results/repertoires/*_seed0_demo/metrics.csv`.
 
+## Chosen budget
+
 DCRL-ME is the slowest algorithm, so it sets the budget.
 
 - 2000 iterations x 256 = 512,256 evaluations per run, the same for the three algorithms.

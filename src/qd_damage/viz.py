@@ -98,6 +98,60 @@ def plot_progress(runs: dict, stem: Path):
     _save(fig, stem)
 
 
+def plot_repertoire(run_dir: Path, stem: Path, title: str):
+    """The descriptor has 4 dimensions (one per foot): show the 6 two-dimensional projections.
+
+    Each point is a gait of the repertoire, placed by the ground-contact time of two feet and coloured by fitness.
+    """
+    data = np.load(Path(run_dir) / "repertoire.npz")
+    filled = np.isfinite(data["fitnesses"])
+    desc, fit = data["descriptors"][filled], data["fitnesses"][filled]
+    pairs = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+    fig, axes = plt.subplots(2, 3, figsize=(11, 7.2), layout="constrained")
+    order = np.argsort(fit)  # best gaits drawn last (on top)
+    for ax, (i, j) in zip(axes.flat, pairs, strict=False):
+        sc = ax.scatter(desc[order, i], desc[order, j], c=fit[order], s=9, cmap="viridis")
+        ax.set_xlim(-0.03, 1.03)
+        ax.set_ylim(-0.03, 1.03)
+        ax.set_xlabel(f"pied {i + 1} au sol")
+        ax.set_ylabel(f"pied {j + 1} au sol")
+        ax.set_aspect("equal")
+    fig.colorbar(sc, ax=axes, shrink=0.6, label="fitness")
+    fig.suptitle(f"{title} — {filled.sum()} démarches dans le répertoire")
+    _save(fig, stem)
+
+
+def plot_trajectories(rollouts: dict, stem: Path, colors=None):
+    """Torso path seen from above: the robot is rewarded for moving right (+x)."""
+    colors = colors or [CONDITION_COLORS[key] for key in rollouts]
+    fig, ax = plt.subplots(figsize=(6, 4.2))
+    for r, color in zip(rollouts.values(), colors, strict=False):
+        xy = r["path_xy"]
+        ax.plot(xy[:, 0], xy[:, 1], color=color, lw=2.2, label=f"{r['label']} ({r['distance']:.1f} m)")
+        ax.plot(*xy[-1], "o", color=color, ms=7)
+    ax.plot(0, 0, "ks", ms=7, label="départ")
+    ax.set_xlabel("x (m) — sens de la marche récompensé →")
+    ax.set_ylabel("y (m)")
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.grid(alpha=0.3)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.legend(frameon=False, fontsize=9, loc="best")
+    fig.tight_layout()
+    _save(fig, stem)
+
+
+def plot_gait(rollouts: dict, stem: Path):
+    """Feet-contact profile: one row per foot, black = the foot touches the ground."""
+    fig, axes = plt.subplots(len(rollouts), 1, figsize=(10, 1.5 * len(rollouts)), sharex=True)
+    for ax, r in zip(np.atleast_1d(axes), rollouts.values(), strict=False):
+        ax.imshow(r["contacts"].T, aspect="auto", cmap="Greys", interpolation="nearest", vmin=0, vmax=1)
+        ax.set_yticks(range(4), [f"pied {k + 1}" for k in range(4)])
+        ax.set_title(f"{r['label']} — avance de {r['distance']:.1f} m", loc="left", fontsize=10)
+    np.atleast_1d(axes)[-1].set_xlabel("pas de temps")
+    fig.tight_layout()
+    _save(fig, stem)
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""
