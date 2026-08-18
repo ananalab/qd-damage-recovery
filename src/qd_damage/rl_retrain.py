@@ -87,3 +87,15 @@ class RandomDamageWrapper:
         return getattr(self.env, name)
 
 
+def load_rl_config(smoke: bool) -> dict:
+    cfg = load_yaml("rl")
+    smoke_cfg = cfg.pop("smoke")
+    if smoke:
+        for key, value in smoke_cfg.items():
+            if isinstance(value, dict):
+                cfg[key].update(value)
+            else:
+                cfg[key] = value
+    return cfg
+
+

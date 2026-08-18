@@ -80,3 +80,55 @@ class Normalizer:
         return np.asarray(p, float) * self.scale + self.f0
 
 
+@dataclass
+class TrialHistory:
+    cells: list[int] = field(default_factory=list)
+    observed: list[float] = field(default_factory=list)  # raw fitness observed at each trial
+    stop_trial: int | None = None  # number of trials when the stopping criterion was met (None: never)
+
+    def best_cell(self, upto: int) -> int:
+        """Cell recommended after `upto` trials: the best one observed so far."""
+        k = int(np.argmax(self.observed[:upto]))
+        return self.cells[k]
+
+
+def run_ite(
+    descriptors: np.ndarray,
+    prior_fitness: np.ndarray,
+    trial_fn: Callable[[int], float],
+    normalizer: Normalizer,
+    kappa: float,
+    alpha: float,
+    lengthscale: float,
+    noise_variance: float,
+    max_trials: int,
+    signal_variance: float = 1.0,
+    continue_after_stop: bool = True,
+) -> TrialHistory:
+    """M-BOA over the given cells (descriptors (n, d) in [0,1]^d, prior (n,)).
+
+    trial_fn(i) plays one episode with the gait of cell i on the damaged robot and returns its fitness.
+    With continue_after_stop=True the search goes on until max_trials (to draw performance-vs-trials curves);
+    `stop_trial` records where ITE would have stopped.
+    """
+    prior = normalizer(prior_fitness)
+    gp = GaussianProcess(lengthscale, noise_variance, signal_variance)
+    history = TrialHistory()
+    observed_p = []
+    for t in range(max_trials):
+        residual_mean, residual_std = gp.predict(descriptors)
+        i = int(np.argmax(prior + residual_mean + kappa * residual_std))  # UCB
+        f = float(trial_fn(i))
+        history.cells.append(i)
+        history.observed.append(f)
+        observed_p.append(float(normalizer(f)))
+        tested = np.array(history.cells)
+        gp.fit(descriptors[tested], np.array(observed_p) - prior[tested])
+        if history.stop_trial is None:
+            # Stopping criterion of Cully et al.: best tested performance >= alpha x best expected performance.
+            residual_mean, _ = gp.predict(descriptors)
+            if max(observed_p) >= alpha * np.max(prior + residual_mean):
+                history.stop_trial = t + 1
+                if not continue_after_stop:
+                    break
+    return history
