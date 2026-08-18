@@ -40,3 +40,50 @@ from qd_damage.envs import DamageWrapper, damage_scale, get_scenario, load_damag
 from qd_damage.oracle import make_evaluator
 from qd_damage.repertoires import REPO_ROOT, git_commit, load_policy_params
 
+VARIANTS = ("scratch", "finetune", "finetune_warmup", "finetune_pretrained")
+
+
+class _BatchedEnv:
+    """n robots in parallel (vmap). QDax's AutoResetWrapper restarts every finished episode."""
+
+    def __init__(self, env):
+        self.env = env
+        self.reset = jax.vmap(env.reset)
+        self.step = jax.vmap(env.step)
+
+
+class RandomDamageWrapper:
+    """A new random damage at every episode: each joint is independently scaled by 0 or 0.5 with probability p.
+
+    The damage lives in the state info, so it survives QDax's automatic resets and is redrawn when an episode ends.
+    """
+
+    def __init__(self, env, p_damaged: float):
+        self.env = env
+        self.p_damaged = p_damaged
+
+    def _draw(self, key):
+        k1, k2 = jax.random.split(key)
+        damaged = jax.random.bernoulli(k1, self.p_damaged, (self.env.action_size,))
+        level = jnp.where(jax.random.bernoulli(k2, 0.5, (self.env.action_size,)), 0.0, 0.5)
+        return jnp.where(damaged, level, 1.0)
+
+    def reset(self, rng):
+        state = self.env.reset(rng)
+        key, subkey = jax.random.split(jax.random.fold_in(rng, 1))
+        state.info["damage_scale"] = self._draw(subkey)
+        state.info["damage_key"] = key
+        return state
+
+    def step(self, state, action):
+        scale, key = state.info["damage_scale"], state.info["damage_key"]
+        state = self.env.step(state, action * scale)
+        key, subkey = jax.random.split(key)
+        state.info["damage_scale"] = jnp.where(state.done, self._draw(subkey), scale)
+        state.info["damage_key"] = key
+        return state
+
+    def __getattr__(self, name):
+        return getattr(self.env, name)
+
+

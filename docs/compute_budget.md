@@ -35,3 +35,6 @@ DCRL-ME is the slowest algorithm, so it sets the budget.
 | PGA-ME | 52.4 min | 53.1 min | 52.3 min |
 | DCRL-ME | 81.7 min | 81.5 min | 83.2 min |
 
+About 4 hours for the 9 runs with two in parallel (`results/repertoires/*/run.json`, logs in
+`results/kaggle_logs/full/`). The evaluation campaign (oracle, adaptation and 16 TD3 runs) took about 2.5 hours
+more, and the continuous-ITE experiment about 97 minutes per seed.

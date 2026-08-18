@@ -11,3 +11,19 @@ Gaussian process, damages, number of repetitions), so both can be compared on th
 Outputs in results/bonus/continuous/<run>/: candidates.npz, trials.csv, summary.csv and continuous.json.
 """
 
+import argparse
+import json
+import time
+from pathlib import Path
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+
+from qd_damage.adaptation import write_csv
+from qd_damage.config import load_run_config, load_yaml, performance_reference
+from qd_damage.envs import damage_scale, load_damages, make_env
+from qd_damage.ite import Normalizer, run_ite
+from qd_damage.oracle import evaluate_all, make_evaluator
+from qd_damage.repertoires import REPO_ROOT, git_commit, load_dc_actor
+

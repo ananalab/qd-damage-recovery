@@ -152,6 +152,9 @@ def plot_gait(rollouts: dict, stem: Path):
     _save(fig, stem)
 
 
+# --------------------------------------------------------------------------- simulation
+
+
 def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, action_scale=None):
     """Play one episode. Damage: `action_scale` (per-action factor, see envs.damage_scale) or, as a shortcut,
     `paralysed_leg` (e.g. "leg_4"), which zeroes the actions of that leg."""
@@ -181,9 +184,47 @@ def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, acti
     }
 
 
+# --------------------------------------------------------------------------- videos
+
+
 def side_by_side(columns):
     n = max(len(c) for c in columns)
     columns = [c + [c[-1]] * (n - len(c)) for c in columns]  # when an episode ends earlier
     return [np.concatenate([c[t] for c in columns], axis=1) for t in range(n)]
 
 
+def _write_readme(out_dir: Path, title: str, summary: dict):
+    def listing(sub):
+        return "\n".join(f"- `{sub}/{p.name}`" for p in sorted((out_dir / sub).iterdir()))
+
+    ro = summary["rollouts"]
+    (out_dir / "README.md").write_text(
+        render(
+            "repertoires_readme.md",
+            title=title,
+            generated=summary["generated"],
+            code=summary["code_commit"],
+            status=_status(next(iter(summary["runs"].values()))),
+            command=summary["command"],
+            best_algo=ALGO_LABELS[summary["best_policy"]["algo"]],
+            best_cell=summary["best_policy"]["cell_index"],
+            d_intact=f"{ro['intact']['distance_x_m']:.2f}",
+            duration=f"{ro['intact']['duration_s']:.1f}",
+            paralysed=ro["damaged"]["paralysed_actions"],
+            d_damaged=f"{ro['damaged']['distance_x_m']:.2f}",
+            **{sub: listing(sub) for sub in ("figures", "videos", "interactive", "data")},
+        )
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--runs", nargs="+", required=True, help="run folders (results/repertoires/...)")
+    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--title", default="Premiers pas du robot")
+    args = parser.parse_args()
+    print(make_media(args.runs, args.out, args.title))
+
+
+if __name__ == "__main__":
+    main()
