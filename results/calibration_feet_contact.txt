@@ -1,0 +1,12 @@
+36 (repertoire, damage) pairs, 300 cells each
+log-likelihood | lengthscale | signal_variance | noise_variance
+      4058.8 |  0.40 |  0.050 |  0.020
+      4027.9 |  0.30 |  0.020 |  0.020
+      3986.9 |  0.60 |  0.100 |  0.020
+      3958.3 |  0.40 |  0.020 |  0.020
+      3923.2 |  0.60 |  0.050 |  0.020
+      3908.5 |  0.30 |  0.050 |  0.020
+      3881.4 |  0.80 |  0.200 |  0.020
+      3863.7 |  0.60 |  0.200 |  0.020
+Cully et al. setting (0.4, 1.0, 0.001): -1279.5
+independent cells (no correlation): 2197.6

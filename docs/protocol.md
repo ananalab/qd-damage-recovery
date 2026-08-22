@@ -43,3 +43,10 @@ This project adds:
 
 ## Rules followed
 
+1. Every full run is first tested with `--profile smoke` on CPU.
+2. The three algorithms use exactly the same environment, policy network and total number of evaluations;
+   only the emitter differs. Tests check it (`tests/test_setup.py`, `tests/test_repertoires.py`).
+3. Every number in the README and the reports comes from `results/` (through `report/generated/`) or from a
+   `data/summary.json` in `media/`.
+4. Long scripts can resume from regular checkpoints.
+5. Every run records its config, seed, git commit, QDax / JAX / Brax versions and device.

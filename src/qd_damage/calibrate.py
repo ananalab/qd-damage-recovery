@@ -13,6 +13,16 @@ The script also reports the likelihood of a model without any correlation betwee
 gap between the two measures how much one trial tells about the other cells, i.e. how much ITE can generalise.
 """
 
+import numpy as np
+
+GRID = {
+    "lengthscale": [0.1, 0.2, 0.3, 0.4, 0.6, 0.8, 1.2, 1.6],
+    "signal_variance": [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 1.0],
+    "noise_variance": [0.001, 0.003, 0.01, 0.02, 0.04],
+}
+CULLY = (0.4, 1.0, 0.001)  # (length-scale, signal variance, noise variance) of Cully et al. 2015
+
+
 def independent_log_likelihood(sets) -> float:
     """Log-likelihood of independent Gaussian residuals (no correlation between cells), variance fitted per pair."""
     total = 0.0
