@@ -29,3 +29,43 @@ else:
 sys.path.insert(0, f"{CODE}/kaggle")
 import kernel_utils as ku  # noqa: E402
 
+env = ku.install(CODE)
+OUT, py = "/kaggle/working/outputs", ku.PYTHON
+
+
+def find(pattern):
+    return glob.glob(f"/kaggle/input/**/{pattern}", recursive=True)[0]
+
+
+all_runs = sorted(
+    os.path.dirname(p) for p in glob.glob("/kaggle/input/**/outputs/*_seed[0-9]/repertoire.npz", recursive=True)
+)
+repertoires = {s: os.path.dirname(find(f"outputs/dcrlme_seed{s}/repertoire.npz")) for s in (0, 1)}
+oracle_root = os.path.dirname(os.path.dirname(find("outputs/oracle/dcrlme_seed0/oracle.npz")))
+print("repertoires:", repertoires, "oracle:", oracle_root, flush=True)
+SCENARIOS = ["leg4_paralysed", "leg2_weak", "legs14_paralysed", "ankle1_paralysed"]
+
+
+def finetune(scenario, variant, seed):
+    return (
+        f"rl_{scenario}_{variant}_s{seed}",
+        [
+            py,
+            "-m",
+            "qd_damage.rl_retrain",
+            "--scenario",
+            scenario,
+            "--variant",
+            variant,
+            "--seed",
+            str(seed),
+            "--repertoire",
+            repertoires[seed],
+            "--oracle-root",
+            oracle_root,
+            "--out",
+            f"{OUT}/rl",
+        ],
+    )
+
+

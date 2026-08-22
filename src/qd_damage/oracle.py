@@ -20,6 +20,19 @@ import json
 import time
 from pathlib import Path
 
+import jax
+import jax.numpy as jnp
+import numpy as np
+from jax.flatten_util import ravel_pytree
+from qdax.tasks.brax.v1.env_creators import scoring_function_brax_envs
+
+from qd_damage.config import load_run_config, load_yaml, performance_reference
+from qd_damage.envs import DamageWrapper, damage_scale, descriptor_extractor, load_damages, make_env
+from qd_damage.repertoires import REPO_ROOT, git_commit, make_play_step_fn, make_policy_network
+
+CHUNK = 512  # policies evaluated at once (memory)
+
+
 def make_evaluator(common: dict, policy_network=None, physics: dict | None = None, extractor=None):
     """Return (env, network, evaluate) with evaluate(params_batch, key, scale) -> (fitnesses, descriptors).
 
