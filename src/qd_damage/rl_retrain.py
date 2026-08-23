@@ -99,3 +99,74 @@ def load_rl_config(smoke: bool) -> dict:
     return cfg
 
 
+def best_intact_cell(repertoire: Path, oracle_root: Path) -> tuple:
+    """(cell, source) of the best intact policy: on the re-evaluated intact fitness when the oracle exists,
+    as for ITE and the best-intact baseline, otherwise on the fitness stored in the repertoire."""
+    oracle_file = Path(oracle_root) / Path(repertoire).name / "oracle.npz"
+    if oracle_file.exists():
+        oracle = np.load(oracle_file)
+        intact = oracle["fitness"][list(oracle["scenarios"]).index("intact")].mean(-1)
+        return int(np.nanargmax(intact)), "oracle"
+    return int(np.nanargmax(np.load(Path(repertoire) / "repertoire.npz")["fitnesses"])), "repertoire"
+
+
+def make_td3(cfg: dict, common: dict, action_size: int) -> TD3:
+    t = cfg["td3"]
+    return TD3(
+        TD3Config(
+            episode_length=common["env"]["episode_length"],
+            batch_size=t["batch_size"],
+            policy_delay=t["policy_delay"],
+            soft_tau_update=t["soft_tau_update"],
+            expl_noise=t["expl_noise"],
+            critic_hidden_layer_size=tuple(t["critic_hidden_layer_size"]),
+            policy_hidden_layer_size=tuple(common["policy"]["hidden_layer_sizes"]),  # same network as the repertoires
+            critic_learning_rate=t["critic_learning_rate"],
+            policy_learning_rate=t["policy_learning_rate"],
+            discount=t["discount"],
+            noise_clip=t["noise_clip"],
+            policy_noise=t["policy_noise"],
+            reward_scaling=t["reward_scaling"],
+        ),
+        action_size=action_size,
+    )
+
+
+def make_train_round(td3: TD3, venv: _BatchedEnv, cfg: dict, episode_length: int, freeze_actor: bool = False):
+    """Compiled round: episode_length steps for n_envs robots, updates_per_step gradient steps per step.
+
+    With freeze_actor, only the critic learns: the policy, its target and its optimiser state are kept.
+    """
+
+    def one_update(carry, _):
+        state, buffer = carry
+        new_state, buffer, _ = td3.update(state, buffer)
+        if freeze_actor:
+            new_state = new_state.replace(
+                policy_params=state.policy_params,
+                target_policy_params=state.target_policy_params,
+                policy_optimizer_state=state.policy_optimizer_state,
+            )
+        return (new_state, buffer), None
+
+    def one_step(carry, _):
+        env_state, state, buffer = carry
+        env_state, state, transitions = td3.play_step_fn(env_state, state, venv)
+        buffer = buffer.insert(transitions)
+        (state, buffer), _ = jax.lax.scan(one_update, (state, buffer), (), length=cfg["updates_per_step"])
+        return (env_state, state, buffer), None
+
+    @jax.jit
+    def train_round(env_state, state, buffer):
+        (env_state, state, buffer), _ = jax.lax.scan(one_step, (env_state, state, buffer), (), length=episode_length)
+        return env_state, state, buffer
+
+    return train_round
+
+
+def new_buffer(cfg: dict, env) -> ReplayBuffer:
+    return ReplayBuffer.init(
+        buffer_size=cfg["buffer_size"], transition=Transition.init_dummy(env.observation_size, env.action_size)
+    )
+
+

@@ -16,6 +16,11 @@ from pathlib import Path
 
 import matplotlib
 
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
+
 from qd_damage.config import load_run_config, performance_reference  # noqa: E402
 from qd_damage.envs import damage_scale, get_scenario, load_damages, make_env  # noqa: E402
 from qd_damage.repertoires import REPO_ROOT, git_commit, load_policy_params, make_policy_network  # noqa: E402
