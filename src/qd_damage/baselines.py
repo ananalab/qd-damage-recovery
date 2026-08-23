@@ -12,3 +12,19 @@ import numpy as np
 from qd_damage.ite import TrialHistory
 
 
+def _run_order(order, trial_fn: Callable[[int], float], max_trials: int) -> TrialHistory:
+    history = TrialHistory()
+    for i in order[:max_trials]:
+        history.cells.append(int(i))
+        history.observed.append(float(trial_fn(int(i))))
+    return history
+
+
+def run_best_intact(prior_fitness: np.ndarray, trial_fn: Callable[[int], float]) -> TrialHistory:
+    return _run_order([int(np.argmax(prior_fitness))], trial_fn, 1)
+
+
+def run_top_k(prior_fitness: np.ndarray, trial_fn: Callable[[int], float], max_trials: int) -> TrialHistory:
+    return _run_order(np.argsort(-prior_fitness), trial_fn, max_trials)
+
+

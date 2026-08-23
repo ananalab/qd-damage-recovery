@@ -57,3 +57,13 @@ def make_evaluator(common: dict, policy_network=None, physics: dict | None = Non
     return base_env, policy_network, evaluate
 
 
+def load_genotypes(run_dir: Path, policy_network, observation_size: int):
+    """Parameters of all filled cells (stacked pytree), indices of these cells, and the repertoire data."""
+    data = np.load(Path(run_dir) / "repertoire.npz")
+    filled = np.flatnonzero(np.isfinite(data["fitnesses"]))
+    template = policy_network.init(jax.random.key(0), jnp.zeros((observation_size,)))
+    _, unravel = ravel_pytree(template)
+    params = jax.vmap(unravel)(jnp.asarray(data["genotypes"][filled]))
+    return params, filled, data
+
+

@@ -1,0 +1,17 @@
+{
+  "run_dir": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/me_seed2",
+  "code_commit": "1d0bc8f",
+  "ite": {
+    "kernel": "matern52",
+    "lengthscale": 0.4,
+    "signal_variance": 0.05,
+    "noise_variance": 0.02,
+    "kappa": 0.05,
+    "alpha": 0.9,
+    "max_trials": 20,
+    "n_repeats": 5
+  },
+  "f0": 1058.7,
+  "oracle_intact": 1216.24169921875,
+  "time_s": 543.3166146278381
+}
