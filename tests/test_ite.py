@@ -30,3 +30,14 @@ def test_matern_kernel_properties():
     assert np.all(np.linalg.eigvalsh(k) > -1e-9)
 
 
+def test_gp_interpolates_and_is_uncertain_far_away():
+    x = np.array([[0.1, 0.1], [0.5, 0.5], [0.9, 0.2]])
+    y = np.array([0.3, -0.2, 0.1])
+    gp = GaussianProcess(lengthscale=0.4, noise_variance=1e-6).fit(x, y)
+    mean, std = gp.predict(x)
+    np.testing.assert_allclose(mean, y, atol=1e-3)
+    assert np.all(std < 0.01)
+    _, std_far = gp.predict(np.array([[5.0, 5.0]]))
+    assert std_far[0] > 0.99
+
+
