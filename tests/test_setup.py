@@ -30,6 +30,23 @@ def test_ant_uni_env_exists():
     assert env.action_size == 8
 
 
+def test_algo_configs_do_not_override_common_keys():
+    """Environment, network and budget come from common.yaml only."""
+    common_keys = set(load_yaml("common"))
+    for algo in ALGOS:
+        algo_keys = set(load_yaml(f"algos/{algo}"))
+        assert not (algo_keys & common_keys), f"{algo} redefines {algo_keys & common_keys}"
+
+
+@pytest.mark.parametrize("algo", ALGOS)
+def test_smoke_config_is_complete(algo):
+    cfg = load_run_config(algo, profile="smoke")["common"]
+    assert cfg["env"]["name"] == "ant_uni"
+    assert cfg["env"]["episode_length"] > 0
+    assert cfg["budget"]["num_iterations"] % cfg["budget"]["log_period"] == 0
+    assert cfg["budget"]["batch_size"] > 0
+
+
 def test_damage_scenarios_are_unique_and_valid():
     damages = load_yaml("damages")
     names = [s["name"] for s in damages["scenarios"]]

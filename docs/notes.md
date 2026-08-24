@@ -19,3 +19,14 @@ and `report/generated/numbers.tex`.
 
 ## A common configuration for the three algorithms
 
+Differences between the official notebooks:
+
+| | MAP-Elites | PGA-ME | DCRL-ME |
+|---|---|---|---|
+| default env | walker2d_uni | walker2d_uni | ant_omni |
+| episode_length | 100 | 250 | 250 |
+| policy MLP | (64, 64) | (256, 256) | (128, 128) |
+| evaluations / iteration | 100 | 100 | 256 (128 GA + 64 DCRL + 64 actor) |
+| reward | raw | raw | shifted by reward_offset, clipped at 0 |
+| iso / line sigma, CVT | 0.005 / 0.05, 1024 cells | same | same |
+

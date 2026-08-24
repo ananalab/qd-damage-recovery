@@ -69,3 +69,23 @@ def finetune(scenario, variant, seed):
     )
 
 
+jobs = [
+    (f"robust_s{s}", [py, "-m", "qd_damage.rl_retrain", "--robust", "--seed", str(s), "--out", f"{OUT}/rl_robust"])
+    for s in (0, 1)
+]  # longest first
+jobs += [
+    (
+        f"gap_{os.path.basename(r)}",
+        [
+            "bash",
+            "-c",
+            f"{py} -m qd_damage.oracle --reality-gap --runs {r} --out {OUT}/oracle_gap && "
+            f"{py} -m qd_damage.adaptation --reality-gap --runs {r} --oracle-root {OUT}/oracle_gap "
+            f"--prior-oracle-root {oracle_root} --methods ite top_k best_intact --out {OUT}/adaptation_gap",
+        ],
+    )
+    for r in all_runs
+]
+jobs += [finetune(sc, "finetune", 0) for sc in SCENARIOS]
+jobs += [finetune(sc, v, s) for v in ("finetune_warmup", "finetune_pretrained") for s in (0, 1) for sc in SCENARIOS]
+ku.run_jobs(jobs, CODE, env, log_dir="/kaggle/working/logs")

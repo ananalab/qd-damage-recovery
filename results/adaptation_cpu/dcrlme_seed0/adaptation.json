@@ -1,0 +1,20 @@
+{
+  "run_dir": "results/repertoires/dcrlme_seed0",
+  "code_commit": "5a7efcf9e65f920874f1496e49a9d7a2da3335d4-dirty",
+  "ite": {
+    "kernel": "matern52",
+    "lengthscale": 0.4,
+    "signal_variance": 0.05,
+    "noise_variance": 0.02,
+    "kappa": 0.05,
+    "alpha": 0.9,
+    "max_trials": 20,
+    "n_repeats": 5
+  },
+  "f0": 1058.7,
+  "oracle_intact": 1578.359619140625,
+  "physics": null,
+  "descriptor_file": "",
+  "prior_oracle_root": "/Users/anaisazouaoui/Desktop/STAGE M2/projets/quality-diverty/qd-damage-recovery/results/oracle",
+  "time_s": 259.2925181388855
+}

@@ -170,3 +170,194 @@ def new_buffer(cfg: dict, env) -> ReplayBuffer:
     )
 
 
+def write_curve(out_dir: Path, rows: list, info: dict):
+    out_dir.mkdir(parents=True, exist_ok=True)
+    with open(out_dir / "curve.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    (out_dir / "rl.json").write_text(
+        json.dumps(
+            {**info, "code_commit": git_commit(), "devices": [f"{d} ({d.device_kind})" for d in jax.devices()]},
+            indent=2,
+        )
+    )
+
+
+def retrain(
+    scenario: str,
+    variant: str,
+    seed: int,
+    repertoire=None,
+    smoke: bool = False,
+    out_root: Path = REPO_ROOT / "results" / "rl",
+    oracle_root: Path = REPO_ROOT / "results" / "oracle",
+):
+    if variant not in VARIANTS:
+        raise ValueError(f"unknown variant {variant!r}, expected one of {VARIANTS}")
+    if variant != "scratch" and repertoire is None:
+        raise ValueError(f"--repertoire is required for {variant}")
+    cfg = load_rl_config(smoke)
+    common = load_run_config("me", "smoke" if smoke else None)["common"]
+    episode_length = common["env"]["episode_length"]
+    damages = load_damages()
+    scale = damage_scale(get_scenario(scenario, damages), damages)
+    env = DamageWrapper(make_env(common), scale)
+    venv = _BatchedEnv(env)
+    td3 = make_td3(cfg, common, env.action_size)
+
+    key = jax.random.key(seed)
+    key, subkey = jax.random.split(key)
+    state = td3.init(subkey, env.action_size, env.observation_size)
+
+    _, policy_network, evaluate = make_evaluator(common)
+    init_cell = init_source = None
+    if variant != "scratch":
+        # Same architecture (MLP (128, 128), tanh output): the repertoire weights load as they are.
+        init_cell, init_source = best_intact_cell(repertoire, oracle_root)
+        params = load_policy_params(repertoire, init_cell, policy_network, env.observation_size)
+        assert jax.tree.structure(params) == jax.tree.structure(state.policy_params)
+        state = state.replace(policy_params=params, target_policy_params=params)
+
+    pretrain_time = 0.0
+    if variant == "finetune_pretrained":
+        # Critic trained on the intact robot, in simulation, with the actor frozen; then a fresh buffer.
+        t_pre = time.time()
+        intact = _BatchedEnv(make_env(common))
+        pre_round = make_train_round(td3, intact, cfg, episode_length, freeze_actor=True)
+        pre_key = jax.random.fold_in(jax.random.key(seed), 1)
+        pre_state = intact.reset(jax.random.split(pre_key, cfg["n_envs"]))
+        pre_buffer = new_buffer(cfg, env)
+        for _ in range(cfg["pretrain_episodes"] // cfg["n_envs"]):
+            pre_state, state, pre_buffer = pre_round(pre_state, state, pre_buffer)
+        pretrain_time = time.time() - t_pre
+
+    buffer = new_buffer(cfg, env)
+    key, subkey = jax.random.split(key)
+    env_state = venv.reset(jax.random.split(subkey, cfg["n_envs"]))
+    train_round = make_train_round(td3, venv, cfg, episode_length)
+    frozen_round = make_train_round(td3, venv, cfg, episode_length, freeze_actor=True)
+    warmup = cfg["warmup_episodes"] if variant == "finetune_warmup" else 0
+
+    def evaluate_policy(policy_params, key):
+        batch = jax.tree.map(lambda x: jnp.repeat(x[None], cfg["eval_episodes"], axis=0), policy_params)
+        fitnesses, _ = evaluate(batch, key, jnp.asarray(scale))
+        return float(fitnesses.mean())
+
+    rows, t0, episodes = [], time.time(), 0
+    key, subkey = jax.random.split(key)
+    rows.append({"episodes": 0, "eval_fitness": evaluate_policy(state.policy_params, subkey), "time_s": 0.0})
+    while episodes < cfg["max_episodes"]:
+        step_fn = frozen_round if episodes < warmup else train_round
+        env_state, state, buffer = step_fn(env_state, state, buffer)
+        episodes += cfg["n_envs"]
+        key, subkey = jax.random.split(key)
+        rows.append(
+            {
+                "episodes": episodes,
+                "eval_fitness": evaluate_policy(state.policy_params, subkey),
+                "time_s": time.time() - t0,
+            }
+        )
+        if len(rows) % 10 == 0 or episodes >= cfg["max_episodes"]:
+            print(
+                f"[rl {scenario} {variant} s{seed}] {episodes} episodes: {rows[-1]['eval_fitness']:.1f} "
+                f"({rows[-1]['time_s']:.0f} s)",
+                flush=True,
+            )
+
+    out_dir = Path(out_root) / (f"{scenario}_{variant}_seed{seed}" + ("_smoke" if smoke else ""))
+    write_curve(
+        out_dir,
+        rows,
+        {
+            "scenario": scenario,
+            "variant": variant,
+            "seed": seed,
+            "repertoire": str(repertoire),
+            "init_cell": init_cell,
+            "init_cell_source": init_source,
+            "warmup_episodes": warmup,
+            "pretrain_time_s": pretrain_time,
+            "config": cfg,
+            "time_s": time.time() - t0,
+        },
+    )
+    return out_dir
+
+
+def train_robust(seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "results" / "rl_robust"):
+    """TD3 from scratch with a random damage at every episode, then zero-shot evaluation on every scenario."""
+    cfg = load_rl_config(smoke)
+    common = load_run_config("me", "smoke" if smoke else None)["common"]
+    episode_length = common["env"]["episode_length"]
+    env = RandomDamageWrapper(make_env(common), cfg["robust"]["p_damaged"])
+    venv = _BatchedEnv(env)
+    td3 = make_td3(cfg, common, env.action_size)
+    key = jax.random.key(seed)
+    key, subkey = jax.random.split(key)
+    state = td3.init(subkey, env.action_size, env.observation_size)
+    buffer = new_buffer(cfg, env)
+    key, subkey = jax.random.split(key)
+    env_state = venv.reset(jax.random.split(subkey, cfg["n_envs"]))
+    train_round = make_train_round(td3, venv, cfg, episode_length)
+
+    damages = load_damages()
+    _, _, evaluate = make_evaluator(common)
+
+    def evaluate_on(policy_params, scenario, key):
+        batch = jax.tree.map(lambda x: jnp.repeat(x[None], cfg["eval_episodes"], axis=0), policy_params)
+        fitnesses, _ = evaluate(batch, key, jnp.asarray(damage_scale(scenario, damages)))
+        return float(fitnesses.mean())
+
+    rows, t0, episodes, every = [], time.time(), 0, cfg["robust"]["eval_every"]
+    while episodes < cfg["robust"]["episodes"]:
+        env_state, state, buffer = train_round(env_state, state, buffer)
+        episodes += cfg["n_envs"]
+        if episodes % every < cfg["n_envs"] or episodes >= cfg["robust"]["episodes"]:
+            key, subkey = jax.random.split(key)
+            fits = [
+                evaluate_on(state.policy_params, s, k)
+                for s, k in zip(damages["scenarios"], jax.random.split(subkey, len(damages["scenarios"])), strict=False)
+            ]
+            rows.append(
+                {
+                    "episodes": episodes,
+                    "intact": fits[0],
+                    "damaged_mean": float(np.mean(fits[1:])),
+                    "time_s": time.time() - t0,
+                }
+            )
+            print(
+                f"[robust s{seed}] {episodes} episodes: intact {fits[0]:.1f}, damaged mean "
+                f"{rows[-1]['damaged_mean']:.1f} ({rows[-1]['time_s']:.0f} s)",
+                flush=True,
+            )
+
+    # Final zero-shot evaluation, more episodes per scenario.
+    key, subkey = jax.random.split(key)
+    final = []
+    for s, k in zip(damages["scenarios"], jax.random.split(subkey, len(damages["scenarios"])), strict=False):
+        batch = jax.tree.map(
+            lambda x: jnp.repeat(x[None], cfg["robust"]["final_eval_episodes"], axis=0), state.policy_params
+        )
+        fits, _ = evaluate(batch, k, jnp.asarray(damage_scale(s, damages)))
+        final.append(
+            {
+                "seed": seed,
+                "scenario": s["name"],
+                "fitness": float(fits.mean()),
+                "std": float(fits.std()),
+                "n_episodes": cfg["robust"]["final_eval_episodes"],
+            }
+        )
+    out_dir = Path(out_root) / (f"seed{seed}" + ("_smoke" if smoke else ""))
+    write_curve(out_dir, rows, {"variant": "robust", "seed": seed, "config": cfg, "time_s": time.time() - t0})
+    with open(out_dir / "zero_shot.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(final[0]))
+        writer.writeheader()
+        writer.writerows(final)
+    np.savez_compressed(out_dir / "policy.npz", params=np.asarray(ravel_pytree(state.policy_params)[0]))
+    return out_dir
+
+

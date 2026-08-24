@@ -83,6 +83,86 @@ def damaged_legs(scenario: dict):
     return sorted({int(j.split(".")[0].split("_")[1]) - 1 for j in scenario["joints"]})
 
 
+def plot_ite_trials(
+    trials: pd.DataFrame, descriptors: np.ndarray, hurt, stem: Path, f0: float, scale: float, lang: str = "fr"
+):
+    """For each ITE trial: the feet-contact profile of the gait tried, and its performance."""
+    T = TEXT[lang]
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 5.2), sharex=True, gridspec_kw={"height_ratios": [1.3, 1]})
+    cells = trials.cell.to_numpy()
+    im = ax1.imshow(
+        descriptors[cells].T,
+        aspect="auto",
+        cmap="Greys",
+        vmin=0,
+        vmax=1,
+        interpolation="nearest",
+        extent=[0.5, len(cells) + 0.5, 3.5, -0.5],
+    )
+    ax1.set_yticks(range(4), T["feet"], fontsize=8)
+    for k in hurt:
+        ax1.get_yticklabels()[k].set_color("#c8413b")
+        ax1.get_yticklabels()[k].set_fontweight("bold")
+    ax1.set_title(T["trials_title"], fontsize=10, loc="left")
+    fig.colorbar(im, ax=ax1, fraction=0.03, pad=0.01)
+    perf = (trials.observed.to_numpy() - f0) / scale
+    ax2.plot(np.arange(1, len(cells) + 1), perf, "o-", color="#3a9d5d", label=T["observed"])
+    ax2.plot(
+        np.arange(1, len(cells) + 1), np.maximum.accumulate(perf), color="#222", lw=1.2, ls="--", label=T["best_so_far"]
+    )
+    stop = trials.stop_trial.dropna()
+    if len(stop):
+        ax2.axvline(float(stop.iloc[0]), color="#c8413b", lw=1.2, ls=":", label=T["stop"])
+    ax2.set_xlabel(T["trial"])
+    ax2.set_xticks(range(1, len(cells) + 1))
+    ax2.set_ylabel(T["perf"])
+    ax2.grid(alpha=0.3)
+    ax2.legend(frameon=False, fontsize=8)
+    for ax in (ax1, ax2):
+        ax.spines[["top", "right"]].set_visible(False)
+    fig.tight_layout()
+    _save(fig, stem)
+
+
+def plot_map_before_after(
+    oracle: np.lib.npyio.NpzFile, scenario: str, stem: Path, f0: float, scale: float, tested=None, lang: str = "fr"
+):
+    """Repertoire map: front vs hind feet ground contact, colour = performance."""
+    T = TEXT[lang]
+    names = list(oracle["scenarios"])
+    filled = np.isfinite(oracle["repertoire_fitness"])
+    d = oracle["repertoire_descriptors"][filled]
+    x, y = d[:, [0, 3]].mean(1), d[:, [1, 2]].mean(1)
+    before = (oracle["fitness"][names.index("intact")].mean(-1)[filled] - f0) / scale
+    after = (oracle["fitness"][names.index(scenario)].mean(-1)[filled] - f0) / scale
+    vmin, vmax = np.percentile(np.concatenate([before, after]), [2, 98])
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.3), layout="constrained")
+    for ax, v, title in zip(axes, [before, after], [T["intact"], f"{T['damage']}: {scenario}"], strict=False):
+        order = np.argsort(v)
+        sc = ax.scatter(x[order], y[order], c=v[order], s=10, cmap="viridis", vmin=vmin, vmax=vmax)
+        ax.set_title(title)
+        ax.set_xlabel(T["front"])
+        ax.set_ylabel(T["hind"])
+        ax.set_xlim(-0.02, 1.02)
+        ax.set_ylim(-0.02, 1.02)
+        ax.set_aspect("equal")
+    if tested is not None:
+        all_d = oracle["repertoire_descriptors"]
+        axes[1].plot(
+            all_d[tested][:, [0, 3]].mean(1),
+            all_d[tested][:, [1, 2]].mean(1),
+            "o-",
+            ms=5,
+            mfc="none",
+            color="#c8413b",
+            lw=1,
+            label=T["ite_trials"],
+        )
+        axes[1].legend(frameon=False, fontsize=8, loc="upper left")
+    fig.colorbar(sc, ax=axes, shrink=0.8, label=T["perf_bar"])
+    _save(fig, stem)
+
+
 def write_follow_gifs(env, clips: dict, stop: int, out_dir: Path):
     """Three-phase GIF with following cameras (the robot stays large), in French and English."""
     dt = float(env.sys.config.dt)
