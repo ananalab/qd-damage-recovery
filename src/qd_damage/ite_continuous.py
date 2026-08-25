@@ -27,3 +27,15 @@ from qd_damage.ite import Normalizer, run_ite
 from qd_damage.oracle import evaluate_all, make_evaluator
 from qd_damage.repertoires import REPO_ROOT, git_commit, load_dc_actor
 
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--runs", nargs="+", required=True)
+    parser.add_argument("--candidates", type=int, default=2048)
+    parser.add_argument("--scenarios", nargs="*", default=None)
+    parser.add_argument("--repeats", type=int, default=None)
+    parser.add_argument("--out", type=Path, default=OUT)
+    args = parser.parse_args()
+    for r in args.runs:
+        print(run_continuous(r, args.candidates, scenarios=args.scenarios, n_repeats=args.repeats, out_root=args.out))
+
+

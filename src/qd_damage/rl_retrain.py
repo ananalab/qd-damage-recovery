@@ -361,3 +361,35 @@ def train_robust(seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "r
     return out_dir
 
 
+def evaluate_robust(robust_dir: Path, physics=None, n_episodes: int = 32, seed: int = 7) -> Path:
+    """Zero-shot evaluation of a saved robust policy on every damage, optionally on perturbed physics."""
+    robust_dir = Path(robust_dir)
+    info = json.loads((robust_dir / "rl.json").read_text())
+    common = load_run_config("me")["common"]
+    env, policy_network, evaluate = make_evaluator(common, physics=physics)
+    template = policy_network.init(jax.random.key(0), jnp.zeros((env.observation_size,)))
+    _, unravel = ravel_pytree(template)
+    params = unravel(jnp.asarray(np.load(robust_dir / "policy.npz")["params"]))
+    damages = load_damages()
+    rows = []
+    keys = jax.random.split(jax.random.key(seed), len(damages["scenarios"]))
+    for s, k in zip(damages["scenarios"], keys, strict=True):
+        batch = jax.tree.map(lambda x: jnp.repeat(x[None], n_episodes, axis=0), params)
+        fits, _ = evaluate(batch, k, jnp.asarray(damage_scale(s, damages)))
+        rows.append(
+            {
+                "seed": info["seed"],
+                "scenario": s["name"],
+                "fitness": float(fits.mean()),
+                "std": float(fits.std()),
+                "n_episodes": n_episodes,
+            }
+        )
+    out = robust_dir / ("zero_shot_gap.csv" if physics else "zero_shot_check.csv")
+    with open(out, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    return out
+
+
