@@ -50,3 +50,22 @@ def test_ite_finds_new_optimum_quickly():
     assert found >= 0.9 * true.max()
 
 
+def test_ite_beats_top_k_and_random_after_10_trials():
+    x, prior, true = synthetic_problem()
+    rng = np.random.default_rng(1)
+    trial = lambda i: true[i] + 0.01 * rng.normal()  # noqa: E731
+    ite = run_ite(x, prior, trial, Normalizer(0.0, 1.0), max_trials=10, **PARAMS)
+    top = run_top_k(prior, trial, 10)
+    rand = np.mean([true[run_random(len(x), trial, 10, np.random.default_rng(s)).best_cell(10)] for s in range(20)])
+    assert true[ite.best_cell(10)] > true[top.best_cell(10)]
+    assert true[ite.best_cell(10)] > rand
+
+
+def test_baselines_interface():
+    prior = np.array([0.1, 0.9, 0.5])
+    hist = run_best_intact(prior, lambda i: float(i))
+    assert hist.cells == [1]
+    assert run_top_k(prior, lambda i: float(i), 3).cells == [1, 2, 0]
+    assert sorted(run_random(3, lambda i: 0.0, 3, np.random.default_rng(0)).cells) == [0, 1, 2]
+
+

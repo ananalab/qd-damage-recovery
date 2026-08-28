@@ -78,3 +78,23 @@ key = jax.random.key(seed)
 policy_network = MLP(layer_sizes=policy_hidden_layer_sizes + (env.action_size,),
                      kernel_init=jax.nn.initializers.lecun_uniform(), final_activation=jnp.tanh)
 
+def make_play_step_fn(env):
+    def play_step_fn(env_state, policy_params, key):
+        actions = policy_network.apply(policy_params, env_state.obs)
+        next_state = env.step(env_state, actions)
+        transition = QDTransition(
+            obs=env_state.obs, next_obs=next_state.obs, rewards=next_state.reward, dones=next_state.done,
+            actions=actions, truncations=next_state.info["truncation"],
+            state_desc=env_state.info["state_descriptor"], next_state_desc=next_state.info["state_descriptor"])
+        return next_state, policy_params, key, transition
+    return play_step_fn
+
+scoring_fn = functools.partial(scoring_function, episode_length=episode_length, play_reset_fn=env.reset,
+                               play_step_fn=make_play_step_fn(env),
+                               descriptor_extractor=environments.descriptor_extractor[env_name])
+emitter = MixingEmitter(mutation_fn=None, variation_percentage=1.0, batch_size=batch_size,
+                        variation_fn=functools.partial(isoline_variation, iso_sigma=0.005, line_sigma=0.05))
+map_elites = MAPElites(scoring_function=scoring_fn, emitter=emitter,
+                       metrics_function=functools.partial(default_qd_metrics,
+                           qd_offset=environments.reward_offset[env_name] * episode_length))
+

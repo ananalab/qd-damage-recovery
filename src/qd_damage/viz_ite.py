@@ -163,6 +163,26 @@ def plot_map_before_after(
     _save(fig, stem)
 
 
+def representative_rollout(env, net, params, action_scale=None, n: int = 8):
+    """Play n episodes (different random starts) and return the median one in fitness.
+
+    A single episode is very noisy and could mislead either way; the median episode is neither the best nor the
+    worst. The mean and standard deviation over the n episodes are kept as well.
+    """
+    runs = [rollout(env, net, params, seed=s, action_scale=action_scale) for s in range(n)]
+    fits = np.array([r["fitness"] for r in runs])
+    median = runs[int(np.argsort(fits)[n // 2])]
+    dists = np.array([r["distance"] for r in runs])
+    return {
+        **median,
+        "fitness_mean": float(fits.mean()),
+        "fitness_std": float(fits.std()),
+        "distance_mean": float(dists.mean()),
+        "distance_std": float(dists.std()),
+        "n_episodes": n,
+    }
+
+
 def write_follow_gifs(env, clips: dict, stop: int, out_dir: Path):
     """Three-phase GIF with following cameras (the robot stays large), in French and English."""
     dt = float(env.sys.config.dt)
