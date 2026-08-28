@@ -187,10 +187,55 @@ def rollout(env, policy_network, params, seed: int = 0, paralysed_leg=None, acti
 # --------------------------------------------------------------------------- videos
 
 
+def _fixed_camera(paths, width: int, height: int, ssaa: int = 2) -> image.Camera:
+    """Fixed camera framing all paths, so that the robot is seen moving and not only its legs."""
+    pts = np.concatenate(paths)
+    center = (pts.min(axis=0) + pts.max(axis=0)) / 2
+    extent = float(np.max(pts.max(axis=0) - pts.min(axis=0)))
+    d = max(3.5, 0.8 * extent + 2.5)
+    target = [float(center[0]), float(center[1]), 0.3]
+    hfov = 58.0
+    return image.Camera(
+        viewWidth=width * ssaa,
+        viewHeight=height * ssaa,
+        position=[target[0] + 0.3 * d, target[1] - d, 0.8 * d],
+        target=target,
+        up=[0, 0, 1],
+        hfov=hfov,
+        vfov=hfov * height / width,
+    )
+
+
+def render_frames(env, qps, width: int, height: int, label: str, camera=None, every: int = 1):
+    """Frames of a rollout with a label on top. camera=None: Brax camera that follows the robot."""
+    font = ImageFont.truetype(_FONT_PATH, max(14, height // 24))
+    band = int(font.size * 1.8)
+    frames = []
+    for qp in qps[::every]:
+        img = Image.fromarray(image.render_array(env.sys, qp, width, height, camera=camera))
+        draw = ImageDraw.Draw(img)
+        draw.rectangle([0, 0, width, band], fill=(255, 255, 255))
+        draw.text((10, (band - font.size) // 2), label, fill=(20, 20, 20), font=font)
+        frames.append(np.asarray(img))
+    return frames
+
+
 def side_by_side(columns):
     n = max(len(c) for c in columns)
     columns = [c + [c[-1]] * (n - len(c)) for c in columns]  # when an episode ends earlier
     return [np.concatenate([c[t] for c in columns], axis=1) for t in range(n)]
+
+
+def write_mp4(frames, path: Path, fps: float):
+    # H.264 + yuv420p: plays everywhere (browsers, slides).
+    imageio.mimsave(path, frames, fps=fps, codec="libx264", quality=8, pixelformat="yuv420p")
+
+
+def write_gif(frames, path: Path, frame_duration_s: float):
+    imageio.mimsave(path, frames, duration=round(1000 * frame_duration_s), loop=0)  # in ms
+
+
+# --------------------------------------------------------------------------- 3D interactive
 
 
 def _write_readme(out_dir: Path, title: str, summary: dict):
