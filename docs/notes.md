@@ -65,3 +65,31 @@ Implementation notes:
 
 ## Damages and oracle
 
+Leg mapping, checked in three ways:
+1. Geometry at reset (the robot walks towards +x, +y on its left): foot Body 4 (x+, y+) is front left,
+   Body 7 (x-, y+) hind left, Body 10 (x-, y-) hind right, Body 13 (x+, y-) front right.
+2. Measurement: a single action set to 1 for 4 steps moves the foot relative to its thigh the most for the
+   expected leg (actions 2k, 2k+1 drive leg k+1). Absolute foot displacement did not work: the whole body moves.
+3. Video: `media/checks/leg_mapping/`.
+
+Two findings that changed the analysis:
+1. The zero of performance. A standing robot scores 1058.7 (64 episodes), not 810: Brax adds +1 per step for
+   survival on top of the 3.24 offset. All percentages use F0 = 4.2348 x episode length. With the wrong zero,
+   MAP-Elites looked ~97 % resilient although its gaits barely move.
+2. Elites are over-estimated. The stored fitness comes from one noisy episode and MAP-Elites keeps the lucky
+   evaluations. Re-evaluated on 4 episodes, the "best" cell of the demo MAP-Elites repertoire does worse than a
+   standing robot; the correlation between stored and re-evaluated fitness is 0.88. The ITE prior, the
+   best-intact baseline and the best intact cell of the oracle summary therefore use the fitness re-evaluated by
+   the oracle (legitimate: offline, before the damage).
+
+- `qd_damage.viz`: repertoire figures, videos and offline 3D pages. The Brax v0.1.0 viewer and three.js r135 are
+  bundled in `src/qd_damage/assets/` (Apache 2.0 / MIT licences included) and inlined in each page. Headless
+  Firefox does not render WebGL, so the 3D pages were checked by hand in a browser.
+- `qd_damage.viz_ite`: the three-phase video (intact / damaged, same gait / damaged, after ITE), close-ups, 3D,
+  ITE trial figure, repertoire map before and after damage, still frames for the PDF. Each video shows the median
+  of 8 episodes, since a single episode is too noisy to be representative. The ITE run shown is the median
+  repetition in number of trials.
+- On the demo DCRL-ME repertoire with leg 4 paralysed, ITE barely helps (3.5 m against 3.8 m).
+
+A critical review of the first version listed several weaknesses; each one was addressed as follows.
+

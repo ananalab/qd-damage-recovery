@@ -22,6 +22,15 @@ from qd_damage.analysis.latex import tex_table
 from qd_damage.analysis.stats import fmt_p, mixed_contrasts, mixed_mean_by_algo
 
 
+def _signed(x: float) -> str:
+    """Signed number typeset in math mode, so that LaTeX prints a real minus sign."""
+    return f"\\ensuremath{{{x:+.2f}}}"
+
+
+def _ci(estimate: float, low: float, high: float) -> str:
+    return f"\\ensuremath{{{estimate:+.2f}\\ [{low:+.2f}, {high:+.2f}]}}"
+
+
 def mixed_checks(oracle: pd.DataFrame, adapt: pd.DataFrame, trials: pd.DataFrame, tex_dir: Path | None):
     damaged = oracle[oracle.scenario != "intact"]
     ite = adapt[adapt.method == "ite"]
