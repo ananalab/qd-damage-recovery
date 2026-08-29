@@ -98,3 +98,92 @@ map_elites = MAPElites(scoring_function=scoring_fn, emitter=emitter,
                        metrics_function=functools.partial(default_qd_metrics,
                            qd_offset=environments.reward_offset[env_name] * episode_length))
 
+key, k1, k2, k3 = jax.random.split(key, 4)
+init_params = jax.vmap(policy_network.init)(jax.random.split(k1, batch_size), jnp.zeros((batch_size, env.observation_size)))
+centroids = compute_cvt_centroids(num_descriptors=env.descriptor_length, num_init_cvt_samples=50000,
+                                  num_centroids=num_centroids, minval=0.0, maxval=1.0, key=k2)
+repertoire, emitter_state, _ = map_elites.init(init_params, centroids, k3)
+
+@jax.jit
+def run_block(carry):
+    return jax.lax.scan(map_elites.scan_update, carry, (), length=10)
+
+for i in range(num_iterations // 10):
+    (repertoire, emitter_state, key), metrics = run_block((repertoire, emitter_state, key))
+print("coverage %.1f %%, max fitness %.1f" % (metrics["coverage"][-1], metrics["max_fitness"][-1]))
+""",
+    ),
+    (
+        "markdown",
+        """
+## 2. Damage the robot
+
+A damage multiplies the actions of some joints by a factor (0 = paralysed). For Ant, the torque of an actuator
+is `action × strength`, so this is equivalent to weakening the actuator. Actions `(6, 7)` are the hip and ankle
+of the front-right leg (order of the actuators in the Brax config).
+""",
+    ),
+    (
+        "code",
+        """
+class DamageWrapper:
+    def __init__(self, env, action_scale):
+        self.env, self.action_scale = env, jnp.asarray(action_scale)
+    def reset(self, rng):
+        return self.env.reset(rng)
+    def step(self, state, action):
+        return self.env.step(state, action * self.action_scale)
+    def __getattr__(self, name):
+        return getattr(self.env, name)
+
+Performances are normalised so that 0 ≈ a standing robot and 1 ≈ a good gait (≈ 15 m in 12.5 s); the GP
+models the residual between observed and prior performance.
+""",
+    ),
+    (
+        "code",
+        """
+def matern52(a, b, lengthscale):
+    d = np.sqrt(((a[:, None, :] - b[None, :, :]) ** 2).sum(-1)) / lengthscale
+    return (1 + np.sqrt(5) * d + 5 / 3 * d**2) * np.exp(-np.sqrt(5) * d)
+
+def ite(descriptors, prior, trial_fn, kappa=0.05, alpha=0.9, lengthscale=0.4,
+        signal_variance=0.05, noise_variance=0.02, max_trials=20):
+    tested, observed = [], []
+    for t in range(max_trials):
+        if tested:
+            X = descriptors[tested]
+            K = signal_variance * matern52(X, X, lengthscale) + noise_variance * np.eye(len(tested))
+            k = signal_variance * matern52(descriptors, X, lengthscale)
+            L = np.linalg.cholesky(K)
+            a = np.linalg.solve(L.T, np.linalg.solve(L, np.array(observed) - prior[tested]))
+            v = np.linalg.solve(L, k.T)
+            mean, std = prior + k @ a, np.sqrt(np.maximum(signal_variance - (v**2).sum(0), 1e-12))
+            if max(observed) >= alpha * mean.max():   # stopping criterion of Cully et al.
+                break
+        else:
+            mean, std = prior, np.full(len(prior), np.sqrt(signal_variance))
+        i = int(np.argmax(mean + kappa * std))         # UCB
+        tested.append(i)
+        observed.append(trial_fn(i))
+    return tested, observed
+
+def build(path: Path):
+    cells = []
+    for kind, src in CELLS:
+        c = {"cell_type": kind, "metadata": {}, "source": src.strip("\n").splitlines(keepends=True)}
+        if kind == "code":
+            c.update(execution_count=None, outputs=[])
+        cells.append(c)
+    nb = {
+        "cells": cells,
+        "metadata": {
+            "kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
+            "language_info": {"name": "python"},
+        },
+        "nbformat": 4,
+        "nbformat_minor": 5,
+    }
+    path.write_text(json.dumps(nb, indent=1, ensure_ascii=False))
+
+

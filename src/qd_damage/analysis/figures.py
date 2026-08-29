@@ -76,3 +76,10 @@ TEXT = {
 }
 
 
+def _save(fig, stem: Path):
+    stem.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(stem.with_suffix(".png"), dpi=200, bbox_inches="tight")
+    fig.savefig(stem.with_suffix(".pdf"), bbox_inches="tight", metadata={"CreationDate": None})  # reproducible files
+    plt.close(fig)
+
+

@@ -27,6 +27,9 @@ from qd_damage.ite import Normalizer, run_ite
 from qd_damage.oracle import evaluate_all, make_evaluator
 from qd_damage.repertoires import REPO_ROOT, git_commit, load_dc_actor
 
+OUT = REPO_ROOT / "results" / "bonus" / "continuous"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--runs", nargs="+", required=True)
