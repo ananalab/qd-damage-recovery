@@ -136,6 +136,14 @@ class DamageWrapper:
     def __getattr__(self, name):
         return getattr(self.env, name)
 
+def make_evaluator(e):
+    @jax.jit
+    def evaluate(params_batch, key):
+        f, _, _ = scoring_function(params_batch, key, episode_length, e.reset, make_play_step_fn(e),
+                                   environments.descriptor_extractor[env_name])
+        return f
+    return evaluate
+
 Performances are normalised so that 0 ≈ a standing robot and 1 ≈ a good gait (≈ 15 m in 12.5 s); the GP
 models the residual between observed and prior performance.
 """,
