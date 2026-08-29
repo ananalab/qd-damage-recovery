@@ -93,3 +93,5 @@ Two findings that changed the analysis:
 
 A critical review of the first version listed several weaknesses; each one was addressed as follows.
 
+## Open points
+

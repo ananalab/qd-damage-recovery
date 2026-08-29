@@ -183,6 +183,26 @@ def representative_rollout(env, net, params, action_scale=None, n: int = 8):
     }
 
 
+def plot_strip(env, clips: dict, stem: Path, lang: str, stop: int, times=(0.0, 4.0, 8.0, 12.4)):
+    """Still frames for print: one row per situation, a few time points."""
+    T = TEXT[lang]
+    dt = float(env.sys.config.dt)
+    fig, axes = plt.subplots(len(clips), len(times), figsize=(2.6 * len(times), 2.1 * len(clips)))
+    titles = [T["clips"][0], T["clips"][1], f"{T['clips'][2]} ({stop} {'essais' if lang == 'fr' else 'trials'})"]
+    for r, ((_, c), title) in enumerate(zip(clips.items(), titles, strict=True)):
+        for j, t in enumerate(times):
+            idx = min(int(round(t / dt)), len(c["qps"]) - 1)
+            # Camera following the robot (close-up), readable in print; the distance is given on the left.
+            axes[r, j].imshow(image.render_array(env.sys, c["qps"][idx], 360, 270))
+            axes[r, j].set_xticks([])
+            axes[r, j].set_yticks([])
+            if r == 0:
+                axes[r, j].set_title(T["time"].format(idx * dt), fontsize=9)
+        axes[r, 0].set_ylabel(f"{title}\n{c['distance']:.1f} m", fontsize=9)
+    fig.tight_layout()
+    _save(fig, stem)
+
+
 def write_follow_gifs(env, clips: dict, stop: int, out_dir: Path):
     """Three-phase GIF with following cameras (the robot stays large), in French and English."""
     dt = float(env.sys.config.dt)

@@ -19,6 +19,8 @@ Patte 4 paralysée (actions $paralysed à 0) : $d_damaged m.
 | Web, slides | `figures/*.png` (200 dpi) |
 | Chiffres et provenance | `data/summary.json`, `data/run_*.json`, `data/metrics_*.csv` |
 
+## Fichiers
+
 ### figures/
 $figures
 

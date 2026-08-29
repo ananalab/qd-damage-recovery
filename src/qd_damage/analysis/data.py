@@ -50,3 +50,8 @@ SCENARIO_FR = {
 RL_SCENARIOS = ["leg4_paralysed", "leg2_weak", "legs14_paralysed", "ankle1_paralysed"]
 
 
+def units(df: pd.DataFrame, value: str) -> pd.Series:
+    """Mean of `value` over the repetitions of each (repertoire, damage) pair."""
+    return df.groupby(UNIT)[value].mean()
+
+
