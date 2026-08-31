@@ -136,6 +136,16 @@ class DamageWrapper:
     def __getattr__(self, name):
         return getattr(self.env, name)
 
+damaged_env = DamageWrapper(env, [1, 1, 1, 1, 1, 1, 0, 0])   # front-right leg paralysed
+""",
+    ),
+    (
+        "code",
+        """
+filled = np.flatnonzero(np.asarray(repertoire.fitnesses) > -np.inf)
+params = jax.tree.map(lambda x: x[filled], repertoire.genotypes)
+descriptors = np.asarray(repertoire.descriptors)[filled]
+
 def make_evaluator(e):
     @jax.jit
     def evaluate(params_batch, key):
@@ -175,6 +185,10 @@ def ite(descriptors, prior, trial_fn, kappa=0.05, alpha=0.9, lengthscale=0.4,
         tested.append(i)
         observed.append(trial_fn(i))
     return tested, observed
+
+f0 = 0.9948 * episode_length      # measured return of a standing robot (survival bonus, minus contact cost)
+scale = 1.2 * episode_length
+normalise = lambda f: (np.asarray(f) - f0) / scale
 
 def build(path: Path):
     cells = []

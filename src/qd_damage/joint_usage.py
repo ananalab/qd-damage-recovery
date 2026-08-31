@@ -55,3 +55,5 @@ def main():
         print(compute_joint_usage(run_dir, out_root=args.out))
 
 
+if __name__ == "__main__":
+    main()

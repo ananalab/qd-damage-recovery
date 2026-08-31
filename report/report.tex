@@ -29,3 +29,33 @@
 \input{generated/numbers}
 \graphicspath{{../media/final/figures_en/}{../media/final/ite_main/figures_en/}}
 
+\newcommand{\ME}{MAP-Elites}
+\newcommand{\PGA}{PGA-ME}
+\newcommand{\DCRL}{DCRL-ME}
+
+\begin{document}
+
+% ================================================================ title
+\title{Few-Trial Damage Recovery with Quality-Diversity Repertoires\\[4pt]
+\large Repertoires built with and without reinforcement learning, adapted with Intelligent Trial \& Error}
+\author{Anaïs Azouaoui\\[2pt] \small\url{https://github.com/ananalab/qd-damage-recovery}}
+\date{}
+\maketitle
+
+\begin{abstract}
+A legged robot that loses the use of a leg should find a new gait with as few physical trials as possible.
+Intelligent Trial \& Error (ITE) does so by searching, with Bayesian optimisation, a repertoire of diverse gaits
+learned beforehand in simulation. Recent Quality-Diversity (QD) algorithms build such repertoires with the help of
+reinforcement-learning (RL) critics and reach much higher performance, but it is not known whether they keep the
+diversity that makes a repertoire useful after damage. On the Brax Ant, we build repertoires at equal budget with
+\ME, \PGA{} and \DCRL{} (\NSeeds{} seeds each), measure their resilience to \NScenarios{} damage scenarios, and adapt
+them with ITE, simple baselines and RL (TD3), counting episodes on the damaged robot. Repertoires built with RL are
+as resilient as those of \ME{} in relative terms and keep much better gaits in absolute terms. ITE needs a median of
+\ITETrials{} trials and recovers \ITEPctIntact\% of the progress of the best intact gait (against \BestIntactPct\%
+without adaptation), but it is barely better than trying gaits in decreasing order of intact performance, even with a
+descriptor that models the damage three times better or with a gap between simulator and robot. Re-training with TD3
+needs hundreds of episodes once its critic is warmed up. A TD3 policy trained in simulation on random damages,
+however, matches ITE on the best repertoires without any trial, as long as the damage belongs to its training
+distribution.
+\end{abstract}
+

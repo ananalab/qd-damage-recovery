@@ -238,6 +238,29 @@ def write_gif(frames, path: Path, frame_duration_s: float):
 # --------------------------------------------------------------------------- 3D interactive
 
 
+def render(template: str, **values) -> str:
+    """Fill a page template of src/qd_damage/templates ($name placeholders)."""
+    return Template((TEMPLATES / template).read_text()).substitute(values)
+
+
+def write_interactive(env, qps, path: Path, title: str, caption: str):
+    """Self-contained HTML page: trajectory and Brax 3D viewer inlined (no external resource)."""
+    viewer_js = VIEWER_JS.read_text().replace("</script", "<\\/script")
+    system_json = brax_dumps(env.sys, qps).replace("</script", "<\\/script")
+    path.write_text(
+        render(
+            "interactive.html",
+            title=html_lib.escape(title),
+            caption=html_lib.escape(caption),
+            system_json=system_json,
+            viewer_js=viewer_js,
+        )
+    )
+
+
+# --------------------------------------------------------------------------- page and catalogue
+
+
 def _write_readme(out_dir: Path, title: str, summary: dict):
     def listing(sub):
         return "\n".join(f"- `{sub}/{p.name}`" for p in sorted((out_dir / sub).iterdir()))
