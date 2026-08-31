@@ -30,6 +30,19 @@ from qd_damage.repertoires import REPO_ROOT, git_commit, load_dc_actor
 OUT = REPO_ROOT / "results" / "bonus" / "continuous"
 
 
+class ConditionedPolicy:
+    """The actor seen as a policy whose "parameters" are the target descriptor d.
+
+    The existing machinery (QDax scoring, oracle, ITE) then applies unchanged.
+    """
+
+    def __init__(self, actor, actor_params):
+        self.actor, self.actor_params = actor, actor_params
+
+    def apply(self, desc, obs):
+        return self.actor.apply(self.actor_params, obs, desc)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--runs", nargs="+", required=True)
@@ -42,3 +55,5 @@ def main():
         print(run_continuous(r, args.candidates, scenarios=args.scenarios, n_repeats=args.repeats, out_root=args.out))
 
 
+if __name__ == "__main__":
+    main()

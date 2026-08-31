@@ -70,6 +70,45 @@ def ite_vs_topk(trials: pd.DataFrame, at=(3, 5, 10)) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def rl_episodes_to_match(rl: pd.DataFrame, adapt: pd.DataFrame) -> pd.DataFrame:
+    """RL episodes needed to match the gait found by ITE (DCRL-ME repertoire of the same seed)."""
+    rows = []
+    for (scenario, variant, seed), c in rl.groupby(["scenario", "variant", "seed"]):
+        ite = adapt[
+            (adapt.method == "ite") & (adapt.algo == "dcrlme") & (adapt.seed == seed) & (adapt.scenario == scenario)
+        ]
+        if ite.empty:
+            continue
+        target = ite.recommended_true.mean()
+        reached = c[c.eval_fitness >= target]
+        rows.append(
+            {
+                "scenario": scenario,
+                "variant": variant,
+                "seed": seed,
+                "ite_trials": ite.trials_used.mean(),
+                "ite_fitness": target,
+                "rl_episodes_to_match": int(reached.episodes.iloc[0]) if len(reached) else np.nan,
+                "rl_best_fitness": c.eval_fitness.max(),
+                "rl_max_episodes": int(c.episodes.max()),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def _fit_mixed(formula: str, df: pd.DataFrame):
+    """Linear mixed model with a random intercept per repertoire (run): units of one seed share a repertoire."""
+    import warnings
+
+    import statsmodels.formula.api as smf
+    from statsmodels.tools.sm_exceptions import ConvergenceWarning
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", ConvergenceWarning)
+        warnings.simplefilter("ignore", RuntimeWarning)
+        return smf.mixedlm(formula, df, groups=df["run"]).fit(reml=True)
+
+
 def mixed_contrasts(values: pd.Series) -> pd.DataFrame:
     """Differences between algorithms (b - a) from `value ~ algo + damage + (1 | run)`, with 95 % intervals.
 
@@ -97,3 +136,21 @@ def mixed_contrasts(values: pd.Series) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def mixed_mean_by_algo(values: pd.Series) -> pd.DataFrame:
+    """Mean of `values` (indexed by UNIT) per algorithm from `value ~ 0 + algo + (1 | run)`, with 95 % intervals."""
+    df = values.rename("y").reset_index()
+    fit = _fit_mixed("y ~ 0 + C(algo)", df)
+    ci = fit.conf_int()
+    rows = []
+    for a in ALGOS:
+        name = f"C(algo)[{a}]"
+        rows.append(
+            {
+                "algo": a,
+                "estimate": fit.params[name],
+                "ci_low": ci.loc[name, 0],
+                "ci_high": ci.loc[name, 1],
+                "p": fit.pvalues[name],
+            }
+        )
+    return pd.DataFrame(rows)
