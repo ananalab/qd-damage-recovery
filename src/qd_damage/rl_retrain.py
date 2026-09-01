@@ -393,3 +393,42 @@ def evaluate_robust(robust_dir: Path, physics=None, n_episodes: int = 32, seed: 
     return out
 
 
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--scenario")
+    parser.add_argument("--variant", choices=VARIANTS)
+    parser.add_argument("--robust", action="store_true", help="train the damage-robust policy instead")
+    parser.add_argument(
+        "--evaluate-robust",
+        type=Path,
+        default=None,
+        help="evaluate a saved robust policy (results/rl_robust/seed<s>) on every damage",
+    )
+    parser.add_argument("--reality-gap", action="store_true", help="with --evaluate-robust: perturbed physics")
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--repertoire", type=Path, default=None, help="required for the finetune variants")
+    parser.add_argument("--oracle-root", type=Path, default=REPO_ROOT / "results" / "oracle")
+    parser.add_argument("--smoke", action="store_true")
+    parser.add_argument("--out", type=Path, default=None)
+    args = parser.parse_args()
+    if args.evaluate_robust:
+        physics = load_yaml("adaptation")["reality_gap"] if args.reality_gap else None
+        print(evaluate_robust(args.evaluate_robust, physics))
+    elif args.robust:
+        print(train_robust(args.seed, args.smoke, args.out or REPO_ROOT / "results" / "rl_robust"))
+    else:
+        if not (args.scenario and args.variant):
+            parser.error("--scenario and --variant are required unless --robust")
+        print(
+            retrain(
+                args.scenario,
+                args.variant,
+                args.seed,
+                args.repertoire,
+                args.smoke,
+                args.out or REPO_ROOT / "results" / "rl",
+                args.oracle_root,
+            )
+        )
+
+

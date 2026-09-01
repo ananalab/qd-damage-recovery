@@ -31,6 +31,56 @@ def _ci(estimate: float, low: float, high: float) -> str:
     return f"\\ensuremath{{{estimate:+.2f}\\ [{low:+.2f}, {high:+.2f}]}}"
 
 
+def _read_runs(kind: str, name: str, runs) -> pd.DataFrame | None:
+    files = [RES / kind / r / name for r in runs if (RES / kind / r / name).exists()]
+    return pd.concat(map(pd.read_csv, files)) if files else None
+
+
+# --------------------------------------------------------------------------- unbiased oracle
+
+
+def oracle_check(oracle: pd.DataFrame, f0: float, scale: float, tex_dir: Path | None):
+    checked = _read_runs("oracle", "best_checked.csv", sorted(oracle.run.unique()))
+    if checked is None:
+        return {}, {}
+    algo = oracle.drop_duplicates("run").set_index("run").algo
+    checked = checked.assign(
+        algo=checked.run.map(algo), bias=(checked.oracle_fitness - checked.checked_fitness) / scale
+    )
+    intact = checked[checked.scenario == "intact"].set_index("run").checked_fitness
+    damaged = checked[checked.scenario != "intact"].copy()
+    damaged["resilience"] = (damaged.checked_fitness - f0) / (damaged.run.map(intact) - f0)
+    damaged["checked_abs"] = (damaged.checked_fitness - f0) / scale
+    res_units = damaged.set_index(UNIT).resilience
+    contrasts = mixed_contrasts(res_units)
+    m = {}
+    for a in ALGOS:
+        m[f"OracleBias{TAG[a]}"] = f"{checked[checked.algo == a].bias.mean():.2f}"
+        m[f"ResChecked{TAG[a]}"] = f"{100 * damaged[damaged.algo == a].resilience.median():.0f}"
+        m[f"OracleChecked{TAG[a]}"] = f"{damaged[damaged.algo == a].checked_abs.median():.2f}"
+    m["PResCheckedMin"] = fmt_p(contrasts.p.min())
+    for r in contrasts.itertuples():
+        m[f"MixResChecked{TAG[r.b]}vs{TAG[r.a]}"] = _ci(r.estimate, r.ci_low, r.ci_high)
+        m[f"PMixResChecked{TAG[r.b]}vs{TAG[r.a]}"] = fmt_p(r.p)
+    m["OracleCheckEpisodes"] = f"{int(checked.n_episodes.iloc[0])}"
+    if tex_dir:
+        t = pd.DataFrame(
+            {
+                "Bias of the oracle ($v$)": [checked[checked.algo == a].bias.mean() for a in ALGOS],
+                "Resilience, checked (\\%)": [100 * damaged[damaged.algo == a].resilience.median() for a in ALGOS],
+                "Best gait after damage, checked ($v$)": [
+                    damaged[damaged.algo == a].checked_abs.median() for a in ALGOS
+                ],
+            },
+            index=[ALGO_LABELS[a] for a in ALGOS],
+        )
+        tex_table(t, tex_dir / "table_oracle_check.tex", ["{:.2f}", "{:.0f}", "{:.2f}"], "Repertoire")
+    return {"oracle_check": checked, "resilience_checked_contrasts": contrasts}, m
+
+
+# --------------------------------------------------------------------------- mixed models
+
+
 def mixed_checks(oracle: pd.DataFrame, adapt: pd.DataFrame, trials: pd.DataFrame, tex_dir: Path | None):
     damaged = oracle[oracle.scenario != "intact"]
     ite = adapt[adapt.method == "ite"]
