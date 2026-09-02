@@ -154,6 +154,8 @@ def make_evaluator(e):
         return f
     return evaluate
 
+eval_intact, eval_damaged = make_evaluator(env), make_evaluator(damaged_env)
+
 Performances are normalised so that 0 ≈ a standing robot and 1 ≈ a good gait (≈ 15 m in 12.5 s); the GP
 models the residual between observed and prior performance.
 """,
@@ -189,6 +191,12 @@ def ite(descriptors, prior, trial_fn, kappa=0.05, alpha=0.9, lengthscale=0.4,
 f0 = 0.9948 * episode_length      # measured return of a standing robot (survival bonus, minus contact cost)
 scale = 1.2 * episode_length
 normalise = lambda f: (np.asarray(f) - f0) / scale
+
+def trial_fn(i):
+    global key
+    key, k = jax.random.split(key)
+    one = jax.tree.map(lambda x: x[i:i + 1], params)
+    return float(normalise(eval_damaged(one, k)[0]))    # ONE episode on the damaged robot
 
 def build(path: Path):
     cells = []
