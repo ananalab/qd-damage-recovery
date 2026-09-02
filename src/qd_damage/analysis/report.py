@@ -108,3 +108,5 @@ def main():
     print((out / "summary.md").read_text())
 
 
+if __name__ == "__main__":
+    main()

@@ -123,6 +123,71 @@ def mixed_checks(oracle: pd.DataFrame, adapt: pd.DataFrame, trials: pd.DataFrame
     return {"mixed_contrasts": pd.DataFrame(rows), "mixed_ite_minus_topk": diffs}, m
 
 
+# --------------------------------------------------------------------------- reality gap
+
+
+def reality_gap(adapt: pd.DataFrame, f0: float, scale: float, tex_dir: Path | None):
+    runs = sorted(adapt.run.unique())
+    gap = _read_runs("adaptation_gap", "summary.csv", runs)
+    gap_trials = _read_runs("adaptation_gap", "trials.csv", runs)
+    oracle_gap = _read_runs("oracle_gap", "summary.csv", runs)
+    if gap is None or gap_trials is None or oracle_gap is None:
+        return {}, {}
+    gap = gap.assign(perf_abs=(gap.recommended_true - f0) / scale)
+    gap_trials = gap_trials.assign(perf_abs=(gap_trials.recommended_true - f0) / scale)
+    nominal = adapt[adapt.method.isin(gap.method.unique())]
+    m = {}
+    rows = []
+    for meth in ["best_intact", "top_k", "ite"]:
+        g, n = gap[gap.method == meth], nominal[nominal.method == meth]
+        rows.append(
+            {
+                "Method": {"best_intact": "best-intact", "top_k": "top-$k$", "ite": "ITE"}[meth],
+                "Trials": g.trials_used.median(),
+                "Nominal $v$": n.perf_abs.median(),
+                "With reality gap $v$": g.perf_abs.median(),
+                "\\% intact (gap)": g.pct_intact.median(),
+            }
+        )
+        name = {"best_intact": "BestIntact", "top_k": "TopK", "ite": "ITE"}[meth]
+        m[f"Gap{name}Abs"] = f"{g.perf_abs.median():.2f}"
+        m[f"Gap{name}Pct"] = f"{g.pct_intact.median():.0f}"
+        m[f"Gap{name}Trials"] = f"{g.trials_used.median():.0f}"
+    # Paired comparison ITE - top-k under the gap.
+    for t in (3, 5, 10):
+        u = gap_trials[(gap_trials.trial == t) & gap_trials.method.isin(["ite", "top_k"])]
+        u = u.groupby([*UNIT, "method"]).perf_abs.mean().unstack()
+        d = u.ite - u.top_k
+        m[f"GapDiffTopK{WORD[t]}"] = _signed(d.mean())
+        m[f"GapPTopK{WORD[t]}"] = fmt_p(wilcoxon(u.ite, u.top_k).pvalue)
+        for a in ALGOS:
+            da = d.xs(a, level="algo")
+            m[f"GapDiffTopK{WORD[t]}{TAG[a]}"] = _signed(da.mean())
+            m[f"GapPTopK{WORD[t]}{TAG[a]}"] = fmt_p(wilcoxon(da).pvalue if (da != 0).any() else 1.0)
+    if tex_dir:
+        tex_table(
+            pd.DataFrame(rows).set_index("Method"),
+            tex_dir / "table_reality_gap.tex",
+            ["{:.0f}", "{:.2f}", "{:.2f}", "{:.0f}"],
+            "Method",
+        )
+    return {"reality_gap": pd.DataFrame(rows)}, m
+
+
+def gap_intact_cost(oracle: pd.DataFrame, f0: float, scale: float):
+    """How much the reality gap alone costs the best intact gait (no damage)."""
+    oracle_gap = _read_runs("oracle_gap", "summary.csv", sorted(oracle.run.unique()))
+    if oracle_gap is None:
+        return {}
+    nominal = oracle[oracle.scenario == "intact"].set_index("run").oracle_fitness
+    gap = oracle_gap[oracle_gap.scenario == "intact"].set_index("run").oracle_fitness
+    ratio = ((gap - f0) / (nominal - f0)).dropna()
+    return {"GapIntactRetained": f"{100 * ratio.median():.0f}"}
+
+
+# --------------------------------------------------------------------------- descriptor ablation
+
+
 def run_checks(oracle, adapt, trials, rl, f0: float, scale: float, tex_dir: Path | None):
     tables, macros = {}, {}
     for t, m in (

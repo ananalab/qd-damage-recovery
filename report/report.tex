@@ -67,3 +67,24 @@ distribution.
 \label{fig:teaser}
 \end{figure}
 
+\tableofcontents
+
+
+% ================================================================ 1
+\section{Introduction}
+Animals keep walking after an injury because they already know many ways to move: they limp, shift their weight,
+use another leg more. \citet{cully2015robots} gave robots the same ability. \emph{Before} any damage, a large
+repertoire of diverse gaits is learned in simulation with MAP-Elites \citep{mouret2015illuminating}; \emph{after}
+damage, the robot runs Intelligent Trial \& Error (ITE): it tests a promising gait, observes how well it works,
+and updates a Gaussian-process model of the performance of \emph{all similar} gaits, so that each trial is
+informative about many of them. A damaged hexapod recovered in less than two minutes.
+
+Since then, QD algorithms have been combined with deep RL. PGA-ME \citep{nilsson2021policy} improves half of
+the offspring with the gradient of a TD3 critic \citep{fujimoto2018addressing}; DCRL-ME
+\citep{faldor2024synergizing} conditions critic and actor on the targeted behaviour descriptor, so that RL can
+improve a gait \emph{without changing its style}. These methods produce much better gaits. Whether they also
+produce repertoires that are useful after damage is less clear: RL pushes towards high performance, possibly at
+the cost of the diversity that adaptation needs. Moreover, adaptation has mostly been evaluated with an
+\emph{oracle} that tries every skill on the damaged robot \citep{chalumeau2023neuroevolution}, which says nothing
+about the number of trials a real robot would need.
+

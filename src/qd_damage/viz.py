@@ -261,6 +261,183 @@ def write_interactive(env, qps, path: Path, title: str, caption: str):
 # --------------------------------------------------------------------------- page and catalogue
 
 
+def _rel(path: Path) -> str:
+    try:
+        return str(Path(path).resolve().relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def make_media(run_dirs, out_dir: Path, title: str) -> Path:
+    """Write figures, videos, 3D pages, data and the overview page. Return the path of index.html."""
+    out_dir = Path(out_dir)
+    dirs = {name: out_dir / name for name in ("figures", "videos", "interactive", "data")}
+    for d in dirs.values():
+        d.mkdir(parents=True, exist_ok=True)
+    # One run per name (e.g. dcrlme_seed0), fixed order: ME, PGA-ME, DCRL-ME, then seed.
+    order = list(ALGO_LABELS)
+    run_dirs = sorted(
+        (Path(r) for r in run_dirs), key=lambda r: (order.index(_run_info(r)["algo"]), _run_info(r)["seed"])
+    )
+    runs = {r.name: r for r in run_dirs}
+
+    # Repertoire figures
+    plot_progress(runs, dirs["figures"] / "progression_qd")
+    for name, r in runs.items():
+        info = _run_info(r)
+        plot_repertoire(r, dirs["figures"] / f"repertoire_{name}", f"{ALGO_LABELS[info['algo']]} (seed {info['seed']})")
+
+    # Best gait over all runs: intact, then with leg 4 paralysed.
+    best_name, best_idx, best_fit = None, None, -np.inf
+    for name, r in runs.items():
+        fit = np.load(r / "repertoire.npz")["fitnesses"]
+        if np.nanmax(fit) > best_fit:
+            best_name, best_idx, best_fit = name, int(np.nanargmax(fit)), float(np.nanmax(fit))
+    best_run = _run_info(runs[best_name])
+    best_algo = best_run["algo"]
+    common = load_run_config(best_algo, best_run["profile"])["common"]
+    env = make_env(common)
+    net = make_policy_network(common, env.action_size)
+    params = load_policy_params(runs[best_name], best_idx, net, env.observation_size)
+    rollouts = {
+        "intact": {**rollout(env, net, params), "label": "Intact"},
+        "damaged": {**rollout(env, net, params, paralysed_leg="leg_4"), "label": "Patte 4 paralysée"},
+    }
+    plot_gait(rollouts, dirs["figures"] / "contacts_pieds")
+    plot_trajectories(rollouts, dirs["figures"] / "trajets_vus_de_dessus")
+
+    # Videos. dt = duration of a simulation step (0.05 s): videos play in real time.
+    dt = float(env.sys.config.dt)
+    labels = {k: f"{r['label']} : {r['distance']:.1f} m" for k, r in rollouts.items()}
+    paths = [r["path_xy"] for r in rollouts.values()]
+    hd_cam = _fixed_camera(paths, 640, 480)
+    hd = side_by_side([render_frames(env, r["qps"], 640, 480, labels[k], hd_cam) for k, r in rollouts.items()])
+    write_mp4(hd, dirs["videos"] / "intact_vs_patte4_camera_fixe.mp4", fps=1 / dt)
+    small_cam = _fixed_camera(paths, 360, 270)
+    small = side_by_side(
+        [render_frames(env, r["qps"], 360, 270, labels[k], small_cam, every=2) for k, r in rollouts.items()]
+    )
+    write_gif(small, dirs["videos"] / "intact_vs_patte4_camera_fixe.gif", 2 * dt)
+    for key, r in rollouts.items():
+        name = "intact" if key == "intact" else "patte4_paralysee"
+        write_mp4(
+            render_frames(env, r["qps"], 768, 576, labels[key]), dirs["videos"] / f"{name}_camera_suiveuse.mp4", 1 / dt
+        )
+
+    # Interactive 3D
+    for key, r in rollouts.items():
+        name = "intact" if key == "intact" else "patte4_paralysee"
+        write_interactive(
+            env,
+            r["qps"],
+            dirs["interactive"] / f"{name}.html",
+            title=f"Ant — {r['label'].lower()}",
+            caption=f"Meilleure démarche {ALGO_LABELS[best_algo]} · avance de {r['distance']:.1f} m "
+            f"en {len(r['qps']) * dt:.1f} s",
+        )
+
+    # Data and provenance
+    summary = {
+        "generated": datetime.datetime.now().isoformat(timespec="seconds"),
+        "code_commit": git_commit(),
+        "command": (
+            f"python -m qd_damage.viz --runs {' '.join(_rel(r) for r in runs.values())} "
+            f"--out {_rel(out_dir)} --title {json.dumps(title, ensure_ascii=False)}"
+        ),
+        "best_policy": {"algo": best_algo, "run": best_name, "cell_index": best_idx, "repertoire_fitness": best_fit},
+        "rollouts": {
+            k: {
+                "label": r["label"],
+                "distance_x_m": r["distance"],
+                "fitness": r["fitness"],
+                "duration_s": len(r["qps"]) * dt,
+                "paralysed_actions": list(LEG_ACTIONS["leg_4"]) if k == "damaged" else [],
+            }
+            for k, r in rollouts.items()
+        },
+        "runs": {},
+    }
+    for name, r in runs.items():
+        run_info = _run_info(r)
+        m = read_metrics(r)
+        summary["runs"][name] = {
+            "algo": run_info["algo"],
+            "run_dir": _rel(r),
+            "profile": run_info["profile"],
+            "seed": run_info["seed"],
+            "run_commit": run_info["git_commit"],
+            "total_evaluations": int(m["evaluations"][-1]),
+            "iterations": int(m["iteration"][-1]),
+            "coverage_pct": float(m["coverage"][-1]),
+            "max_fitness": float(m["max_fitness"][-1]),
+            "qd_score": float(m["qd_score"][-1]),
+            "time_min": run_info["total_time_s"] / 60,
+            "device": run_info["devices"][0],
+        }
+        shutil.copy(r / "metrics.csv", dirs["data"] / f"metrics_{name}.csv")
+        shutil.copy(r / "run.json", dirs["data"] / f"run_{name}.json")
+    (dirs["data"] / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False))
+    np.savez_compressed(
+        dirs["data"] / "rollouts.npz",
+        **{f"{k}_path_xy": r["path_xy"] for k, r in rollouts.items()},
+        **{f"{k}_contacts": r["contacts"] for k, r in rollouts.items()},
+    )
+
+    _write_index(out_dir, title, summary, runs)
+    _write_readme(out_dir, title, summary)
+    return out_dir / "index.html"
+
+
+def _status(run: dict, machine: str = "") -> str:
+    """One sentence saying whether the page shows demo runs or final runs."""
+    where = f" sur {machine}" if machine else ""
+    if run["profile"] is None:
+        return f"Runs complets{where} ({run['iterations']} itérations par run) : résultats finaux, avant blessure."
+    return (
+        f"Mini-entraînement{where} (profil « {run['profile']} », {run['iterations']} itérations) : "
+        "démo, pas des résultats finaux."
+    )
+
+
+def _write_index(out_dir: Path, title: str, summary: dict, runs: dict):
+    ro = summary["rollouts"]
+    best = summary["best_policy"]
+    first = next(iter(summary["runs"].values()))
+    on_cpu = "cpu" in first["device"].lower()
+    machine = "le CPU du Mac" if on_cpu else f"un GPU {first['device'].split('(')[-1].rstrip(')')} sur Kaggle"
+    dcrl_note = (
+        " En profil local, DCRL-ME entraîne son critique 10× moins que prévu, pour tenir sur CPU."
+        if first["profile"] == "local" and any(s.get("algo", a) == "dcrlme" for a, s in summary["runs"].items())
+        else ""
+    )
+    rows = "".join(
+        f"<tr><td>{ALGO_LABELS[s.get('algo', a)]} (seed {s['seed']})</td><td>{s['total_evaluations']:,}</td>"
+        f"<td>{s['coverage_pct']:.1f} %</td>"
+        f"<td>{s['max_fitness']:.0f}</td><td>{s['time_min']:.1f} min</td></tr>".replace(",", " ")
+        for a, s in summary["runs"].items()
+    )
+    repertoires = "".join(
+        f'<div class="card"><img src="figures/repertoire_{a}.png" alt="Répertoire {a}"></div>' for a in runs
+    )
+    (out_dir / "index.html").write_text(
+        render(
+            "repertoires_index.html",
+            title=html_lib.escape(title),
+            status=_status(first, machine),
+            best_algo=ALGO_LABELS[best["algo"]],
+            best_fitness=f"{best['repertoire_fitness']:.0f}",
+            duration=f"{ro['intact']['duration_s']:.1f}",
+            d_intact=f"{ro['intact']['distance_x_m']:.1f}",
+            d_damaged=f"{ro['damaged']['distance_x_m']:.1f}",
+            rows=rows,
+            dcrl_note=dcrl_note,
+            repertoires=repertoires,
+            generated=summary["generated"],
+            code=summary["code_commit"],
+        )
+    )
+
+
 def _write_readme(out_dir: Path, title: str, summary: dict):
     def listing(sub):
         return "\n".join(f"- `{sub}/{p.name}`" for p in sorted((out_dir / sub).iterdir()))
