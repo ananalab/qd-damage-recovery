@@ -91,7 +91,11 @@ Two findings that changed the analysis:
   repetition in number of trials.
 - On the demo DCRL-ME repertoire with leg 4 paralysed, ITE barely helps (3.5 m against 3.8 m).
 
+## Continuous ITE
+
 A critical review of the first version listed several weaknesses; each one was addressed as follows.
 
 ## Open points
 
+- The QDax example notebook: make the demo more telling (stronger damage or longer repertoire) before any PR.
+- Descriptors closer to what a damage changes; a pre-trained critic for TD3 fine-tuning.

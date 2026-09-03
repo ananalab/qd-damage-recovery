@@ -188,6 +188,94 @@ def gap_intact_cost(oracle: pd.DataFrame, f0: float, scale: float):
 # --------------------------------------------------------------------------- descriptor ablation
 
 
+def _parse_calibration(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    text = path.read_text()
+    best = re.search(r"^\s*([-\d.]+) \|\s*([\d.]+) \|\s*([\d.]+) \|\s*([\d.]+)", text, re.M)
+    indep = re.search(r"independent cells \(no correlation\): ([-\d.]+)", text)
+    pairs = re.search(r"^(\d+) \(repertoire, damage\) pairs", text, re.M)
+    if not (best and indep and pairs):
+        return None
+    ll, ls, sv, nv = map(float, best.groups())
+    return {
+        "ll": ll,
+        "lengthscale": ls,
+        "signal": sv,
+        "noise": nv,
+        "ll_indep": float(indep.group(1)),
+        "pairs": int(pairs.group(1)),
+    }
+
+
+def descriptor_ablation(trials: pd.DataFrame, f0: float, scale: float, tex_dir: Path | None):
+    m, tables = {}, {}
+    cal = {d: _parse_calibration(RES / f"calibration_{d}.txt") for d in ("feet_contact", "joint_usage")}
+    if all(cal.values()):
+        rows = []
+        for d, c in cal.items():
+            gain = (c["ll"] - c["ll_indep"]) / c["pairs"]
+            rows.append(
+                {
+                    "Descriptor": {"feet_contact": "feet contact (4D)", "joint_usage": "joint usage (8D)"}[d],
+                    "Length-scale": c["lengthscale"],
+                    "Signal var.": c["signal"],
+                    "Noise var.": c["noise"],
+                    "Gain per pair": gain,
+                }
+            )
+            tag = "Feet" if d == "feet_contact" else "Joint"
+            m[f"Calib{tag}Gain"] = f"{gain:.1f}"
+            m[f"Calib{tag}Noise"] = f"{c['noise']:.3f}"
+            m[f"Calib{tag}Signal"] = f"{c['signal']:.3f}"
+            m[f"Calib{tag}Lengthscale"] = f"{c['lengthscale']:.1f}"
+        tables["calibration"] = pd.DataFrame(rows)
+        if tex_dir:
+            tex_table(
+                tables["calibration"].set_index("Descriptor"),
+                tex_dir / "table_calibration.tex",
+                ["{:.1f}", "{:.3f}", "{:.3f}", "{:.1f}"],
+                "Descriptor",
+            )
+    joint = _read_runs("adaptation_joint", "trials.csv", sorted(trials.run.unique()))
+    if joint is None:
+        return tables, m
+    joint = joint.assign(perf_abs=(joint.recommended_true - f0) / scale, method="ite_joint")
+    # The joint-usage runs were made on CPU: compare them with ITE and top-k re-run on the same machine when
+    # available (results/adaptation_cpu), since episode noise differs between CPU and GPU.
+    control = _read_runs("adaptation_cpu", "trials.csv", sorted(trials.run.unique()))
+    reference = trials if control is None else control.assign(perf_abs=(control.recommended_true - f0) / scale)
+    m["JointControlCPU"] = "yes" if control is not None else "no"
+    both = pd.concat([reference[reference.method.isin(["ite", "top_k"])], joint])
+    rows = []
+    for t in (3, 5, 10):
+        u = both[both.trial == t].groupby([*UNIT, "method"]).perf_abs.mean().unstack()
+        for a in ALGOS + ["all"]:
+            ua = u if a == "all" else u.xs(a, level="algo", drop_level=False)
+            dj = ua.ite_joint - ua.ite
+            dk = ua.ite_joint - ua.top_k
+            tag = "" if a == "all" else TAG[a]
+            m[f"JointVsFeet{WORD[t]}{tag}"] = _signed(dj.mean())
+            m[f"PJointVsFeet{WORD[t]}{tag}"] = fmt_p(wilcoxon(dj).pvalue if (dj != 0).any() else 1.0)
+            m[f"JointVsTopK{WORD[t]}{tag}"] = _signed(dk.mean())
+            m[f"PJointVsTopK{WORD[t]}{tag}"] = fmt_p(wilcoxon(dk).pvalue if (dk != 0).any() else 1.0)
+            if a != "all":
+                rows.append(
+                    {
+                        "algo": a,
+                        "trial": t,
+                        "cell": f"${dj.mean():+.2f}$ ($p{fmt_p(wilcoxon(dj).pvalue if (dj != 0).any() else 1.0)}$)",
+                    }
+                )
+    tables["joint_vs_feet"] = pd.DataFrame(rows)
+    if tex_dir:
+        t = tables["joint_vs_feet"].pivot(index="algo", columns="trial", values="cell").reindex(ALGOS)
+        t.index = [ALGO_LABELS[a] for a in t.index]
+        t.columns = [f"{c} trials" for c in t.columns]
+        tex_table(t, tex_dir / "table_joint_vs_feet.tex", "{}", "Repertoire")
+    return tables, m
+
+
 def run_checks(oracle, adapt, trials, rl, f0: float, scale: float, tex_dir: Path | None):
     tables, macros = {}, {}
     for t, m in (
