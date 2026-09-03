@@ -86,3 +86,45 @@ def evaluate_all(evaluate, params, scale, key, n_episodes: int):
     return np.stack(fits, axis=1), np.mean(descs, axis=0)
 
 
+def write_summary(out_dir: Path, run: dict):
+    """summary.csv, one row per damage, computed from oracle.npz (can be rerun without simulating).
+
+    Resilience = (damaged oracle - F0) / (intact oracle - F0), F0 = return of a standing robot: the share of
+    the progress (beyond standing still) that the repertoire can still offer.
+    The best intact cell is chosen on the re-evaluated intact fitness, as in qd_damage.adaptation: the fitness
+    stored in the repertoire comes from one lucky episode and over-estimates the elites.
+    """
+    data = np.load(Path(out_dir) / "oracle.npz")
+    names = list(data["scenarios"])
+    episode_length = load_run_config(run["algo"], run["profile"])["common"]["env"]["episode_length"]
+    f0, _ = performance_reference(episode_length)
+    mean_fit = np.nanmean(data["fitness"], axis=2)  # (scenarios, cells)
+    rep_fit = data["repertoire_fitness"]
+    intact = mean_fit[names.index("intact")]
+    best_intact_cell = int(np.nanargmax(intact))
+    oracle_intact = float(intact[best_intact_cell])
+    rows = []
+    for i, name in enumerate(names):
+        best_cell = int(np.nanargmax(mean_fit[i]))
+        rows.append(
+            {
+                "run": Path(out_dir).name,
+                "algo": run["algo"],
+                "seed": run["seed"],
+                "scenario": name,
+                "oracle_cell": best_cell,
+                "oracle_fitness": float(mean_fit[i, best_cell]),
+                "best_intact_cell": best_intact_cell,
+                "best_intact_fitness_damaged": float(mean_fit[i, best_intact_cell]),
+                "resilience": (float(mean_fit[i, best_cell]) - f0) / (oracle_intact - f0),
+                "best_intact_retained": (float(mean_fit[i, best_intact_cell]) - f0) / (oracle_intact - f0),
+                "n_policies": int(np.isfinite(rep_fit).sum()),
+                "n_episodes": int(data["fitness"].shape[2]),
+            }
+        )
+    with open(Path(out_dir) / "summary.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+

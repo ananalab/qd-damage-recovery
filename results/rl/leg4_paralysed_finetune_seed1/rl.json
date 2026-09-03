@@ -1,0 +1,43 @@
+{
+  "scenario": "leg4_paralysed",
+  "variant": "finetune",
+  "seed": 1,
+  "repertoire": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/dcrlme_seed1",
+  "config": {
+    "td3": {
+      "batch_size": 256,
+      "policy_delay": 2,
+      "soft_tau_update": 0.005,
+      "expl_noise": 0.1,
+      "critic_hidden_layer_size": [
+        256,
+        256
+      ],
+      "critic_learning_rate": 0.0003,
+      "policy_learning_rate": 0.0003,
+      "discount": 0.99,
+      "noise_clip": 0.5,
+      "policy_noise": 0.2,
+      "reward_scaling": 1.0
+    },
+    "n_envs": 16,
+    "updates_per_step": 16,
+    "buffer_size": 1000000,
+    "max_episodes": 2000,
+    "eval_episodes": 8,
+    "variants": {
+      "scratch": "RL de z\u00e9ro sur le robot bless\u00e9",
+      "finetune": "RL depuis la meilleure politique intacte du r\u00e9pertoire (critique neuf)"
+    },
+    "init_from_algo": "dcrlme",
+    "seeds": [
+      0,
+      1
+    ]
+  },
+  "code_commit": "1d0bc8f",
+  "devices": [
+    "cuda:0 (Tesla T4)"
+  ],
+  "time_s": 713.1294255256653
+}

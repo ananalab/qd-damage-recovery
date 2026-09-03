@@ -69,3 +69,8 @@ def test_baselines_interface():
     assert sorted(run_random(3, lambda i: 0.0, 3, np.random.default_rng(0)).cells) == [0, 1, 2]
 
 
+@pytest.mark.parametrize("f", [0.0, 810.0, 1500.0])
+def test_normalizer_roundtrip(f):
+    n = Normalizer(f0=1058.7, scale=300.0)
+    assert n.inverse(n(f)) == pytest.approx(f)
+    assert n(1358.7) == pytest.approx(1.0)

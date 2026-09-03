@@ -72,6 +72,9 @@ Leg mapping, checked in three ways:
    expected leg (actions 2k, 2k+1 drive leg k+1). Absolute foot displacement did not work: the whole body moves.
 3. Video: `media/checks/leg_mapping/`.
 
+So leg 1 = actions (0, 1) front left, 2 = (2, 3) hind left, 3 = (4, 5) hind right, 4 = (6, 7) front right, and
+the descriptor lists the feet in the same order.
+
 Two findings that changed the analysis:
 1. The zero of performance. A standing robot scores 1058.7 (64 episodes), not 810: Brax adds +1 per step for
    survival on top of the 3.24 offset. All percentages use F0 = 4.2348 x episode length. With the wrong zero,
@@ -81,6 +84,8 @@ Two findings that changed the analysis:
    standing robot; the correlation between stored and re-evaluated fitness is 0.88. The ITE prior, the
    best-intact baseline and the best intact cell of the oracle summary therefore use the fitness re-evaluated by
    the oracle (legitimate: offline, before the damage).
+
+## RL re-training
 
 - `qd_damage.viz`: repertoire figures, videos and offline 3D pages. The Brax v0.1.0 viewer and three.js r135 are
   bundled in `src/qd_damage/assets/` (Apache 2.0 / MIT licences included) and inlined in each page. Headless
