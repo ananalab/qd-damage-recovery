@@ -88,3 +88,15 @@ the cost of the diversity that adaptation needs. Moreover, adaptation has mostly
 \emph{oracle} that tries every skill on the damaged robot \citep{chalumeau2023neuroevolution}, which says nothing
 about the number of trials a real robot would need.
 
+\paragraph{Summary of results} (i) At equal budget, \DCRL{} covers the most cells (\CovDCRL\%) and \PGA{} finds the
+fastest gaits (best fitness \MaxFitPGA). The \emph{relative} resilience to damage does not differ significantly between
+algorithms, but the best gait left after damage is much better in repertoires built with RL. (ii) ITE stops after a
+median of \ITETrials{} trials and recovers \ITEPctIntact\% of the intact progress, against \BestIntactPct\% for the
+best intact gait; however, a model-free strategy that tries gaits in decreasing order of intact performance (top-$k$)
+does almost as well: ITE is slightly ahead after three trials, mostly on \DCRL{} repertoires, and no longer after
+five; a better descriptor or a reality gap do not change this. (iii) RL re-training needs hundreds of episodes on the
+damaged robot, and fine-tuning the intact policy only works once its critic is warmed up or pre-trained; a
+damage-robust TD3 policy, trained in simulation, matches ITE without any trial on damages it was trained for.
+(iv) Searching the continuous descriptor space with the \DCRL{}
+conditioned actor, instead of the repertoire cells, is clearly worse.
+

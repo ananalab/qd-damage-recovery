@@ -24,6 +24,11 @@ Patte 4 paralysée (actions $paralysed à 0) : $d_damaged m.
 ### figures/
 $figures
 
+### videos/
+$videos
+
 ### interactive/
 $interactive
 
+### data/
+$data

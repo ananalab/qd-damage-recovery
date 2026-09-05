@@ -156,6 +156,16 @@ def make_evaluator(e):
 
 eval_intact, eval_damaged = make_evaluator(env), make_evaluator(damaged_env)
 
+best_intact = int(np.argmax(prior))
+print("best intact gait: %.1f intact, %.1f once damaged; best damaged gait in the repertoire: %.1f"
+      % (prior[best_intact], oracle[best_intact], oracle.max()))
+""",
+    ),
+    (
+        "markdown",
+        """
+## 3. Intelligent Trial & Error (M-BOA)
+
 Performances are normalised so that 0 ≈ a standing robot and 1 ≈ a good gait (≈ 15 m in 12.5 s); the GP
 models the residual between observed and prior performance.
 """,
@@ -197,6 +207,37 @@ def trial_fn(i):
     key, k = jax.random.split(key)
     one = jax.tree.map(lambda x: x[i:i + 1], params)
     return float(normalise(eval_damaged(one, k)[0]))    # ONE episode on the damaged robot
+
+tested, observed = ite(descriptors, normalise(prior), trial_fn)
+best = tested[int(np.argmax(observed))]
+print(f"ITE stopped after {len(tested)} trials")
+print("recommended gait: %.2f   best intact gait once damaged: %.2f   oracle (tries everything): %.2f"
+      % (normalise(oracle[best]), normalise(oracle[best_intact]), normalise(oracle.max())))
+""",
+    ),
+    (
+        "code",
+        """
+fig, ax = plt.subplots(figsize=(6, 3.5))
+ax.plot(range(1, len(observed) + 1), observed, "o-", label="observed (one episode)")
+ax.plot(range(1, len(observed) + 1), np.maximum.accumulate(observed), "k--", label="best so far")
+ax.axhline(normalise(oracle[best_intact]), color="tab:red", ls=":", label="best intact gait, damaged")
+ax.axhline(normalise(oracle.max()), color="tab:green", ls=":", label="oracle")
+ax.set_xlabel("trial on the damaged robot"); ax.set_ylabel("normalised performance"); ax.legend(fontsize=8)
+plt.show()
+""",
+    ),
+    (
+        "markdown",
+        """
+### Going further
+- Compare with repertoires built by PGA-ME or DCRL-ME (see the corresponding QDax notebooks).
+- Fit the GP hyper-parameters by marginal likelihood on held-out repertoires rather than using fixed values.
+- Reference: A. Cully, J. Clune, D. Tarapore, J.-B. Mouret, *Robots that can adapt like animals*, Nature 521, 2015.
+""",
+    ),
+]
+
 
 def build(path: Path):
     cells = []
