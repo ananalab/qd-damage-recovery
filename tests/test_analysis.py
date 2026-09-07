@@ -34,3 +34,14 @@ def _trials(diff_dcrl: float) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def test_ite_vs_topk_pairs_units_not_repetitions():
+    res = ite_vs_topk(_trials(0.2), at=(5,)).set_index("algo")
+    assert res.loc["dcrlme", "n"] == 12  # 12 units, not 60 rows
+    assert res.loc["dcrlme", "ite_better"] == 12 and res.loc["dcrlme", "p"] < 0.01
+    assert res.loc["me", "p"] > 0.05
+
+
+def test_mann_whitney_on_units():
+    df = _trials(0.2)
+    table = mann_whitney_table(units(df[df.method == "ite"], "perf_abs"))
+    assert set(table.n_a) == {12}
