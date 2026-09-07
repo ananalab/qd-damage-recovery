@@ -100,3 +100,11 @@ damage-robust TD3 policy, trained in simulation, matches ITE without any trial o
 (iv) Searching the continuous descriptor space with the \DCRL{}
 conditioned actor, instead of the repertoire cells, is clearly worse.
 
+\paragraph{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.2em]
+  \item At equal budget, are repertoires built with RL (\PGA, \DCRL) more or less \emph{resilient} to damage than
+        those of \ME?
+  \item How many \emph{trials} does ITE need on each kind of repertoire, compared with simpler strategies?
+  \item How does this compare with re-training a policy by RL on the damaged robot, counted in episodes?
+\end{enumerate}
+
