@@ -87,6 +87,8 @@ Two findings that changed the analysis:
 
 ## RL re-training
 
+## Visuals
+
 - `qd_damage.viz`: repertoire figures, videos and offline 3D pages. The Brax v0.1.0 viewer and three.js r135 are
   bundled in `src/qd_damage/assets/` (Apache 2.0 / MIT licences included) and inlined in each page. Headless
   Firefox does not render WebGL, so the 3D pages were checked by hand in a browser.

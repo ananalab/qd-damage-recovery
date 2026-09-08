@@ -108,3 +108,25 @@ conditioned actor, instead of the repertoire cells, is clearly worse.
   \item How does this compare with re-training a policy by RL on the damaged robot, counted in episodes?
 \end{enumerate}
 
+% ================================================================ 2
+\section{Background and related work}
+\subsection{Quality-Diversity and MAP-Elites}
+A QD algorithm searches for a \emph{collection} of solutions that are both diverse and high-performing.
+MAP-Elites \citep{mouret2015illuminating} discretises a user-defined \emph{behaviour descriptor} space into cells
+and keeps, in each cell, the best solution found (its \emph{elite}). At each iteration, elites are selected at
+random, mutated, evaluated, and inserted in their cell if they beat its current occupant.
+
+\subsection{Damage scenarios}
+A damage multiplies the actions of some joints by a factor $\lambda$ ($\lambda=0$: paralysed, $\lambda=0.5$:
+weakened). Since the torque of an Ant actuator is proportional to its action, this is equivalent to scaling its
+strength, as in \citet{chalumeau2023neuroevolution}. We use \NScenarios{} scenarios: each leg paralysed, each leg
+weakened, two legs paralysed (FL+HL, same side; FL+FR, both front legs), and one ankle paralysed (FL, HR).
+
+\DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
+profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
+\DCRL{} runs where the actor was saved. The answer is clearly negative (\cref{fig:bonus}): the gaits produced by the actor
+are much weaker than the elites (best available gait after damage $v=\BonusOracleCont$ against $v=\BonusOracleGrid$, and
+never better in any of the (run, damage) pairs), and ITE on the actor finds $v=\BonusContAbs$ against $v=\BonusGridAbs$
+on the grid (better in only \BonusContWins{} of the \BonusN{} (run, damage) pairs; Wilcoxon $p\BonusP$). The actor is a
+useful source of offspring during training, but it does not replace the elites that were selected and refined.
+

@@ -276,6 +276,60 @@ def descriptor_ablation(trials: pd.DataFrame, f0: float, scale: float, tex_dir: 
     return tables, m
 
 
+# --------------------------------------------------------------------------- RL baselines
+
+
+def robust_policy(adapt: pd.DataFrame, f0: float, scale: float, tex_dir: Path | None):
+    """Damage-robust TD3 policy (zero trials) against ITE, on the nominal robot and with the reality gap."""
+
+    def zero_shot(name):
+        files = sorted(glob.glob(str(RES / "rl_robust" / "seed[0-9]" / name)))
+        if not files:
+            return None
+        z = pd.concat(map(pd.read_csv, files)).assign(v=lambda d: (d.fitness - f0) / scale)
+        return z.groupby("scenario").v.mean()
+
+    nominal, gap = zero_shot("zero_shot.csv"), zero_shot("zero_shot_gap.csv")
+    if nominal is None:
+        return {}, {}
+
+    def ite_by_scenario(df, algo):
+        d = df[(df.method == "ite") & (df.algo == algo)]
+        return ((d.groupby("scenario").recommended_true.mean() - f0) / scale).reindex(damaged)
+
+    damaged = nominal.drop("intact").index
+    gap_adapt = _read_runs("adaptation_gap", "summary.csv", sorted(adapt.run.unique()))
+    table = pd.DataFrame(
+        {
+            "Robust TD3": nominal.reindex(damaged),
+            "ITE, DCRL-ME": ite_by_scenario(adapt, "dcrlme"),
+            "ITE, PGA-ME": ite_by_scenario(adapt, "pgame"),
+        }
+    )
+    if gap is not None and gap_adapt is not None:
+        table["Robust TD3 (gap)"] = gap.reindex(damaged)
+        table["ITE, PGA-ME (gap)"] = ite_by_scenario(gap_adapt, "pgame")
+    m = {
+        "RobustIntact": f"{nominal['intact']:.2f}",
+        "RobustDamaged": f"{table['Robust TD3'].median():.2f}",
+        "RobustBeatsITEDCRL": f"{int((table['Robust TD3'] > table['ITE, DCRL-ME']).sum())}",
+        "RobustBeatsITEPGA": f"{int((table['Robust TD3'] > table['ITE, PGA-ME']).sum())}",
+        "RobustNScenarios": f"{len(table)}",
+        "RobustNSeeds": f"{len(glob.glob(str(RES / 'rl_robust' / 'seed[0-9]' / 'zero_shot.csv')))}",
+        "ITEPGAMedianByDamage": f"{table['ITE, PGA-ME'].median():.2f}",
+    }
+    if "Robust TD3 (gap)" in table:
+        m["RobustGapDamaged"] = f"{table['Robust TD3 (gap)'].median():.2f}"
+        m["RobustGapIntact"] = f"{gap['intact']:.2f}"
+        m["ITEPGAGapMedianByDamage"] = f"{table['ITE, PGA-ME (gap)'].median():.2f}"
+        m["RobustGapBeatsITEPGA"] = f"{int((table['Robust TD3 (gap)'] > table['ITE, PGA-ME (gap)']).sum())}"
+    if tex_dir:
+        t = table.copy()
+        t.index = [SCENARIO_EN.get(i, i) for i in t.index]
+        tex_table(t, tex_dir / "table_robust.tex", "{:.2f}", "Damage")
+    return {"robust_zero_shot": table}, m
+
+
 def run_checks(oracle, adapt, trials, rl, f0: float, scale: float, tex_dir: Path | None):
     tables, macros = {}, {}
     for t, m in (

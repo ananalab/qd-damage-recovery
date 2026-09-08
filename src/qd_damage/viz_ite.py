@@ -203,6 +203,50 @@ def plot_strip(env, clips: dict, stem: Path, lang: str, stop: int, times=(0.0, 4
     _save(fig, stem)
 
 
+def load_episode(run_dir: Path, scenario_name: str, rep: int):
+    """Everything needed to show one ITE run: the trials, where ITE stopped, and the three median clips
+    (best intact gait intact, same gait damaged, gait recommended by ITE damaged). Seeds are fixed, so the
+    clips are the same at every call."""
+    run = json.loads((run_dir / "run.json").read_text())
+    common = load_run_config(run["algo"], run["profile"])["common"]
+    damages = load_damages()
+    scenario = get_scenario(scenario_name, damages)
+    dmg_scale = damage_scale(scenario, damages)
+
+    oracle = np.load(RES / "oracle" / run_dir.name / "oracle.npz")
+    names = list(oracle["scenarios"])
+    best_intact_cell = int(np.nanargmax(oracle["fitness"][names.index("intact")].mean(-1)))
+    trials = pd.read_csv(RES / "adaptation" / run_dir.name / "trials.csv")
+    trials = trials[(trials.scenario == scenario_name) & (trials.method == "ite") & (trials.rep == rep)]
+    stop = int(trials.stop_trial.dropna().iloc[0]) if trials.stop_trial.notna().any() else int(trials.trial.max())
+    ite_cell = int(trials[trials.trial == stop].recommended_cell.iloc[0])
+
+    env = make_env(common)
+    net = make_policy_network(common, env.action_size)
+    p_intact = load_policy_params(run_dir, best_intact_cell, net, env.observation_size)
+    p_ite = load_policy_params(run_dir, ite_cell, net, env.observation_size)
+    clips = {
+        "intact": {**representative_rollout(env, net, p_intact), "label": "1. Intact"},
+        "blesse": {**representative_rollout(env, net, p_intact, dmg_scale), "label": "2. Blessé, même démarche"},
+        "apres_ite": {
+            **representative_rollout(env, net, p_ite, dmg_scale),
+            "label": f"3. Blessé, après ITE ({stop} essais)",
+        },
+    }
+    return dict(
+        run=run,
+        common=common,
+        scenario=scenario,
+        oracle=oracle,
+        trials=trials,
+        stop=stop,
+        ite_cell=ite_cell,
+        best_intact_cell=best_intact_cell,
+        env=env,
+        clips=clips,
+    )
+
+
 def write_follow_gifs(env, clips: dict, stop: int, out_dir: Path):
     """Three-phase GIF with following cameras (the robot stays large), in French and English."""
     dt = float(env.sys.config.dt)
@@ -218,5 +262,96 @@ def write_follow_gifs(env, clips: dict, stop: int, out_dir: Path):
             ]
         )
         write_gif(frames, out_dir / "videos" / name, 2 * dt)
+
+
+def make_ite_media(run_dir: Path, scenario_name: str, out_dir: Path, rep: int = 0):
+    run_dir, out_dir = Path(run_dir), Path(out_dir)
+    for sub in ("figures", "figures_en", "videos", "interactive", "data"):
+        (out_dir / sub).mkdir(parents=True, exist_ok=True)
+    e = load_episode(run_dir, scenario_name, rep)
+    run, env, clips, trials, stop, oracle = e["run"], e["env"], e["clips"], e["trials"], e["stop"], e["oracle"]
+    f0, scale = performance_reference(e["common"]["env"]["episode_length"])
+    dt = float(env.sys.config.dt)
+    labels = {k: f"{c['label']} : {c['distance']:.1f} m" for k, c in clips.items()}
+
+    # Videos
+    paths = [c["path_xy"] for c in clips.values()]
+    cam = _fixed_camera(paths, 480, 360)
+    hd = side_by_side([render_frames(env, c["qps"], 480, 360, labels[k], cam) for k, c in clips.items()])
+    write_mp4(hd, out_dir / "videos" / "trois_temps_camera_fixe.mp4", fps=1 / dt)
+    cam_s = _fixed_camera(paths, 320, 240)
+    small = side_by_side([render_frames(env, c["qps"], 320, 240, labels[k], cam_s, every=2) for k, c in clips.items()])
+    write_gif(small, out_dir / "videos" / "trois_temps_camera_fixe.gif", 2 * dt)
+    for k, c in clips.items():
+        write_mp4(
+            render_frames(env, c["qps"], 768, 576, labels[k]), out_dir / "videos" / f"{k}_camera_suiveuse.mp4", 1 / dt
+        )
+        write_interactive(
+            env,
+            c["qps"],
+            out_dir / "interactive" / f"{k}.html",
+            title=f"Ant — {c['label']}",
+            caption=f"Blessure {scenario_name} · avance de {c['distance']:.1f} m en {len(c['qps']) * dt:.1f} s",
+        )
+
+    write_follow_gifs(env, clips, stop, out_dir)
+
+    # Figures (French for the portfolio, English for the report)
+    all_desc = oracle["repertoire_descriptors"]
+    hurt = damaged_legs(e["scenario"])
+    for lang, sub in (("fr", "figures"), ("en", "figures_en")):
+        plot_ite_trials(
+            trials, all_desc, hurt, out_dir / sub / ("essais_ite" if lang == "fr" else "ite_trials"), f0, scale, lang
+        )
+        plot_map_before_after(
+            oracle,
+            scenario_name,
+            out_dir / sub / ("carte_avant_apres" if lang == "fr" else "map_before_after"),
+            f0,
+            scale,
+            tested=trials.cell.to_numpy()[:stop],
+            lang=lang,
+        )
+        plot_strip(
+            env, clips, out_dir / sub / ("planche_trois_temps" if lang == "fr" else "three_phase_strip"), lang, stop
+        )
+    plot_gait(clips, out_dir / "figures" / "contacts_pieds")
+    plot_trajectories(
+        {"intact": clips["intact"], "damaged": clips["blesse"]}, out_dir / "figures" / "trajets_intact_blesse"
+    )
+    plot_trajectories(clips, out_dir / "figures" / "trajets_trois_temps", colors=["#2a78d6", "#c8413b", "#3a9d5d"])
+
+    summary = {
+        "run": run_dir.name,
+        "algo": run["algo"],
+        "seed": run["seed"],
+        "scenario": scenario_name,
+        "rep": rep,
+        "code_commit": git_commit(),
+        "ite_trials_to_stop": stop,
+        "ite_cell": e["ite_cell"],
+        "best_intact_cell": e["best_intact_cell"],
+        "clips": {
+            k: {
+                "label": c["label"],
+                "shown_episode": "médian sur 8",
+                "distance_x_m": c["distance"],
+                "fitness": c["fitness"],
+                "distance_mean_m": c["distance_mean"],
+                "distance_std_m": c["distance_std"],
+                "fitness_mean": c["fitness_mean"],
+                "fitness_std": c["fitness_std"],
+                "perf_norm_mean": (c["fitness_mean"] - f0) / scale,
+            }
+            for k, c in clips.items()
+        },
+        "command": (
+            f"python -m qd_damage.viz_ite --run {run_dir} --scenario {scenario_name} --out {out_dir} --rep {rep}"
+        ),
+    }
+    (out_dir / "data" / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False))
+    trials.to_csv(out_dir / "data" / "essais_ite.csv", index=False)
+    _write_index(out_dir, summary)
+    return out_dir
 
 
