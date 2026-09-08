@@ -87,6 +87,17 @@ Two findings that changed the analysis:
 
 ## RL re-training
 
+- Every number of the reports is a LaTeX macro written by `qd_damage.analysis.report`; tables are generated too.
+- The absolute performance p was added because percentages "of the intact gait" hide that the best intact
+  MAP-Elites gait barely moves.
+- The five repetitions of an adaptation only differ by episode noise. They are averaged before any test, so the
+  unit is a (repertoire, damage) pair (36 per algorithm). A first version tested the 180 repetitions as if they
+  were independent, which inflated significance. Units from the same seed share a repertoire, so p-values remain
+  indicative.
+- ITE against top-k is tested with paired Wilcoxon tests on these units. A first reading of pooled medians
+  suggested that ITE clearly helps on DCRL-ME repertoires; the paired test only supports a small advantage after
+  3 trials (DCRL-ME p = 0.02; all repertoires p = 0.009), which is gone after 5 and 10 trials.
+
 ## Visuals
 
 - `qd_damage.viz`: repertoire figures, videos and offline 3D pages. The Brax v0.1.0 viewer and three.js r135 are
@@ -99,6 +110,8 @@ Two findings that changed the analysis:
 - On the demo DCRL-ME repertoire with leg 4 paralysed, ITE barely helps (3.5 m against 3.8 m).
 
 ## Continuous ITE
+
+## Review and robustness checks
 
 A critical review of the first version listed several weaknesses; each one was addressed as follows.
 

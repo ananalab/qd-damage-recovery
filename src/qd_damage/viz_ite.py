@@ -355,3 +355,34 @@ def make_ite_media(run_dir: Path, scenario_name: str, out_dir: Path, rep: int = 
     return out_dir
 
 
+def _write_index(out_dir: Path, s: dict):
+    c = s["clips"]
+    title = f"Adaptation à la blessure « {s['scenario']} » avec ITE"
+    (out_dir / "index.html").write_text(
+        render(
+            "ite_index.html",
+            title=html_lib.escape(title),
+            algo=s["algo"],
+            seed=s["seed"],
+            trials=s["ite_trials_to_stop"],
+            code=s["code_commit"],
+            command=html_lib.escape(s["command"]),
+            **{
+                f"{name}_{stat}": f"{c[key][f'distance_{stat}_m']:.1f}"
+                for name, key in (("intact", "intact"), ("damaged", "blesse"), ("ite", "apres_ite"))
+                for stat in ("mean", "std")
+            },
+        )
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--run", type=Path, required=True)
+    parser.add_argument("--scenario", required=True)
+    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--rep", type=int, default=0)
+    args = parser.parse_args()
+    print(make_ite_media(args.run, args.scenario, args.out, args.rep))
+
+

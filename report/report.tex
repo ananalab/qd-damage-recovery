@@ -116,6 +116,45 @@ MAP-Elites \citep{mouret2015illuminating} discretises a user-defined \emph{behav
 and keeps, in each cell, the best solution found (its \emph{elite}). At each iteration, elites are selected at
 random, mutated, evaluated, and inserted in their cell if they beat its current occupant.
 
+\subsection{QD with reinforcement learning}
+Mutations are blind. PGA-ME \citep{nilsson2021policy} trains a TD3 critic on all transitions collected by the
+population and uses its gradient to improve half of the offspring. DCG-ME and DCRL-ME \citep{faldor2024synergizing}
+condition the critic on a target descriptor, so that the gradient improves a policy while keeping its behaviour,
+and also train a descriptor-conditioned actor whose outputs are added to the repertoire.
+\citet{chalumeau2023neuroevolution} compared QD methods with skill-discovery RL (DIAYN, DADS, SMERL) on few-shot
+adaptation tasks, including a leg dysfunction on Ant: after perturbation, every skill is evaluated and the best
+one is kept. QD methods were more robust to large perturbations, and PGA-ME adapted better than MAP-Elites.
+
+\subsection{Damage recovery with repertoires}
+ITE \citep{cully2015robots} uses the M-BOA algorithm described in \cref{sec:ite}. Follow-ups removed the need for
+resets \citep{chatzilygeroudis2018reset}, selected among several priors \citep{kaushik2020adaptive}, or used
+hierarchical repertoires \citep{allard2022online}. We keep the original algorithm and study the effect of
+\emph{how the repertoire was built}. Noisy evaluations, which make elites look better than they are, are the topic of
+uncertain QD \citep{flageat2023uncertain}.
+
+\subsection{Adaptation without a repertoire}
+Other approaches prepare a single policy for a family of conditions. Domain randomisation trains it on randomised
+dynamics so that it works zero-shot \citep{tobin2017domain,peng2018sim}; strategy optimisation searches a small
+latent space of a conditioned policy on the new robot \citep{yu2019policy}; meta-learning trains a policy, or a model,
+to adapt from a few gradient steps or a few seconds of data \citep{finn2017model,nagabandi2019learning}; RMA infers the
+current dynamics online from the recent history \citep{kumar2021rma}. We compare ITE with the simplest member of this
+family, a TD3 policy trained on random damages (\cref{sec:rlbaselines}), and leave meta-learned baselines for future
+work.
+
+% ================================================================ 3
+\section{Experimental setup}
+\subsection{Robot, task and behaviour descriptor}
+We use the Brax Ant (\texttt{ant\_uni} in QDax \citep{chalumeau2023qdax}): a torso and four legs, each with a hip
+and an ankle actuator (8 actions). The reward is the forward velocity plus a survival bonus, minus control and
+contact costs, over episodes of 250 steps (12.5\,s). As in the DCRL-ME notebook, rewards are shifted by a constant
+and clipped at zero for all algorithms. The descriptor is the fraction of time each foot touches the ground,
+$\mathbf{d}\in[0,1]^4$; the repertoire is a centroidal Voronoi tessellation of 1024 cells.
+
+\paragraph{Leg mapping} The mapping from actions to legs was checked in three independent ways (geometry of the
+bodies at reset, relative motion of each foot when a single action is applied, and video): actions $(0,1)$,
+$(2,3)$, $(4,5)$, $(6,7)$ drive the hip and ankle of the front-left (FL), hind-left (HL), hind-right (HR) and
+front-right (FR) legs.
+
 \subsection{Damage scenarios}
 A damage multiplies the actions of some joints by a factor $\lambda$ ($\lambda=0$: paralysed, $\lambda=0.5$:
 weakened). Since the torque of an Ant actuator is proportional to its action, this is equivalent to scaling its
@@ -129,4 +168,26 @@ are much weaker than the elites (best available gait after damage $v=\BonusOracl
 never better in any of the (run, damage) pairs), and ITE on the actor finds $v=\BonusContAbs$ against $v=\BonusGridAbs$
 on the grid (better in only \BonusContWins{} of the \BonusN{} (run, damage) pairs; Wilcoxon $p\BonusP$). The actor is a
 useful source of offspring during training, but it does not replace the elites that were selected and refined.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Differences between algorithms from linear mixed models (fixed effects: algorithm and damage; random
+intercept per repertoire), with 95\% confidence intervals.}
+\label{tab:mixed}
+\resizebox{\linewidth}{!}{\input{generated/table_mixed}}
+\vspace{1em}
+\caption{Mean gain of ITE over top-$k$ in $v$ (95\% confidence interval) from a mixed model per repertoire type.}
+\label{tab:mixedtopk}
+\input{generated/table_mixed_topk}
+\end{table}
+
+\section{Conclusion and future work}
+Repertoires built with the help of RL critics are not less useful after damage: they are as resilient in relative
+terms and keep much better gaits in absolute terms, so that the quality of the repertoire, more than the adaptation
+algorithm, decides how well a damaged robot walks. ITE finds a good gait in a handful of trials, far fewer than RL
+re-training, but in this setting most of its benefit comes from a good prior: a simple ranking of re-evaluated gaits
+is almost as good, and a better model of the damage does not change this. A single policy trained on random damages in
+simulation is a serious competitor when the possible damages are known in advance. The case for repertoires and ITE is
+therefore the unexpected damage on a real robot, which is where future work should test them, together with damages
+outside the training distribution of robust policies and meta-learned adaptive policies.
 
