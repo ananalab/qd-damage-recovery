@@ -85,6 +85,8 @@ Two findings that changed the analysis:
    best-intact baseline and the best intact cell of the oracle summary therefore use the fitness re-evaluated by
    the oracle (legitimate: offline, before the damage).
 
+## ITE
+
 ## RL re-training
 
 - Every number of the reports is a LaTeX macro written by `qd_damage.analysis.report`; tables are generated too.

@@ -230,6 +230,40 @@ re-evaluated fitness is 0.88, and the ``best'' cell of a \ME{} repertoire perfor
 re-evaluated). As the repertoire is built offline in simulation, we re-evaluate it on the intact robot (4 episodes)
 and use this as prior; the best-intact baseline uses the same values.
 
+\paragraph{Hyper-parameters} With the values of \citet{cully2015robots} (length-scale 0.4, unit signal variance,
+noise $10^{-3}$), ITE stopped after very few trials and plateaued. The residuals have a variance of 0.03--0.06, not 1,
+and a large nugget (neighbouring cells differ). We therefore fitted $(\ell,\sigma_f^2,\sigma_n^2)$ by maximising the
+marginal likelihood on \emph{development} repertoires (short runs of the three algorithms, never used for the results):
+$\ell=0.4$, $\sigma_f^2=0.05$, $\sigma_n^2=0.02$ (log-likelihood $+4059$ against $-1280$ for the original values).
+$\kappa=0.05$ and $\alpha=0.9$ are those of \citet{cully2015robots}; values of $\kappa$ from 0.05 to 2 made little
+difference on the development set.
+
+\subsection{Baselines}
+\emph{Best-intact}: replay the best intact gait (no adaptation, one trial). \emph{Top-$k$}: try cells by decreasing
+prior, without a model. \emph{Random}: try cells at random. All methods run for 20 trials and are repeated 5 times
+per (repertoire, damage); the quality of the recommended gait (best observed so far) is measured with its oracle mean.
+
+\subsection{Statistics}
+The repetitions of an adaptation only differ by episode noise, so they are averaged first: the statistical unit is a
+(repertoire, damage) pair, i.e.\ \NUnits{} units per algorithm. Algorithms are compared with two-sided Mann-Whitney
+tests on these units, and two adaptation methods with paired two-sided Wilcoxon signed-rank tests. Units of the same
+seed share a repertoire and are not independent. As a check that accounts for this, we also fit linear mixed models
+with a random intercept per repertoire, \texttt{value \textasciitilde{} algorithm + damage + (1 | repertoire)} for the
+comparisons between algorithms and \texttt{difference \textasciitilde{} algorithm + (1 | repertoire)} for the paired
+comparisons between methods, and report differences with 95\% confidence intervals (\cref{sec:robustness}). With 3
+repertoires per algorithm these intervals are approximate. Medians in the tables are taken over all repetitions.
+Throughout, $v$ denotes the normalised performance and $p$ a p-value.
+
+\subsection{RL re-training}
+TD3 (QDax implementation) is trained on the damaged robot, either from scratch or starting from the best intact
+\DCRL{} policy (same architecture; the critic starts from scratch), on 4 damages (FR leg paralysed, HL leg weakened,
+FL+FR legs paralysed, FL ankle paralysed) and 2 seeds, for \RLMaxEpisodes{} episodes with 16 robots in parallel and
+one gradient step per transition. The deterministic policy is evaluated on 8 episodes after every 16 training
+episodes. Fine-tuning starts from the best re-evaluated elite. Because the new critic is untrained at first, we also
+test two remedies: a \emph{warm-up}, where the actor is frozen during the first 160 episodes on the damaged robot
+(counted), and a \emph{pre-trained critic}, trained for 512 episodes on the intact robot in simulation with the actor
+frozen (not counted, since no damaged robot is involved).
+
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
 \DCRL{} runs where the actor was saved. The answer is clearly negative (\cref{fig:bonus}): the gaits produced by the actor
