@@ -155,11 +155,80 @@ bodies at reset, relative motion of each foot when a single action is applied, a
 $(2,3)$, $(4,5)$, $(6,7)$ drive the hip and ankle of the front-left (FL), hind-left (HL), hind-right (HR) and
 front-right (FR) legs.
 
+\subsection{Algorithms and budget}
+The three algorithms share the environment, the policy architecture (MLP, two hidden layers of 128 units, tanh
+output), the repertoire, and the number of evaluations per iteration (256); hyper-parameters specific to each
+algorithm are those of the official QDax notebooks (\cref{tab:hparams}). Each run lasts \NIterations{}
+iterations, i.e.\ \NEvaluations{} episodes; \NSeeds{} seeds per algorithm. A test checks that the three
+configurations only differ by their emitter.
+
+\paragraph{What ``equal budget'' means} The budget is equal in \emph{episodes}, which is what a robot would pay, not in
+computation: per iteration, \PGA{} also makes 300 critic and 100 policy-gradient steps and \DCRL{} 3000 and 150
+(\cref{tab:hparams}), so \DCRL{} makes about eight times more gradient steps than \PGA{} (82 against 52 minutes per run on
+a T4, against 8 for \ME). The hyper-parameters of each algorithm come from the official notebooks, which use other
+tasks (Walker2d, Ant-omni) and were not tuned for \texttt{ant\_uni}; the ranking between \PGA{} and \DCRL{} may
+depend on this choice.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Main hyper-parameters (full configuration in \texttt{configs/}).}
+\label{tab:hparams}
+\begin{tabular}{lccc}
+\toprule
+ & \ME & \PGA & \DCRL \\
+\midrule
+Offspring per iteration & 256 mutations & 128 mutations + 128 PG & 128 + 64 PG + 64 actor \\
+Iso/line variation $\sigma$ & 0.005 / 0.05 & 0.005 / 0.05 & 0.005 / 0.05 \\
+Critic & -- & TD3, $256\times256$ & descriptor-cond., $256\times256$ \\
+Critic steps / iteration & -- & 300 & 3000 \\
+PG steps / iteration & -- & 100 & 150 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Damage scenarios}
 A damage multiplies the actions of some joints by a factor $\lambda$ ($\lambda=0$: paralysed, $\lambda=0.5$:
 weakened). Since the torque of an Ant actuator is proportional to its action, this is equivalent to scaling its
 strength, as in \citet{chalumeau2023neuroevolution}. We use \NScenarios{} scenarios: each leg paralysed, each leg
 weakened, two legs paralysed (FL+HL, same side; FL+FR, both front legs), and one ankle paralysed (FL, HR).
+
+\subsection{Performance scale}\label{sec:scale}
+Episodes are noisy (random initial state), and a robot that does not move still collects the survival bonus: its
+return $F_0$ was measured at $4.23$ per step (1058.7 per episode). We report
+\[ v = \frac{F - F_0}{S}, \qquad S = 1.2 \text{ per step } (300 \text{ per episode}), \]
+so that $v\approx0$ for a standing robot and $v\approx1$ for $\approx$15\,m in 12.5\,s, or percentages of the
+progress $F-F_0$ of the best intact gait. With this scale, the variance of a single episode's performance is
+$\approx10^{-3}$, the value used by \citet{cully2015robots}.
+
+% ================================================================ 4
+\section{Methods}
+\subsection{Oracle and resilience}
+For each repertoire and damage, every policy is evaluated on 4 episodes. The best mean is the \emph{oracle}
+performance, an upper bound for any method that picks a gait from the repertoire (it needs 4 episodes for each of the
+\OraclePolicies{} policies of a repertoire, for every damage).
+The \emph{resilience} of a repertoire to a damage is the fraction of the intact oracle progress still reachable:
+$(F^\star_{\text{damaged}}-F_0)/(F^\star_{\text{intact}}-F_0)$.
+
+\paragraph{Selection bias of the oracle} The oracle is the maximum of noisy means over several hundred cells, so it is
+biased upwards, and possibly more for repertoires with more cells. As a check, the cell selected by the oracle is
+re-evaluated on \OracleCheckEpisodes{} fresh episodes, which removes the selection bias (\cref{sec:robustness}).
+
+\subsection{Intelligent Trial \& Error}\label{sec:ite}
+Let $P(\mathbf{d}_i)$ be the prior performance of cell $i$ on the intact robot. ITE models the residual between
+observed and prior performance with a Gaussian process with a Matérn-5/2 kernel on descriptors:
+\begin{align*}
+\mu_t(\mathbf{d}) &= P(\mathbf{d}) + \mathbf{k}(\mathbf{d})^\top (K + \sigma_n^2 I)^{-1}\big(\mathbf{y} - P(\mathbf{D}_t)\big),\\
+\sigma_t^2(\mathbf{d}) &= \sigma_f^2 - \mathbf{k}(\mathbf{d})^\top (K + \sigma_n^2 I)^{-1}\mathbf{k}(\mathbf{d}),
+\end{align*}
+where $\mathbf{D}_t$ and $\mathbf{y}$ are the descriptors and observed performances of the gaits tried so far.
+The next gait maximises the upper confidence bound $\mu_t + \kappa\sigma_t$; ITE stops when the best observed
+performance reaches $\alpha\max_{\mathbf{d}}\mu_t(\mathbf{d})$. One trial is \emph{one} episode on the damaged robot.
+
+\paragraph{Prior} The fitness stored in a repertoire comes from a single noisy episode, and MAP-Elites keeps the
+luckiest evaluations: elites are over-estimated (on development repertoires, the correlation between stored and
+re-evaluated fitness is 0.88, and the ``best'' cell of a \ME{} repertoire performs worse than a standing robot once
+re-evaluated). As the repertoire is built offline in simulation, we re-evaluate it on the intact robot (4 episodes)
+and use this as prior; the best-intact baseline uses the same values.
 
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
