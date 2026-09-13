@@ -311,6 +311,45 @@ touch the ground only briefly. The stored fitness of these elites is optimistic 
 \resizebox{\linewidth}{!}{\input{generated/table_resilience}}
 \end{table}
 
+In relative terms, the three kinds of repertoires are equally resilient: the median share of the intact progress
+that remains reachable after damage is \ResME\% for \ME, \ResPGA\% for \PGA{} and \ResDCRL\% for \DCRL, and none of
+the pairwise differences is significant (Mann-Whitney, $p\PResMEPGA$, $p\PResMEDCRL$ and $p\PResPGADCRL$;
+\cref{fig:resilience}). We therefore find no sign that RL makes repertoires less useful after damage. In absolute terms,
+the difference is large (\cref{tab:resilience}): after damage, the best gait available is worth a median
+$v=\OracleAbsPGA$ in \PGA{} repertoires, $v=\OracleAbsDCRL$ in \DCRL{} ones and only $v=\OracleAbsME$ in \ME{} ones.
+Weakening a leg is usually mild; paralysing a whole leg removes roughly half of the progress; with two paralysed
+legs, no repertoire keeps a useful gait.
+
+\FloatBarrier
+\subsection{Adaptation in a few trials (Q2)}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\linewidth]{performance_vs_trials}
+\caption{Performance of the recommended gait against the number of trials on the damaged robot (median and IQR over
+repertoires, damages and repetitions; each repertoire relative to its own best intact gait). RL curves are relative
+to the best intact \DCRL{} gait.}
+\label{fig:trials}
+\end{figure}
+
+\begin{table}[htbp]
+\centering\small
+\caption{ITE against top-$k$ at equal numbers of trials: mean difference in absolute performance $v$ (ITE $-$ top-$k$),
+number of units where ITE is better / equal / worse, and paired Wilcoxon test, over the (repertoire, damage) units.}
+\label{tab:itevstopk}
+\resizebox{\linewidth}{!}{\input{generated/table_ite_vs_topk}}
+\end{table}
+
+\FloatBarrier
+\subsection{Comparison with RL re-training (Q3)}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{rl_curves}
+\caption{TD3 on the damaged robot (two seeds each): from scratch, from the best intact \DCRL{} policy, and from the
+same policy with a critic warm-up or a pre-trained critic, against the performance of the gait found by ITE on the
+\DCRL{} repertoire of the same seed (dashed lines).}
+\label{fig:rl}
+\end{figure}
+
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
 \DCRL{} runs where the actor was saved. The answer is clearly negative (\cref{fig:bonus}): the gaits produced by the actor
@@ -331,6 +370,30 @@ intercept per repertoire), with 95\% confidence intervals.}
 \input{generated/table_mixed_topk}
 \end{table}
 
+\paragraph{Is the descriptor the bottleneck?} With the feet-contact descriptor the fitted noise variance
+($\CalibFeetNoise$) is not small compared with the signal variance ($\CalibFeetSignal$): neighbouring cells react
+differently to the same damage. A damage acts on joints, so we built a second descriptor, the mean absolute action of
+each of the 8 actuators on the intact robot, and fitted the Gaussian process on it in the same way, on the same
+development repertoires (\cref{tab:calibration}). It explains the residuals much better: the log-likelihood gained
+over independent cells is $\CalibJointGain$ per (repertoire, damage) pair against $\CalibFeetGain$, and the fitted
+noise drops to $\CalibJointNoise$. Yet ITE barely improves (\cref{tab:jointfeet}): against ITE on feet contact the
+mean gain is \JointVsFeetFive{} after five trials ($p\PJointVsFeetFive$) and \JointVsFeetTen{} after ten
+($p\PJointVsFeetTen$). Against top-$k$, ITE on joint usage is ahead after three trials (\JointVsTopKThree, $p\PJointVsTopKThree$)
+and, on \DCRL, after five (\JointVsTopKFiveDCRL, $p\PJointVsTopKFiveDCRL$), but not after ten. These runs were made on
+a CPU, so ITE and top-$k$ were re-run on the same machine for these comparisons. A better model of the damage
+therefore does not translate into a better choice of gait: in these repertoires, the gaits that remain good after a
+damage are mostly among the best intact ones, which top-$k$ tries first anyway.
+
+\section{Limitations}
+Simulation only, one robot, and damages modelled as action scaling; the reality gap is simulated by changing a few
+physical parameters. One repertoire size and one budget, with the hyper-parameters of the official notebooks.
+\NSeeds{} seeds per algorithm, so the (repertoire, damage) units used in the tests are not independent and the
+p-values are indicative, even with mixed models. ITE hyper-parameters fitted on development repertoires of the same
+algorithms. RL baselines on 4 damages and 2 seeds; the robust policy is trained on the family of damages it is tested
+on, and no meta-learned or history-based adaptive policy \citep{nagabandi2019learning,kumar2021rma} was tested.
+Results on GPU and CPU differ slightly for the same seed (different floating-point rounding), so ITE with the
+joint-usage descriptor is compared with ITE and top-$k$ re-run on the same CPU.
+
 \section{Conclusion and future work}
 Repertoires built with the help of RL critics are not less useful after damage: they are as resilient in relative
 terms and keep much better gaits in absolute terms, so that the quality of the repertoire, more than the adaptation
@@ -340,4 +403,8 @@ is almost as good, and a better model of the damage does not change this. A sing
 simulation is a serious competitor when the possible damages are known in advance. The case for repertoires and ITE is
 therefore the unexpected damage on a real robot, which is where future work should test them, together with damages
 outside the training distribution of robust policies and meta-learned adaptive policies.
+
+\small
+\bibliographystyle{plainnat}
+\bibliography{refs}
 

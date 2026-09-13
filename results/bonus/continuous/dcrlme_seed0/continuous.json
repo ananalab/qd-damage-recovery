@@ -1,0 +1,17 @@
+{
+  "run_dir": "/kaggle/working/outputs/repertoires/dcrlme_seed0",
+  "code_commit": "1d0bc8f",
+  "n_candidates": 2048,
+  "n_episodes": 4,
+  "ite": {
+    "kernel": "matern52",
+    "lengthscale": 0.4,
+    "signal_variance": 0.05,
+    "noise_variance": 0.02,
+    "kappa": 0.05,
+    "alpha": 0.9,
+    "max_trials": 20,
+    "n_repeats": 5
+  },
+  "time_s": 250.78059458732605
+}

@@ -22,3 +22,13 @@ from pathlib import Path
 import jax
 import numpy as np
 
+from qd_damage.baselines import run_best_intact, run_random, run_top_k
+from qd_damage.config import load_run_config, load_yaml, performance_reference
+from qd_damage.envs import damage_scale, load_damages
+from qd_damage.ite import Normalizer, run_ite
+from qd_damage.oracle import load_genotypes, make_evaluator
+from qd_damage.repertoires import REPO_ROOT, git_commit
+
+METHODS = ("ite", "top_k", "random", "best_intact")
+
+

@@ -86,6 +86,68 @@ def evaluate_all(evaluate, params, scale, key, n_episodes: int):
     return np.stack(fits, axis=1), np.mean(descs, axis=0)
 
 
+def run_oracle(
+    run_dir: Path,
+    out_root: Path = REPO_ROOT / "results" / "oracle",
+    n_episodes=None,
+    scenarios=None,
+    physics: dict | None = None,
+):
+    run_dir = Path(run_dir)
+    run = json.loads((run_dir / "run.json").read_text())
+    common = load_run_config(run["algo"], run["profile"])["common"]
+    damages = load_damages()
+    n_episodes = n_episodes or damages["oracle"]["n_episodes"]
+    chosen = [s for s in damages["scenarios"] if scenarios is None or s["name"] in scenarios]
+
+    env, policy_network, evaluate = make_evaluator(common, physics=physics)
+    params, filled, data = load_genotypes(run_dir, policy_network, env.observation_size)
+    n_cells = data["fitnesses"].shape[0]
+    key = jax.random.key(damages["oracle"]["seed"])
+
+    t0 = time.time()
+    fitness = np.full((len(chosen), n_cells, n_episodes), np.nan, dtype=np.float32)
+    descriptors = np.full((len(chosen), n_cells, 4), np.nan, dtype=np.float32)
+    for i, scenario in enumerate(chosen):
+        key, subkey = jax.random.split(key)
+        scale = jnp.asarray(damage_scale(scenario, damages, env.action_size))
+        fitness[i, filled], descriptors[i, filled] = evaluate_all(evaluate, params, scale, subkey, n_episodes)
+        print(
+            f"[oracle {run_dir.name}] {scenario['name']:18s} best: {np.nanmax(fitness[i].mean(1)):7.1f}"
+            f"  ({time.time() - t0:.0f} s)",
+            flush=True,
+        )
+
+    out_dir = Path(out_root) / run_dir.name
+    out_dir.mkdir(parents=True, exist_ok=True)
+    names = [s["name"] for s in chosen]
+    np.savez_compressed(
+        out_dir / "oracle.npz",
+        scenarios=np.array(names),
+        fitness=fitness,
+        descriptors=descriptors,
+        repertoire_fitness=data["fitnesses"],
+        repertoire_descriptors=data["descriptors"],
+    )
+
+    write_summary(out_dir, run)
+    (out_dir / "oracle.json").write_text(
+        json.dumps(
+            {
+                "run_dir": str(run_dir),
+                "code_commit": git_commit(),
+                "n_episodes": n_episodes,
+                "seed": damages["oracle"]["seed"],
+                "devices": [str(d) for d in jax.devices()],
+                "physics": physics,
+                "time_s": time.time() - t0,
+            },
+            indent=2,
+        )
+    )
+    return out_dir
+
+
 def write_summary(out_dir: Path, run: dict):
     """summary.csv, one row per damage, computed from oracle.npz (can be rerun without simulating).
 
@@ -126,5 +188,51 @@ def write_summary(out_dir: Path, run: dict):
         writer = csv.DictWriter(f, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
+
+
+def check_best_cells(run_dir: Path, oracle_root: Path = REPO_ROOT / "results" / "oracle"):
+    """Re-evaluate the oracle's best cell of every scenario on fresh episodes.
+
+    The oracle performance is a maximum of noisy 4-episode means over ~1000 cells, so it is biased upwards, and more
+    so for repertoires with more cells. Selecting the cell on the oracle means and measuring it on independent
+    episodes removes this selection bias. Writes best_checked.csv next to oracle.npz.
+    """
+    run_dir = Path(run_dir)
+    run = json.loads((run_dir / "run.json").read_text())
+    common = load_run_config(run["algo"], run["profile"])["common"]
+    cfg, damages = load_yaml("adaptation")["oracle_check"], load_damages()
+    oracle = np.load(Path(oracle_root) / run_dir.name / "oracle.npz")
+    names = list(oracle["scenarios"])
+    env, policy_network, evaluate = make_evaluator(common)
+    params, filled, _ = load_genotypes(run_dir, policy_network, env.observation_size)
+    position = {int(c): i for i, c in enumerate(filled)}
+    key = jax.random.key(cfg["seed"])
+    rows = []
+    for name in names:
+        best = int(np.nanargmax(oracle["fitness"][names.index(name)].mean(-1)))
+        scenario = next(s for s in damages["scenarios"] if s["name"] == name)
+        scale = jnp.asarray(damage_scale(scenario, damages, env.action_size))
+        # n_episodes copies of the same policy in one batch: one episode each, different random starts.
+        i = position[best]
+        copies = jax.tree.map(lambda x, i=i: jnp.repeat(x[i][None], cfg["n_episodes"], axis=0), params)
+        key, subkey = jax.random.split(key)
+        fits = np.asarray(evaluate(copies, subkey, scale)[0])
+        rows.append(
+            {
+                "run": run_dir.name,
+                "scenario": name,
+                "cell": best,
+                "oracle_fitness": float(oracle["fitness"][names.index(name)].mean(-1)[best]),
+                "checked_fitness": float(fits.mean()),
+                "checked_std": float(fits.std()),
+                "n_episodes": cfg["n_episodes"],
+            }
+        )
+    out = Path(oracle_root) / run_dir.name / "best_checked.csv"
+    with open(out, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    return out
 
 
