@@ -258,3 +258,5 @@ def build(path: Path):
     path.write_text(json.dumps(nb, indent=1, ensure_ascii=False))
 
 
+if __name__ == "__main__":
+    build(Path(__file__).parent / "ite_damage_recovery.ipynb")

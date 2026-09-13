@@ -264,6 +264,53 @@ test two remedies: a \emph{warm-up}, where the actor is frozen during the first 
 (counted), and a \emph{pre-trained critic}, trained for 512 episodes on the intact robot in simulation with the actor
 frozen (not counted, since no damaged robot is involved).
 
+\paragraph{Damage-robust policy} The strongest alternative to adaptation is not to adapt at all: train one policy
+that works under many damages. We train TD3 from scratch in simulation for 10{,}000 episodes, drawing a new damage at
+every episode (each joint independently paralysed or weakened with probability 0.25), and evaluate it without any
+trial on the damaged robot (32 episodes per damage). The test damages lie inside this training distribution, which
+favours the robust policy: unlike ITE, it needs to know in advance what kind of damage can happen.
+
+% ================================================================ 5
+\section{Results}
+\subsection{Repertoires on the intact robot}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{repertoire_progress}
+\caption{QD-score, coverage and best fitness during training (median and inter-quartile range over \NSeeds{} seeds).}
+\label{fig:progress}
+\end{figure}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Repertoires at the end of training (median over seeds).}
+\label{tab:quality}
+\input{generated/table_quality}
+\end{table}
+
+Both RL-based algorithms improve over \ME{} at equal budget (\cref{fig:progress,tab:quality}), in different ways.
+\DCRL{} fills the most cells and reaches the highest QD-score, which is consistent with its descriptor-conditioned
+critic improving gaits \emph{without changing their style}. \PGA{} finds by far the fastest gaits (median best fitness
+\MaxFitPGA{} against \MaxFitDCRL{} for \DCRL{} and \MaxFitME{} for \ME): its unconditioned critic pushes offspring towards
+high reward, wherever they land in the grid. The fastest gait we inspected (\PGA) is a bounding gait in which the feet
+touch the ground only briefly. The stored fitness of these elites is optimistic (\cref{sec:discussion}).
+
+\FloatBarrier
+\subsection{Resilience to damage (Q1)}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.40\linewidth}\includegraphics[width=\linewidth]{resilience_by_algo}\caption{All damages}\end{subfigure}\hfill
+\begin{subfigure}{0.58\linewidth}\includegraphics[width=\linewidth]{resilience_by_damage}\caption{By damage (median over seeds)}\end{subfigure}
+\caption{Resilience: share of the intact oracle progress still reachable after damage.}
+\label{fig:resilience}
+\end{figure}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Resilience (\%) and absolute oracle performance $v$ after damage (median over seeds).}
+\label{tab:resilience}
+\resizebox{\linewidth}{!}{\input{generated/table_resilience}}
+\end{table}
+
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
 \DCRL{} runs where the actor was saved. The answer is clearly negative (\cref{fig:bonus}): the gaits produced by the actor

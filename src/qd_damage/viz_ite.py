@@ -386,3 +386,5 @@ def main():
     print(make_ite_media(args.run, args.scenario, args.out, args.rep))
 
 
+if __name__ == "__main__":
+    main()
