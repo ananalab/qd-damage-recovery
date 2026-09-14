@@ -333,11 +333,75 @@ to the best intact \DCRL{} gait.}
 
 \begin{table}[htbp]
 \centering\small
+\caption{Adaptation methods (median over repertoires, damages and repetitions). ``\% intact'': share of the progress
+of the best intact gait; ``\% oracle'': share of the best gait available after damage.}
+\label{tab:methods}
+\input{generated/table_methods}
+\vspace{1em}
+\caption{Share of the intact progress (\%) recovered after a given number of trials (median).}
+\label{tab:equal}
+\input{generated/table_equal_trials}
+\end{table}
+
+ITE meets its stopping criterion in \ITEStopRate\% of the runs, after a median of \ITETrials{} trials (IQR
+\ITETrialsQone--\ITETrialsQthree). The recommended gait recovers \ITEPctIntact\% of the progress of the best intact
+gait, against \BestIntactPct\% when the best intact gait is simply replayed, and \ITEPctOracle\% of what an exhaustive
+search of the repertoire would find (\cref{tab:methods}). Random search is much slower (\RandomAtThree\% after three
+trials, against \ITEAtThree\% for ITE).
+
+The comparison with top-$k$, which tries gaits in decreasing order of intact performance without any model, is less
+favourable: after three trials ITE reaches \ITEAtThree\% and top-$k$ \TopKAtThree\%; after 20 trials, \ITEAtTwenty\%
+and \TopKAtTwenty\% (\cref{fig:trials,tab:equal}). Paired over the \NPairsTopK{} (repertoire, damage) units, ITE is
+better than top-$k$ after five trials in \ITEWinsTopK\% of them, equal in \ITETiesTopK\% and worse in \ITELosesTopK\%
+(Wilcoxon $p\PTopKFive$). After three trials ITE has a small advantage (mean difference \DiffTopKThree{} in $v$,
+$p\PTopKThree$), which comes mostly from \DCRL{} repertoires (\DiffTopKThreeDCRL, $p\PTopKThreeDCRL$) and disappears
+after five and ten trials (\cref{tab:itevstopk}). The pooled medians of \cref{tab:equalalgo} suggest a larger gap on
+\DCRL{} repertoires ($\ITEAbsTenDCRL$ against $\TopKAbsTenDCRL$ after ten trials), but the paired test does not support it
+($p\PTopKTenDCRL$): unit by unit, ITE is better as often as it is worse (\cref{tab:itevstopk}). On \PGA{} repertoires, the best intact gait already keeps most of its
+performance ($v=\ITEAbsOnePGA$ at the first trial). On \ME{} repertoires, all methods stay close to a standing robot.
+
+\begin{table}[htbp]
+\centering\small
 \caption{ITE against top-$k$ at equal numbers of trials: mean difference in absolute performance $v$ (ITE $-$ top-$k$),
 number of units where ITE is better / equal / worse, and paired Wilcoxon test, over the (repertoire, damage) units.}
 \label{tab:itevstopk}
 \resizebox{\linewidth}{!}{\input{generated/table_ite_vs_topk}}
 \end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Absolute performance $v$ of the recommended gait at equal numbers of trials, by repertoire (median).}
+\label{tab:equalalgo}
+\input{generated/table_equal_trials_by_algo}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{ITE on each kind of repertoire (median over seeds, damages and repetitions).}
+\label{tab:itealgo}
+\input{generated/table_ite_by_algo}
+\end{table}
+
+What a robot finally gets depends mostly on how its repertoire was built (\cref{tab:itealgo}): with ITE, the
+recommended gait is worth $v=\ITEAbsPGA$ with \PGA, $v=\ITEAbsDCRL$ with \DCRL{} and $v=\ITEAbsME$ with \ME{}
+(Mann-Whitney on the (repertoire, damage) units: $p\PITEAbsMEPGA$ for \ME{} against \PGA, $p\PITEAbsMEDCRL$ against
+\DCRL{} and $p\PITEAbsPGADCRL$ between \PGA{} and \DCRL; at the level of seeds, every \PGA{} repertoire is above every
+\DCRL{} repertoire, itself above every \ME{} repertoire). \Cref{fig:itetrials,fig:map} show one ITE run.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\linewidth]{ite_trials}
+\caption{One ITE run on a \DCRL{} repertoire (front-right leg paralysed; the five repetitions all recommend the same
+gait, after 6 or 7 trials, and this one used 6): feet-contact profile of each gait tried, and its observed performance.}
+\label{fig:itetrials}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{map_before_after}
+\caption{The same repertoire before and after damage (front vs hind feet contact), and the gaits tried by ITE.}
+\label{fig:map}
+\end{figure}
 
 \FloatBarrier
 \subsection{Comparison with RL re-training (Q3)}
@@ -349,6 +413,35 @@ same policy with a critic warm-up or a pre-trained critic, against the performan
 \DCRL{} repertoire of the same seed (dashed lines).}
 \label{fig:rl}
 \end{figure}
+
+\IfFileExists{generated/table_rl.tex}{%
+\begin{table}[htbp]
+\centering\small
+\caption{Episodes on the damaged robot needed by each TD3 variant to match the gait found by ITE (\DCRL{} repertoire
+of the same seed, mean number of ITE trials in the first column); ``--'': not reached within \RLMaxEpisodes{}
+episodes.}
+\label{tab:rl}
+\input{generated/table_rl}
+\end{table}}{}
+
+Within \RLMaxEpisodes{} episodes, TD3 from scratch matches the gait found by ITE in \RLScratchReached{} runs (median
+\RLScratchEpisodes{} episodes when it does), and plain fine-tuning in only \RLFinetuneReached{} runs, one of them
+because the intact policy already matched ITE before any training (\cref{fig:rl,tab:rl}). Plain fine-tuning collapses
+at the first evaluation. The two remedies show why: with a critic warm-up, fine-tuning matches ITE in
+\RLWarmupReached{} runs (median \RLWarmupEpisodes{} episodes), and with a critic pre-trained on the intact robot in
+\RLPretrainedReached{} runs (median \RLPretrainedEpisodes{} episodes). The collapse came from following the gradient
+of an untrained critic. Even so, the best re-training still needs hundreds of episodes on the damaged robot, against 1
+to 20 trials for ITE.
+
+\subsection{A damage-robust policy}\label{sec:rlbaselines}
+\begin{table}[htbp]
+\centering\small
+\caption{Performance $v$ after damage of the damage-robust TD3 policy (zero trials, mean of \RobustNSeeds{} seeds)
+and of the gait found by ITE (mean over seeds and repetitions), on the nominal robot and with the reality gap of
+\cref{sec:robustness}.}
+\label{tab:robust}
+\resizebox{\linewidth}{!}{\input{generated/table_robust}}
+\end{table}
 
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated

@@ -32,3 +32,10 @@ from qd_damage.repertoires import REPO_ROOT, git_commit
 METHODS = ("ite", "top_k", "random", "best_intact")
 
 
+def write_csv(path: Path, rows: list):
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
