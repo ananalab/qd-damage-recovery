@@ -443,6 +443,16 @@ and of the gait found by ITE (mean over seeds and repetitions), on the nominal r
 \resizebox{\linewidth}{!}{\input{generated/table_robust}}
 \end{table}
 
+The robust policy changes the picture (\cref{tab:robust}). Without any trial on the damaged robot it reaches a median
+$v=\RobustDamaged$ over the damages, better than ITE on \DCRL{} repertoires in \RobustBeatsITEDCRL{} of the
+\RobustNScenarios{} damages and as good as ITE on the best repertoires, those of \PGA{} (better in
+\RobustBeatsITEPGA{} of \RobustNScenarios; median $v=\ITEPGAMedianByDamage$ for ITE). It is also a strong intact
+gait ($v=\RobustIntact$) and is little affected by the reality gap ($v=\RobustGapDamaged$ against
+$\ITEPGAGapMedianByDamage$ for ITE on \PGA). It fails, however, when two legs are paralysed, where it does worse than a
+standing robot, while the repertoires still offer a gait that barely moves. Two caveats limit this comparison: the test
+damages belong to the training distribution of the robust policy, and ITE assumes nothing about the damage. A damage
+outside that distribution, or a real robot, could reverse the ranking; this is precisely the case ITE was designed for.
+
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
 \DCRL{} runs where the actor was saved. The answer is clearly negative (\cref{fig:bonus}): the gaits produced by the actor
@@ -450,6 +460,14 @@ are much weaker than the elites (best available gait after damage $v=\BonusOracl
 never better in any of the (run, damage) pairs), and ITE on the actor finds $v=\BonusContAbs$ against $v=\BonusGridAbs$
 on the grid (better in only \BonusContWins{} of the \BonusN{} (run, damage) pairs; Wilcoxon $p\BonusP$). The actor is a
 useful source of offspring during training, but it does not replace the elites that were selected and refined.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Oracle re-evaluated on fresh episodes: mean bias of the 4-episode oracle, and medians of the resilience and
+of the best gait after damage computed with the re-evaluated values.}
+\label{tab:oraclecheck}
+\input{generated/table_oracle_check}
+\end{table}
 
 \begin{table}[htbp]
 \centering\small
@@ -477,6 +495,9 @@ a CPU, so ITE and top-$k$ were re-run on the same machine for these comparisons.
 therefore does not translate into a better choice of gait: in these repertoires, the gaits that remain good after a
 damage are mostly among the best intact ones, which top-$k$ tries first anyway.
 
+\paragraph{The oracle is optimistic} The oracle is the maximum of noisy means over $\sim$1000 cells, so it is biased
+upwards; percentages of the oracle under-estimate all methods.
+
 \section{Limitations}
 Simulation only, one robot, and damages modelled as action scaling; the reality gap is simulated by changing a few
 physical parameters. One repertoire size and one budget, with the hyper-parameters of the official notebooks.
@@ -500,4 +521,22 @@ outside the training distribution of robust policies and meta-learned adaptive p
 \small
 \bibliographystyle{plainnat}
 \bibliography{refs}
+
+\normalsize
+\appendix
+\section{Reproducibility}
+\begin{footnotesize}\ttfamily\noindent
+python -m qd\_damage.repertoires --algo \{me,pgame,dcrlme\} --seed S\\
+python -m qd\_damage.oracle --runs results/repertoires/<run>\\
+python -m qd\_damage.oracle --check-best --runs results/repertoires/<run>\\
+python -m qd\_damage.adaptation --runs results/repertoires/<run>\\
+python -m qd\_damage.calibrate [--joint-usage] --oracles results/oracle/*\_demo\\
+python -m qd\_damage.joint\_usage --runs results/repertoires/<run>\\
+python -m qd\_damage.adaptation --joint-usage --methods ite ...\\
+python -m qd\_damage.oracle --reality-gap --out results/oracle\_gap --runs ...\\
+python -m qd\_damage.adaptation --reality-gap --oracle-root results/oracle\_gap ...\\
+python -m qd\_damage.rl\_retrain --scenario <s> --variant <variant> --seed S\\
+python -m qd\_damage.rl\_retrain --robust --seed S\\
+python -m qd\_damage.analysis.report
+\end{footnotesize}
 

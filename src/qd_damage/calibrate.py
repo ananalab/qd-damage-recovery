@@ -89,3 +89,5 @@ def main():
     print(f"independent cells (no correlation): {independent_log_likelihood(sets):.1f}")
 
 
+if __name__ == "__main__":
+    main()

@@ -87,7 +87,34 @@ Two findings that changed the analysis:
 
 ## ITE
 
+- M-BOA in numpy: Gaussian process on the residuals, Matern 5/2 kernel, UCB, stop at alpha. Baselines:
+  best-intact, top-k, random. Every trial is a real simulated episode on the damaged robot; the recommended gait
+  is scored with the oracle mean.
+- Synthetic test problem (two families of gaits, the damage destroys the better one): ITE recovers 97 % of the
+  optimum in 2 trials while top-k stays at 0.19 after 15 trials. A first version of this problem was wrong
+  (the damage improved some regions) and was fixed.
+- Performance scale p = (F - F0) / 300 (about 15 m in 12.5 s). On this fixed, shared scale the variance of one
+  episode (measured on the oracle) is ~0.001, the value of Cully et al.
+- Gaussian-process hyper-parameters: with Cully's values (length-scale 0.4, variance 1, noise 0.001), ITE stopped
+  after 3.4 trials and plateaued. The variogram of the residuals on the development set has a variance of
+  0.03 to 0.06 (not 1) and a large nugget (neighbouring cells differ). Maximum marginal likelihood
+  (`qd_damage.calibrate`, 3 demo repertoires x 12 damages x 300 cells) gives length-scale 0.4, signal variance
+  0.05, noise 0.02 (log-likelihood +4059 against -1280 for Cully's values). kappa from 0.05 to 2 made little
+  difference, so kappa = 0.05 and alpha = 0.9 (Cully).
+- Development / test split: all these choices were made on the 200-iteration demo repertoires; the final
+  campaign uses the 9 full repertoires, which were not used for any choice.
+- The oracle is itself optimistic (maximum of noisy means over ~700 to 900 cells), so "% of oracle"
+  under-estimates every method.
+
 ## RL re-training
+
+- QDax TD3, 16 robots in parallel, one gradient step per transition, deterministic evaluation after every round
+  of 16 episodes, up to 2000 episodes. Variants: from scratch, or from the best intact DCRL-ME policy (same MLP,
+  so the weights load as they are; new critic). The x axis counts episodes on the damaged robot.
+- The reported fine-tuning runs started from the elite with the highest stored fitness, because the oracle ran in
+  parallel on Kaggle. For seed 1 it is also the best re-evaluated cell; for seed 0 it is cell 724 instead of
+  cell 43, whose re-evaluated intact fitness is 1556 against 1578 (1.4 % lower). The code now waits for the
+  oracle and uses the re-evaluated best cell; `rl.json` records the starting cell.
 
 - Every number of the reports is a LaTeX macro written by `qd_damage.analysis.report`; tables are generated too.
 - The absolute performance p was added because percentages "of the intact gait" hide that the best intact
