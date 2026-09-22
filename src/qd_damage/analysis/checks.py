@@ -330,6 +330,24 @@ def robust_policy(adapt: pd.DataFrame, f0: float, scale: float, tex_dir: Path | 
     return {"robust_zero_shot": table}, m
 
 
+def rl_variants(rl: pd.DataFrame, adapt: pd.DataFrame):
+    """Median episodes to match ITE for every RL variant (None when the variant has no run)."""
+    from qd_damage.analysis.stats import rl_episodes_to_match
+
+    if rl.empty:
+        return {}
+    table = rl_episodes_to_match(rl, adapt)
+    m = {}
+    for v, name in [("finetune_warmup", "Warmup"), ("finetune_pretrained", "Pretrained")]:
+        r = table[table.variant == v]
+        if len(r):
+            m[f"RL{name}Reached"] = f"{r.rl_episodes_to_match.notna().sum()}/{len(r)}"
+            m[f"RL{name}Episodes"] = (
+                f"{r.rl_episodes_to_match.median():.0f}" if r.rl_episodes_to_match.notna().any() else "n/a"
+            )
+    return m
+
+
 def run_checks(oracle, adapt, trials, rl, f0: float, scale: float, tex_dir: Path | None):
     tables, macros = {}, {}
     for t, m in (
