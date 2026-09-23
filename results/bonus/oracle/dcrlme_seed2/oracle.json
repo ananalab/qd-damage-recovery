@@ -1,0 +1,10 @@
+{
+  "run_dir": "/kaggle/working/outputs/repertoires/dcrlme_seed2",
+  "code_commit": "1d0bc8f",
+  "n_episodes": 4,
+  "seed": 1234,
+  "devices": [
+    "cuda:0"
+  ],
+  "time_s": 41.427982807159424
+}

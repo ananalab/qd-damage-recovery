@@ -236,3 +236,30 @@ def check_best_cells(run_dir: Path, oracle_root: Path = REPO_ROOT / "results" / 
     return out
 
 
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--runs", nargs="+", required=True)
+    parser.add_argument("--out", type=Path, default=REPO_ROOT / "results" / "oracle")
+    parser.add_argument("--episodes", type=int, default=None)
+    parser.add_argument("--scenarios", nargs="*", default=None)
+    parser.add_argument("--summary-only", action="store_true", help="recompute summary.csv from oracle.npz")
+    parser.add_argument("--check-best", action="store_true", help="re-evaluate the best cells on fresh episodes")
+    parser.add_argument(
+        "--reality-gap",
+        action="store_true",
+        help="evaluate on the perturbed physics of configs/adaptation.yaml (reality_gap)",
+    )
+    args = parser.parse_args()
+    for run_dir in args.runs:
+        if args.summary_only:
+            run = json.loads((Path(run_dir) / "run.json").read_text())
+            write_summary(Path(args.out) / Path(run_dir).name, run)
+        elif args.check_best:
+            print(check_best_cells(run_dir, args.out))
+        else:
+            physics = load_yaml("adaptation")["reality_gap"] if args.reality_gap else None
+            print(run_oracle(run_dir, args.out, args.episodes, args.scenarios, physics))
+
+
+if __name__ == "__main__":
+    main()

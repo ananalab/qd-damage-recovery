@@ -156,6 +156,13 @@ def make_evaluator(e):
 
 eval_intact, eval_damaged = make_evaluator(env), make_evaluator(damaged_env)
 
+# Prior = intact performance, re-evaluated over 4 episodes (a single stored evaluation over-estimates elites).
+key, *ks = jax.random.split(key, 5)
+prior = np.mean([np.asarray(eval_intact(params, k)) for k in ks], axis=0)
+# For this demo only: the "true" damaged performance of every cell (the oracle ITE does not have).
+key, *ks = jax.random.split(key, 5)
+oracle = np.mean([np.asarray(eval_damaged(params, k)) for k in ks], axis=0)
+
 best_intact = int(np.argmax(prior))
 print("best intact gait: %.1f intact, %.1f once damaged; best damaged gait in the repertoire: %.1f"
       % (prior[best_intact], oracle[best_intact], oracle.max()))
