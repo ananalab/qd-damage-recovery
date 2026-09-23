@@ -476,6 +476,16 @@ never better in any of the (run, damage) pairs), and ITE on the actor finds $v=\
 on the grid (better in only \BonusContWins{} of the \BonusN{} (run, damage) pairs; Wilcoxon $p\BonusP$). The actor is a
 useful source of offspring during training, but it does not replace the elites that were selected and refined.
 
+\FloatBarrier
+\subsection{Robustness of the conclusions}\label{sec:robustness}
+\paragraph{Oracle bias} Re-evaluating the cell chosen by the oracle on \OracleCheckEpisodes{} fresh episodes shows that
+the oracle over-estimates the best gait by $v\approx\OracleBiasME$ (\ME), $\OracleBiasPGA$ (\PGA) and $\OracleBiasDCRL$
+(\DCRL) on average (\cref{tab:oraclecheck}). With these unbiased values the median resilience is \ResCheckedME\%,
+\ResCheckedPGA\% and \ResCheckedDCRL\%; the mixed model now finds \PGA{} slightly more resilient than \ME{}
+(difference \MixResCheckedPGAvsME{} with the correction, $p\PMixResCheckedPGAvsME$, against \MixResPGAvsME{}
+without it), but the rank test does not. Either way,
+building the repertoire with RL does not make it less resilient.
+
 \begin{table}[htbp]
 \centering\small
 \caption{Oracle re-evaluated on fresh episodes: mean bias of the 4-episode oracle, and medians of the resilience and
@@ -516,6 +526,30 @@ and, on \DCRL, after five (\JointVsTopKFiveDCRL, $p\PJointVsTopKFiveDCRL$), but 
 a CPU, so ITE and top-$k$ were re-run on the same machine for these comparisons. A better model of the damage
 therefore does not translate into a better choice of gait: in these repertoires, the gaits that remain good after a
 damage are mostly among the best intact ones, which top-$k$ tries first anyway.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Gaussian-process hyper-parameters fitted by maximum marginal likelihood on the development repertoires for
+each descriptor, and log-likelihood gained over independent cells, per (repertoire, damage) pair.}
+\label{tab:calibration}
+\input{generated/table_calibration}
+\vspace{1em}
+\caption{ITE on joint usage minus ITE on feet contact: mean difference in $v$ and paired Wilcoxon test, over the
+(repertoire, damage) units.}
+\label{tab:jointfeet}
+\input{generated/table_joint_vs_feet}
+\end{table}
+\paragraph{Reality gap} Here the simulator also plays the robot: prior and trials come from the same physics, which
+is the easy case. To mimic a deployment, the trials now run on a robot whose physics differ from the simulator that
+built the repertoire and gave the prior: ground friction $\times0.7$, torso mass $\times1.2$, actuator strength
+$\times0.9$, values fixed before the experiment. The gap alone costs little: the best intact gait keeps
+\GapIntactRetained\% of its progress. With a damage on top of it (\cref{tab:gap}), the gait found by ITE is worth
+$v=\GapITEAbs$ after a median of \GapITETrials{} trials, top-$k$ reaches $\GapTopKAbs$ after 20 trials, and the best
+intact gait $\GapBestIntactAbs$. ITE's early lead over top-$k$ is slightly larger than without the gap: \GapDiffTopKThree{} after three trials
+($p\GapPTopKThree$), \GapDiffTopKThreeDCRL{} on \DCRL{} ($p\GapPTopKThreeDCRL$); but it is gone after five trials
+(\GapDiffTopKFive, $p\GapPTopKFive$), and on \PGA{} top-$k$ is ahead after ten (\GapDiffTopKTenPGA,
+$p\GapPTopKTenPGA$). A moderate gap therefore makes the prior less reliable without changing the conclusion: the model
+mostly helps in the first trials.
 
 \paragraph{The oracle is optimistic} The oracle is the maximum of noisy means over $\sim$1000 cells, so it is biased
 upwards; percentages of the oracle under-estimate all methods.
