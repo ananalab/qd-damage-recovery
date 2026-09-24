@@ -551,8 +551,36 @@ intact gait $\GapBestIntactAbs$. ITE's early lead over top-$k$ is slightly large
 $p\GapPTopKTenPGA$). A moderate gap therefore makes the prior less reliable without changing the conclusion: the model
 mostly helps in the first trials.
 
+\begin{table}[htbp]
+\centering\small
+\caption{Adaptation with a reality gap: prior from the nominal simulator, trials on the perturbed robot (medians over
+repertoires, damages and repetitions; ``\% intact'': share of the progress of the best intact gait of the perturbed
+robot).}
+\label{tab:gap}
+\input{generated/table_reality_gap}
+\end{table}
+
+% ================================================================ 6
+\FloatBarrier
+\section{Discussion}\label{sec:discussion}
+\paragraph{Why ITE is not much better than top-$k$} ITE helps when trying one gait tells something about
+\emph{similar} gaits, and when the best gait after damage is not among the first ones a ranking would try. With the
+feet-contact descriptor the first condition is weak: neighbouring cells react differently to the same damage. The
+descriptor ablation (\cref{sec:robustness}) shows that a descriptor based on joint usage fixes this, with a noise
+variance seven times smaller, but ITE still gains little: the second condition fails. A damaged repertoire mostly keeps
+some of its best gaits, so the re-evaluated intact ranking is already a strong guide, and 20 trials are enough for
+top-$k$ to reach them. ITE should matter more when the prior is misleading, for instance when the simulator and the
+robot differ (\cref{sec:robustness}), or for damages that remove the best gaits altogether.
+
+\paragraph{Noisy elites} A repertoire stores the fitness of a single noisy episode, and MAP-Elites keeps the luckiest
+ones: elites are over-estimated. Re-evaluating the repertoire before damage, offline in simulation, is cheap and was
+necessary for both ITE and the best-intact baseline. This is the problem studied by uncertain QD.
+
 \paragraph{The oracle is optimistic} The oracle is the maximum of noisy means over $\sim$1000 cells, so it is biased
 upwards; percentages of the oracle under-estimate all methods.
+
+\paragraph{Counting episodes, not compute} In simulation, RL consumes thousands of episodes in minutes; on a real robot,
+each episode costs time, wear and supervision. We therefore compare trials and episodes, not wall-clock time.
 
 \section{Limitations}
 Simulation only, one robot, and damages modelled as action scaling; the reality gap is simulated by changing a few
