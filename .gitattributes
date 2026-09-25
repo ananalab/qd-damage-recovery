@@ -1,0 +1,4 @@
+# Generated pages (Brax viewer and three.js inlined) and the bundled viewer: not counted in the language stats.
+media/** linguist-generated
+src/qd_damage/assets/** linguist-vendored
+*.ipynb linguist-documentation
