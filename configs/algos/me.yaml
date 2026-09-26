@@ -1,0 +1,6 @@
+# MAP-Elites: only the algorithm-specific hyper-parameters (the rest is in common.yaml).
+# Values of the official notebook examples/mapelites.ipynb (QDax 0.5.0).
+algo: me
+emitter:
+  iso_sigma: 0.005    # iso+line mutation (Vassiliades & Mouret 2018)
+  line_sigma: 0.05

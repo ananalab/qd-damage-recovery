@@ -1,0 +1,41 @@
+# Damage scenarios. A damage is a multiplicative factor on the actions of some joints:
+# 0.0 = paralysed, 0.5 = weakened. For Ant, actuator torque = action x strength, so scaling the action scales the
+# actuator strength (what Chalumeau et al. 2023 do with actuator_strength).
+#
+# Leg mapping checked from the actuator order in the Brax config, from the motion produced by each action alone,
+# and on video (media/checks/leg_mapping/). The robot walks towards +x; +y is on its left.
+
+legs:
+  leg_1: {name: front left,  hip: 0, ankle: 1}   # foot "$ Body 4"
+  leg_2: {name: hind left,   hip: 2, ankle: 3}   # foot "$ Body 7"
+  leg_3: {name: hind right,  hip: 4, ankle: 5}   # foot "$ Body 10"
+  leg_4: {name: front right, hip: 6, ankle: 7}   # foot "$ Body 13"
+
+scenarios:
+  - {name: intact,            joints: [],                                              factor: 1.0}
+  # One paralysed leg
+  - {name: leg1_paralysed,    joints: [leg_1.hip, leg_1.ankle],                        factor: 0.0}
+  - {name: leg2_paralysed,    joints: [leg_2.hip, leg_2.ankle],                        factor: 0.0}
+  - {name: leg3_paralysed,    joints: [leg_3.hip, leg_3.ankle],                        factor: 0.0}
+  - {name: leg4_paralysed,    joints: [leg_4.hip, leg_4.ankle],                        factor: 0.0}
+  # One weakened leg
+  - {name: leg1_weak,         joints: [leg_1.hip, leg_1.ankle],                        factor: 0.5}
+  - {name: leg2_weak,         joints: [leg_2.hip, leg_2.ankle],                        factor: 0.5}
+  - {name: leg3_weak,         joints: [leg_3.hip, leg_3.ankle],                        factor: 0.5}
+  - {name: leg4_weak,         joints: [leg_4.hip, leg_4.ankle],                        factor: 0.5}
+  # Two paralysed legs: same side (left), then both front legs
+  - {name: legs12_paralysed,  joints: [leg_1.hip, leg_1.ankle, leg_2.hip, leg_2.ankle], factor: 0.0}
+  - {name: legs14_paralysed,  joints: [leg_1.hip, leg_1.ankle, leg_4.hip, leg_4.ankle], factor: 0.0}
+  # A single ankle
+  - {name: ankle1_paralysed,  joints: [leg_1.ankle],                                   factor: 0.0}
+  - {name: ankle3_paralysed,  joints: [leg_3.ankle],                                   factor: 0.0}
+
+# Subset used for RL re-training (expensive).
+# leg4_paralysed is the leg damaged by Chalumeau et al. (direct comparison).
+rl_subset: [leg4_paralysed, leg2_weak, legs14_paralysed, ankle1_paralysed]
+
+# Oracle: every policy of the repertoire is evaluated on n_episodes episodes per damage
+# (different random starts), and the mean is kept.
+oracle:
+  n_episodes: 4
+  seed: 1234
