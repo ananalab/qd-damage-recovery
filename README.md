@@ -5,8 +5,9 @@ matter whether its repertoire of gaits was built with or without reinforcement l
 
 ![Intact, damaged, and after Intelligent Trial & Error](media/final/ite_main/videos/three_phases_follow.gif)
 
-*Brax Ant, DCRL-ME repertoire, front-right leg paralysed. Mean distance in 12.5 s: 30.6 m intact, 2.8 m damaged
-with the same gait, 9.4 m with the gait found by ITE in 6 trials.*
+*Brax Ant, DCRL-ME repertoire, front-right leg paralysed. Each panel plays the median of 8 episodes and shows its
+distance in 12.5 s; averaged over the 8 episodes: 30.6 m intact, 2.8 m damaged with the same gait, 9.4 m with the
+gait found by ITE in 6 trials.*
 
 ## What I did
 
