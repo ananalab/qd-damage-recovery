@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Large files: repertoires and checkpoints stay on Kaggle
+results/repertoires/
+results/checkpoints/
+*.pkl
+*.npz
+*.msgpack
+
+# Raw media
+media/raw/
+
+# System
+.DS_Store
+
+# LaTeX build files (PDFs are kept)
+report/**/*.aux
+report/**/*.log
+report/**/*.fls
+report/**/*.fdb_latexmk
+report/**/*.out
+report/**/*.toc
+report/**/*.bbl
+report/**/*.blg
+report/**/*.synctex.gz

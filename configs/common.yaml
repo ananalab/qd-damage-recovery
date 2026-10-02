@@ -1,0 +1,42 @@
+# Parameters SHARED by MAP-Elites, PGA-ME and DCRL-ME.
+# A test checks that the algorithm configs do not redefine any of these keys.
+# Values chosen from the official QDax 0.5.0 notebooks (see docs/notes.md).
+
+env:
+  name: ant_uni              # descriptor: fraction of time each foot touches the ground (4D)
+  episode_length: 250        # value of the PGA-ME and DCRL-ME notebooks
+  # DCRL-ME needs positive rewards: its notebook shifts the reward by reward_offset[ant_uni] and clips it at 0.
+  # Applied to all THREE algorithms so that fitness is the same quantity everywhere.
+  positive_rewards: true
+
+policy:
+  hidden_layer_sizes: [128, 128]   # MLP of the DCRL-ME notebook, tanh output
+
+repertoire:
+  num_centroids: 1024
+  num_init_cvt_samples: 50000
+  min_descriptor: 0.0
+  max_descriptor: 1.0
+
+budget:
+  batch_size: 256            # policies evaluated per iteration, identical for the three algorithms
+  num_iterations: 2000       # 512,256 evaluations; DCRL-ME ~86 min on a T4 (docs/compute_budget.md)
+  log_period: 10             # iterations between two metric rows
+  checkpoint_every: 250      # iterations; checkpoint.pkl, automatic resume (deleted at the end of the run)
+
+seeds: [0, 1, 2]
+
+# Profiles that override some of the values above.
+profiles:
+  smoke:                     # a few seconds on CPU, for the tests
+    episode_length: 20
+    batch_size: 32
+    num_centroids: 64
+    num_init_cvt_samples: 5000
+    num_iterations: 4
+    log_period: 2
+    checkpoint_every: 2
+  local:                     # CPU demo, NOT for the final comparison (lighter DCRL-ME, see dcrlme.yaml)
+    num_iterations: 200
+  demo:                      # same size as local with the full settings of the three algorithms (GPU);
+    num_iterations: 200      # also used for timing and as the development set

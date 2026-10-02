@@ -1,0 +1,10 @@
+{
+  "run_dir": "results/repertoires/pgame_seed0_demo",
+  "code_commit": "c83c15bee5d4c7d59ca4448cb18c09f840391c32-dirty",
+  "n_episodes": 4,
+  "seed": 1234,
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "time_s": 342.8751871585846
+}

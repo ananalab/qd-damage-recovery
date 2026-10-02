@@ -1,0 +1,17 @@
+{
+  "run_dir": "results/repertoires/me_seed0_demo",
+  "code_commit": "ece24ff6468f5950be5f7943aa6b6ac83c9e9f5a-dirty",
+  "ite": {
+    "kernel": "matern52",
+    "lengthscale": 0.4,
+    "signal_variance": 0.05,
+    "noise_variance": 0.02,
+    "kappa": 0.05,
+    "alpha": 0.9,
+    "max_trials": 20,
+    "n_repeats": 5
+  },
+  "f0": 1058.7,
+  "oracle_intact": 1104.7646484375,
+  "time_s": 79.06010293960571
+}

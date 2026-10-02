@@ -1,0 +1,945 @@
+[{"stream_name":"stdout","time":1.5656769590000001,"data":"3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]\n"}
+,{"stream_name":"stdout","time":1.599078888,"data":"GPU 0: Tesla T4 (UUID: GPU-067cfd2e-2d1c-a00d-b809-855f8635740d)\n"}
+,{"stream_name":"stdout","time":1.59911971,"data":"GPU 1: Tesla T4 (UUID: GPU-6eede696-ee36-d3a4-8eab-7baa6e2996fd)\n"}
+,{"stream_name":"stdout","time":1.605941338,"data":"$ /usr/bin/python3 -m pip install --progress-bar off --no-deps -r /kaggle/working/code/requirements-kaggle.txt\n"}
+,{"stream_name":"stdout","time":5.959098702,"data":"Collecting absl-py==2.5.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 1))\n"}
+,{"stream_name":"stdout","time":6.02097775,"data":"  Downloading absl_py-2.5.0-py3-none-any.whl.metadata (3.3 kB)\n"}
+,{"stream_name":"stdout","time":6.152976714,"data":"Collecting anyio==4.15.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 2))\n"}
+,{"stream_name":"stdout","time":6.169314984,"data":"  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)\n"}
+,{"stream_name":"stdout","time":6.194905387,"data":"Requirement already satisfied: argon2-cffi==25.1.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 3)) (25.1.0)\n"}
+,{"stream_name":"stdout","time":6.263881468,"data":"Collecting argon2-cffi-bindings==26.1.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 4))\n"}
+,{"stream_name":"stdout","time":6.279769835,"data":"  Downloading argon2_cffi_bindings-26.1.0-cp310-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (7.5 kB)\n"}
+,{"stream_name":"stdout","time":6.304520808,"data":"Requirement already satisfied: arrow==1.4.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 5)) (1.4.0)\n"}
+,{"stream_name":"stdout","time":6.365932601,"data":"Collecting asttokens==3.0.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 6))\n"}
+,{"stream_name":"stdout","time":6.382031707,"data":"  Downloading asttokens-3.0.2-py3-none-any.whl.metadata (5.7 kB)\n"}
+,{"stream_name":"stdout","time":6.45808196,"data":"Collecting async-lru==2.3.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 7))\n"}
+,{"stream_name":"stdout","time":6.481333832,"data":"  Downloading async_lru-2.3.0-py3-none-any.whl.metadata (7.6 kB)\n"}
+,{"stream_name":"stdout","time":6.505669965,"data":"Requirement already satisfied: attrs==26.1.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 8)) (26.1.0)\n"}
+,{"stream_name":"stdout","time":6.50718777,"data":"Requirement already satisfied: babel==2.18.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 9)) (2.18.0)\n"}
+,{"stream_name":"stdout","time":6.571030639,"data":"Collecting beautifulsoup4==4.15.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 10))\n"}
+,{"stream_name":"stdout","time":6.587474691,"data":"  Downloading beautifulsoup4-4.15.0-py3-none-any.whl.metadata (3.8 kB)\n"}
+,{"stream_name":"stdout","time":6.674427491,"data":"Collecting bleach==6.4.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 11))\n"}
+,{"stream_name":"stdout","time":6.691355377,"data":"  Downloading bleach-6.4.0-py3-none-any.whl.metadata (32 kB)\n"}
+,{"stream_name":"stdout","time":6.730076497,"data":"Requirement already satisfied: blinker==1.9.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 12)) (1.9.0)\n"}
+,{"stream_name":"stdout","time":6.785475598,"data":"Collecting brax==0.10.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 13))\n"}
+,{"stream_name":"stdout","time":6.803387656,"data":"  Downloading brax-0.10.4-py3-none-any.whl.metadata (7.6 kB)\n"}
+,{"stream_name":"stdout","time":6.898985334,"data":"Collecting certifi==2026.7.22 (from -r /kaggle/working/code/requirements-kaggle.txt (line 14))\n"}
+,{"stream_name":"stdout","time":6.914908584,"data":"  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)\n"}
+,{"stream_name":"stdout","time":7.2616538760000005,"data":"Collecting cffi==2.1.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 15))\n"}
+,{"stream_name":"stdout","time":7.277933431,"data":"  Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)\n"}
+,{"stream_name":"stdout","time":7.68205616,"data":"Collecting charset-normalizer==3.5.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 16))\n"}
+,{"stream_name":"stdout","time":7.698186544,"data":"  Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)\n"}
+,{"stream_name":"stdout","time":7.775129247,"data":"Collecting chex==0.1.86 (from -r /kaggle/working/code/requirements-kaggle.txt (line 17))\n"}
+,{"stream_name":"stdout","time":7.791742053,"data":"  Downloading chex-0.1.86-py3-none-any.whl.metadata (17 kB)\n"}
+,{"stream_name":"stdout","time":7.884489061,"data":"Collecting click==8.5.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 18))\n"}
+,{"stream_name":"stdout","time":7.901680827,"data":"  Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)\n"}
+,{"stream_name":"stdout","time":7.925824165,"data":"Requirement already satisfied: cloudpickle==3.1.2 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 19)) (3.1.2)\n"}
+,{"stream_name":"stdout","time":7.927275196,"data":"Requirement already satisfied: comm==0.2.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 20)) (0.2.3)\n"}
+,{"stream_name":"stdout","time":7.928990058,"data":"Requirement already satisfied: contourpy==1.3.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 21)) (1.3.3)\n"}
+,{"stream_name":"stdout","time":7.930525494,"data":"Requirement already satisfied: cycler==0.12.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 22)) (0.12.1)\n"}
+,{"stream_name":"stdout","time":8.205030154,"data":"Collecting debugpy==1.8.22 (from -r /kaggle/working/code/requirements-kaggle.txt (line 23))\n"}
+,{"stream_name":"stdout","time":8.221252186,"data":"  Downloading debugpy-1.8.22-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (1.4 kB)\n"}
+,{"stream_name":"stdout","time":8.243459837,"data":"Requirement already satisfied: decorator==5.3.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 24)) (5.3.1)\n"}
+,{"stream_name":"stdout","time":8.246106212,"data":"Requirement already satisfied: defusedxml==0.7.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 25)) (0.7.1)\n"}
+,{"stream_name":"stdout","time":8.293438967,"data":"Collecting dm-env==1.6 (from -r /kaggle/working/code/requirements-kaggle.txt (line 26))\n"}
+,{"stream_name":"stdout","time":8.31067211,"data":"  Downloading dm_env-1.6-py3-none-any.whl.metadata (966 bytes)\n"}
+,{"stream_name":"stdout","time":8.333761163,"data":"Requirement already satisfied: dm-tree==0.1.10 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 27)) (0.1.10)\n"}
+,{"stream_name":"stdout","time":8.335572663,"data":"Requirement already satisfied: etils==1.14.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 28)) (1.14.0)\n"}
+,{"stream_name":"stdout","time":8.38802642,"data":"Collecting executing==2.2.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 29))\n"}
+,{"stream_name":"stdout","time":8.403974709,"data":"  Downloading executing-2.2.1-py2.py3-none-any.whl.metadata (8.9 kB)\n"}
+,{"stream_name":"stdout","time":8.469422758,"data":"Collecting Farama-Notifications==0.0.6 (from -r /kaggle/working/code/requirements-kaggle.txt (line 30))\n"}
+,{"stream_name":"stdout","time":8.486080321,"data":"  Downloading farama_notifications-0.0.6-py3-none-any.whl.metadata (729 bytes)\n"}
+,{"stream_name":"stdout","time":8.560042162,"data":"Collecting fastjsonschema==2.22.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 31))\n"}
+,{"stream_name":"stdout","time":8.575720232,"data":"  Downloading fastjsonschema-2.22.2-py3-none-any.whl.metadata (2.1 kB)\n"}
+,{"stream_name":"stdout","time":8.694721761,"data":"Collecting filelock==4.0.7 (from -r /kaggle/working/code/requirements-kaggle.txt (line 32))\n"}
+,{"stream_name":"stdout","time":8.710632172,"data":"  Downloading filelock-4.0.7-py3-none-any.whl.metadata (2.0 kB)\n"}
+,{"stream_name":"stdout","time":8.734988839,"data":"Requirement already satisfied: Flask==3.1.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 33)) (3.1.3)\n"}
+,{"stream_name":"stdout","time":8.836325573,"data":"Collecting flask-cors==6.0.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 34))\n"}
+,{"stream_name":"stdout","time":8.852135443,"data":"  Downloading flask_cors-6.0.5-py3-none-any.whl.metadata (5.4 kB)\n"}
+,{"stream_name":"stdout","time":8.938611621,"data":"Collecting flax==0.8.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 35))\n"}
+,{"stream_name":"stdout","time":8.954991374,"data":"  Downloading flax-0.8.5-py3-none-any.whl.metadata (10 kB)\n"}
+,{"stream_name":"stdout","time":9.457154079,"data":"Collecting fonttools==4.66.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 36))\n"}
+,{"stream_name":"stdout","time":9.473149517,"data":"  Downloading fonttools-4.66.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (130 kB)\n"}
+,{"stream_name":"stdout","time":9.576370102,"data":"Collecting fqdn==1.6.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 37))\n"}
+,{"stream_name":"stdout","time":9.592961521,"data":"  Downloading fqdn-1.6.0-py3-none-any.whl.metadata (9.4 kB)\n"}
+,{"stream_name":"stdout","time":9.706875635,"data":"Collecting fsspec==2026.9.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 38))\n"}
+,{"stream_name":"stdout","time":9.72757544,"data":"  Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)\n"}
+,{"stream_name":"stdout","time":9.776351777,"data":"Requirement already satisfied: gast==0.7.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 39)) (0.7.0)\n"}
+,{"stream_name":"stdout","time":9.873136487,"data":"Collecting glfw==2.10.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 40))\n"}
+,{"stream_name":"stdout","time":9.89027781,"data":"  Downloading glfw-2.10.2-py2.py3-none-manylinux_2_28_x86_64.whl.metadata (5.5 kB)\n"}
+,{"stream_name":"stdout","time":11.449769189,"data":"Collecting grpcio==1.84.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 41))\n"}
+,{"stream_name":"stdout","time":11.467763076,"data":"  Downloading grpcio-1.84.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)\n"}
+,{"stream_name":"stdout","time":11.500329828,"data":"Requirement already satisfied: gym==0.26.2 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 42)) (0.26.2)\n"}
+,{"stream_name":"stdout","time":11.501635764,"data":"Requirement already satisfied: gym-notices==0.1.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 43)) (0.1.0)\n"}
+,{"stream_name":"stdout","time":11.557015942,"data":"Collecting gymnasium==1.3.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 44))\n"}
+,{"stream_name":"stdout","time":11.818027156,"data":"  Downloading gymnasium-1.3.0-py3-none-any.whl.metadata (10 kB)\n"}
+,{"stream_name":"stdout","time":11.855768074,"data":"Requirement already satisfied: h11==0.16.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 45)) (0.16.0)\n"}
+,{"stream_name":"stdout","time":11.993797696,"data":"Collecting hf-xet==1.6.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 46))\n"}
+,{"stream_name":"stdout","time":12.026449344,"data":"  Downloading hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)\n"}
+,{"stream_name":"stdout","time":12.055746784,"data":"Requirement already satisfied: httpcore==1.0.9 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 47)) (1.0.9)\n"}
+,{"stream_name":"stdout","time":12.102008908,"data":"Collecting httpcore2==2.13.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 48))\n"}
+,{"stream_name":"stdout","time":12.117571247,"data":"  Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)\n"}
+,{"stream_name":"stdout","time":12.138190728,"data":"Requirement already satisfied: httpx==0.28.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 49)) (0.28.1)\n"}
+,{"stream_name":"stdout","time":12.190584987,"data":"Collecting httpx2==2.13.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 50))\n"}
+,{"stream_name":"stdout","time":12.206091481,"data":"  Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)\n"}
+,{"stream_name":"stdout","time":12.426408603,"data":"Collecting huggingface_hub==2.0.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 51))\n"}
+,{"stream_name":"stdout","time":12.442494788,"data":"  Downloading huggingface_hub-2.0.0-py3-none-any.whl.metadata (16 kB)\n"}
+,{"stream_name":"stdout","time":12.542746613,"data":"Collecting humanize==4.16.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 52))\n"}
+,{"stream_name":"stdout","time":12.558986366,"data":"  Downloading humanize-4.16.0-py3-none-any.whl.metadata (8.0 kB)\n"}
+,{"stream_name":"stdout","time":12.631409979,"data":"Collecting idna==3.20 (from -r /kaggle/working/code/requirements-kaggle.txt (line 53))\n"}
+,{"stream_name":"stdout","time":12.646966658,"data":"  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)\n"}
+,{"stream_name":"stdout","time":12.745511082,"data":"Collecting ImageIO==2.38.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 54))\n"}
+,{"stream_name":"stdout","time":12.761961744,"data":"  Downloading imageio-2.38.0-py3-none-any.whl.metadata (9.7 kB)\n"}
+,{"stream_name":"stdout","time":12.802569857,"data":"Requirement already satisfied: imageio-ffmpeg==0.6.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 55)) (0.6.0)\n"}
+,{"stream_name":"stdout","time":12.803984877,"data":"Requirement already satisfied: iniconfig==2.3.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 56)) (2.3.0)\n"}
+,{"stream_name":"stdout","time":12.909004007,"data":"Collecting ipykernel==7.4.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 57))\n"}
+,{"stream_name":"stdout","time":12.924658611,"data":"  Downloading ipykernel-7.4.0-py3-none-any.whl.metadata (3.4 kB)\n"}
+,{"stream_name":"stdout","time":13.082857746,"data":"Collecting ipython==9.17.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 58))\n"}
+,{"stream_name":"stdout","time":13.098537839,"data":"  Downloading ipython-9.17.1-py3-none-any.whl.metadata (4.6 kB)\n"}
+,{"stream_name":"stdout","time":13.122774136,"data":"Requirement already satisfied: ipython_pygments_lexers==1.1.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 59)) (1.1.1)\n"}
+,{"stream_name":"stdout","time":13.217391742,"data":"Collecting ipywidgets==8.1.9 (from -r /kaggle/working/code/requirements-kaggle.txt (line 60))\n"}
+,{"stream_name":"stdout","time":13.23291061,"data":"  Downloading ipywidgets-8.1.9-py3-none-any.whl.metadata (2.4 kB)\n"}
+,{"stream_name":"stdout","time":13.252744717,"data":"Requirement already satisfied: isoduration==20.11.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 61)) (20.11.0)\n"}
+,{"stream_name":"stdout","time":13.253971464,"data":"Requirement already satisfied: itsdangerous==2.2.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 62)) (2.2.0)\n"}
+,{"stream_name":"stdout","time":13.34388538,"data":"Collecting jax==0.4.28 (from -r /kaggle/working/code/requirements-kaggle.txt (line 63))\n"}
+,{"stream_name":"stdout","time":13.365189628,"data":"  Downloading jax-0.4.28-py3-none-any.whl.metadata (23 kB)\n"}
+,{"stream_name":"stdout","time":13.540445705,"data":"Collecting jaxlib==0.4.28 (from -r /kaggle/working/code/requirements-kaggle.txt (line 64))\n"}
+,{"stream_name":"stdout","time":13.563010154,"data":"  Downloading jaxlib-0.4.28-cp312-cp312-manylinux2014_x86_64.whl.metadata (1.8 kB)\n"}
+,{"stream_name":"stdout","time":13.628149271,"data":"Collecting jaxopt==0.8.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 65))\n"}
+,{"stream_name":"stdout","time":13.647486228,"data":"  Downloading jaxopt-0.8.5-py3-none-any.whl.metadata (3.3 kB)\n"}
+,{"stream_name":"stdout","time":13.719531104,"data":"Collecting jedi==0.20.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 66))\n"}
+,{"stream_name":"stdout","time":13.737117269,"data":"  Downloading jedi-0.20.0-py2.py3-none-any.whl.metadata (23 kB)\n"}
+,{"stream_name":"stdout","time":13.764037367,"data":"Requirement already satisfied: Jinja2==3.1.6 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 67)) (3.1.6)\n"}
+,{"stream_name":"stdout","time":13.924455584,"data":"Collecting joblib==1.6.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 68))\n"}
+,{"stream_name":"stdout","time":13.940245655,"data":"  Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)\n"}
+,{"stream_name":"stdout","time":13.963041378,"data":"Requirement already satisfied: json5==0.15.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 69)) (0.15.0)\n"}
+,{"stream_name":"stdout","time":13.964546188,"data":"Requirement already satisfied: jsonpointer==3.1.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 70)) (3.1.1)\n"}
+,{"stream_name":"stdout","time":13.966256199,"data":"Requirement already satisfied: jsonschema==4.26.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 71)) (4.26.0)\n"}
+,{"stream_name":"stdout","time":13.967683929,"data":"Requirement already satisfied: jsonschema-specifications==2025.9.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 72)) (2025.9.1)\n"}
+,{"stream_name":"stdout","time":14.043441088,"data":"Collecting jumanji==1.1.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 73))\n"}
+,{"stream_name":"stdout","time":14.061114239,"data":"  Downloading jumanji-1.1.0-py3-none-any.whl.metadata (35 kB)\n"}
+,{"stream_name":"stdout","time":14.128811062,"data":"Collecting jupyter==1.1.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 74))\n"}
+,{"stream_name":"stdout","time":14.144737482,"data":"  Downloading jupyter-1.1.1-py2.py3-none-any.whl.metadata (2.0 kB)\n"}
+,{"stream_name":"stdout","time":14.165540058,"data":"Requirement already satisfied: jupyter-console==6.6.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 75)) (6.6.3)\n"}
+,{"stream_name":"stdout","time":14.167262762,"data":"Requirement already satisfied: jupyter-events==0.12.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 76)) (0.12.1)\n"}
+,{"stream_name":"stdout","time":14.219353724,"data":"Collecting jupyter-lsp==2.3.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 77))\n"}
+,{"stream_name":"stdout","time":14.235253333,"data":"  Downloading jupyter_lsp-2.3.1-py3-none-any.whl.metadata (1.8 kB)\n"}
+,{"stream_name":"stdout","time":14.304323578,"data":"Collecting jupyter_builder==1.2.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 78))\n"}
+,{"stream_name":"stdout","time":14.320340248,"data":"  Downloading jupyter_builder-1.2.3-py3-none-any.whl.metadata (7.8 kB)\n"}
+,{"stream_name":"stdout","time":14.431995601,"data":"Collecting jupyter_client==8.10.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 79))\n"}
+,{"stream_name":"stdout","time":14.449353529,"data":"  Downloading jupyter_client-8.10.0-py3-none-any.whl.metadata (8.5 kB)\n"}
+,{"stream_name":"stdout","time":14.473465075,"data":"Requirement already satisfied: jupyter_core==5.9.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 80)) (5.9.1)\n"}
+,{"stream_name":"stdout","time":14.59012133,"data":"Collecting jupyter_server==2.21.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 81))\n"}
+,{"stream_name":"stdout","time":14.606061017,"data":"  Downloading jupyter_server-2.21.1-py3-none-any.whl.metadata (8.5 kB)\n"}
+,{"stream_name":"stdout","time":14.629411275,"data":"Requirement already satisfied: jupyter_server_terminals==0.5.4 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 82)) (0.5.4)\n"}
+,{"stream_name":"stdout","time":14.91874337,"data":"Collecting jupyterlab==4.6.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 83))\n"}
+,{"stream_name":"stdout","time":14.934797755,"data":"  Downloading jupyterlab-4.6.4-py3-none-any.whl.metadata (16 kB)\n"}
+,{"stream_name":"stdout","time":14.967679711,"data":"Requirement already satisfied: jupyterlab_pygments==0.3.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 84)) (0.3.0)\n"}
+,{"stream_name":"stdout","time":15.077388865,"data":"Collecting jupyterlab_server==2.28.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 85))\n"}
+,{"stream_name":"stdout","time":15.093197855,"data":"  Downloading jupyterlab_server-2.28.1-py3-none-any.whl.metadata (5.8 kB)\n"}
+,{"stream_name":"stdout","time":15.23303385,"data":"Collecting jupyterlab_widgets==3.0.17 (from -r /kaggle/working/code/requirements-kaggle.txt (line 86))\n"}
+,{"stream_name":"stdout","time":15.248818601,"data":"  Downloading jupyterlab_widgets-3.0.17-py3-none-any.whl.metadata (20 kB)\n"}
+,{"stream_name":"stdout","time":15.430198251,"data":"Collecting jupytext==1.19.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 87))\n"}
+,{"stream_name":"stdout","time":15.446133104,"data":"  Downloading jupytext-1.19.5-py3-none-any.whl.metadata (15 kB)\n"}
+,{"stream_name":"stdout","time":15.572838865,"data":"Collecting kaggle==2.2.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 88))\n"}
+,{"stream_name":"stdout","time":15.59109111,"data":"  Downloading kaggle-2.2.4-py3-none-any.whl.metadata (17 kB)\n"}
+,{"stream_name":"stdout","time":15.679079666,"data":"Collecting kagglesdk==0.1.37 (from -r /kaggle/working/code/requirements-kaggle.txt (line 89))\n"}
+,{"stream_name":"stdout","time":15.695074232,"data":"  Downloading kagglesdk-0.1.37-py3-none-any.whl.metadata (13 kB)\n"}
+,{"stream_name":"stdout","time":15.955632135,"data":"Collecting kiwisolver==1.5.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 90))\n"}
+,{"stream_name":"stdout","time":15.976867843,"data":"  Downloading kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.2 kB)\n"}
+,{"stream_name":"stdout","time":16.001275991,"data":"Requirement already satisfied: lark==1.3.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 91)) (1.3.1)\n"}
+,{"stream_name":"stdout","time":16.070836538000002,"data":"Collecting markdown-it-py==4.2.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 92))\n"}
+,{"stream_name":"stdout","time":16.08787476,"data":"  Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)\n"}
+,{"stream_name":"stdout","time":16.114400117,"data":"Requirement already satisfied: MarkupSafe==3.0.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 93)) (3.0.3)\n"}
+,{"stream_name":"stdout","time":16.512648385,"data":"Collecting matplotlib==3.7.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 94))\n"}
+,{"stream_name":"stdout","time":16.529636588,"data":"  Downloading matplotlib-3.7.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.7 kB)\n"}
+,{"stream_name":"stdout","time":16.601037343,"data":"Collecting matplotlib-inline==0.2.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 95))\n"}
+,{"stream_name":"stdout","time":16.618033262,"data":"  Downloading matplotlib_inline-0.2.2-py3-none-any.whl.metadata (2.4 kB)\n"}
+,{"stream_name":"stdout","time":16.683795639,"data":"Collecting mdit-py-plugins==0.6.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 96))\n"}
+,{"stream_name":"stdout","time":16.699449421,"data":"  Downloading mdit_py_plugins-0.6.1-py3-none-any.whl.metadata (2.9 kB)\n"}
+,{"stream_name":"stdout","time":16.721080177,"data":"Requirement already satisfied: mdurl==0.1.2 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 97)) (0.1.2)\n"}
+,{"stream_name":"stdout","time":16.802703084,"data":"Collecting mistune==3.3.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 98))\n"}
+,{"stream_name":"stdout","time":16.819348294,"data":"  Downloading mistune-3.3.4-py3-none-any.whl.metadata (1.9 kB)\n"}
+,{"stream_name":"stdout","time":16.838135534,"data":"Requirement already satisfied: ml_collections==1.1.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 99)) (1.1.0)\n"}
+,{"stream_name":"stdout","time":16.839718917,"data":"Requirement already satisfied: ml_dtypes==0.5.4 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 100)) (0.5.4)\n"}
+,{"stream_name":"stdout","time":17.170302391,"data":"Collecting msgpack==1.2.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 101))\n"}
+,{"stream_name":"stdout","time":17.185894661,"data":"  Downloading msgpack-1.2.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)\n"}
+,{"stream_name":"stdout","time":17.535245727,"data":"Collecting mujoco==3.1.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 102))\n"}
+,{"stream_name":"stdout","time":17.553286736,"data":"  Downloading mujoco-3.1.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (44 kB)\n"}
+,{"stream_name":"stdout","time":17.64300423,"data":"Collecting mujoco-mjx==3.1.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 103))\n"}
+,{"stream_name":"stdout","time":17.666302937,"data":"  Downloading mujoco_mjx-3.1.5-py3-none-any.whl.metadata (3.4 kB)\n"}
+,{"stream_name":"stdout","time":17.863891419,"data":"Collecting narwhals==2.26.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 104))\n"}
+,{"stream_name":"stdout","time":17.879449788,"data":"  Downloading narwhals-2.26.0-py3-none-any.whl.metadata (15 kB)\n"}
+,{"stream_name":"stdout","time":17.970999041,"data":"Collecting nbclient==0.11.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 105))\n"}
+,{"stream_name":"stdout","time":17.987268575999998,"data":"  Downloading nbclient-0.11.0-py3-none-any.whl.metadata (7.3 kB)\n"}
+,{"stream_name":"stdout","time":18.108035346,"data":"Collecting nbconvert==7.17.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 106))\n"}
+,{"stream_name":"stdout","time":18.123966139,"data":"  Downloading nbconvert-7.17.1-py3-none-any.whl.metadata (8.4 kB)\n"}
+,{"stream_name":"stdout","time":18.211732242,"data":"Collecting nbformat==5.11.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 107))\n"}
+,{"stream_name":"stdout","time":18.227663131,"data":"  Downloading nbformat-5.11.1-py3-none-any.whl.metadata (3.7 kB)\n"}
+,{"stream_name":"stdout","time":18.252035856,"data":"Requirement already satisfied: nest-asyncio==1.6.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 108)) (1.6.0)\n"}
+,{"stream_name":"stdout","time":18.297864803,"data":"Collecting nest-asyncio2==1.7.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 109))\n"}
+,{"stream_name":"stdout","time":18.313973037,"data":"  Downloading nest_asyncio2-1.7.3-py3-none-any.whl.metadata (6.7 kB)\n"}
+,{"stream_name":"stdout","time":18.478155058,"data":"Collecting notebook==7.6.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 110))\n"}
+,{"stream_name":"stdout","time":18.495971415,"data":"  Downloading notebook-7.6.3-py3-none-any.whl.metadata (10 kB)\n"}
+,{"stream_name":"stdout","time":18.524004571,"data":"Requirement already satisfied: notebook_shim==0.2.4 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 111)) (0.2.4)\n"}
+,{"stream_name":"stdout","time":19.110503267,"data":"Collecting numpy==1.26.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 112))\n"}
+,{"stream_name":"stdout","time":19.127535952,"data":"  Downloading numpy-1.26.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (61 kB)\n"}
+,{"stream_name":"stdout","time":19.167020387,"data":"Requirement already satisfied: opt_einsum==3.4.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 113)) (3.4.0)\n"}
+,{"stream_name":"stdout","time":19.225836097,"data":"Collecting optax==0.1.9 (from -r /kaggle/working/code/requirements-kaggle.txt (line 114))\n"}
+,{"stream_name":"stdout","time":19.242703163,"data":"  Downloading optax-0.1.9-py3-none-any.whl.metadata (6.7 kB)\n"}
+,{"stream_name":"stdout","time":19.368670566,"data":"Collecting orbax-checkpoint==0.6.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 115))\n"}
+,{"stream_name":"stdout","time":19.385784903,"data":"  Downloading orbax_checkpoint-0.6.4-py3-none-any.whl.metadata (1.8 kB)\n"}
+,{"stream_name":"stdout","time":19.476637466,"data":"Collecting packaging==26.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 116))\n"}
+,{"stream_name":"stdout","time":19.496877866,"data":"  Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)\n"}
+,{"stream_name":"stdout","time":19.881037438,"data":"Collecting pandas==3.0.6 (from -r /kaggle/working/code/requirements-kaggle.txt (line 117))\n"}
+,{"stream_name":"stdout","time":19.897476592,"data":"  Downloading pandas-3.0.6-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)\n"}
+,{"stream_name":"stdout","time":19.959660491,"data":"Requirement already satisfied: pandocfilters==1.5.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 118)) (1.5.1)\n"}
+,{"stream_name":"stdout","time":20.018723312,"data":"Collecting parso==0.8.7 (from -r /kaggle/working/code/requirements-kaggle.txt (line 119))\n"}
+,{"stream_name":"stdout","time":20.03477725,"data":"  Downloading parso-0.8.7-py2.py3-none-any.whl.metadata (8.2 kB)\n"}
+,{"stream_name":"stdout","time":20.06079654,"data":"Requirement already satisfied: pexpect==4.9.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 120)) (4.9.0)\n"}
+,{"stream_name":"stdout","time":20.710520398,"data":"Collecting pillow==12.3.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 121))\n"}
+,{"stream_name":"stdout","time":20.727371504,"data":"  Downloading pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)\n"}
+,{"stream_name":"stdout","time":20.840999421,"data":"Collecting platformdirs==4.12.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 122))\n"}
+,{"stream_name":"stdout","time":20.856996653,"data":"  Downloading platformdirs-4.12.2-py3-none-any.whl.metadata (5.5 kB)\n"}
+,{"stream_name":"stdout","time":20.879636113,"data":"Requirement already satisfied: pluggy==1.6.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 123)) (1.6.0)\n"}
+,{"stream_name":"stdout","time":20.9447574,"data":"Collecting prometheus_client==0.26.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 124))\n"}
+,{"stream_name":"stdout","time":20.962776751,"data":"  Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)\n"}
+,{"stream_name":"stdout","time":21.080807493,"data":"Collecting prompt_toolkit==3.0.53 (from -r /kaggle/working/code/requirements-kaggle.txt (line 125))\n"}
+,{"stream_name":"stdout","time":21.096799552,"data":"  Downloading prompt_toolkit-3.0.53-py3-none-any.whl.metadata (6.4 kB)\n"}
+,{"stream_name":"stdout","time":21.612437117,"data":"Collecting protobuf==7.36.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 126))\n"}
+,{"stream_name":"stdout","time":21.62971895,"data":"  Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)\n"}
+,{"stream_name":"stdout","time":21.878389169,"data":"Collecting psutil==7.2.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 127))\n"}
+,{"stream_name":"stdout","time":21.897305721,"data":"  Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)\n"}
+,{"stream_name":"stdout","time":21.927660609,"data":"Requirement already satisfied: ptyprocess==0.7.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 128)) (0.7.0)\n"}
+,{"stream_name":"stdout","time":21.976047055,"data":"Collecting pure_eval==0.2.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 129))\n"}
+,{"stream_name":"stdout","time":22.00273613,"data":"  Downloading pure_eval-0.2.4-py3-none-any.whl.metadata (6.4 kB)\n"}
+,{"stream_name":"stdout","time":22.025993231,"data":"Requirement already satisfied: pycparser==3.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 130)) (3.0)\n"}
+,{"stream_name":"stdout","time":22.11092847,"data":"Collecting Pygments==2.21.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 131))\n"}
+,{"stream_name":"stdout","time":22.126858014,"data":"  Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)\n"}
+,{"stream_name":"stdout","time":22.149844567,"data":"Requirement already satisfied: PyOpenGL==3.1.10 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 132)) (3.1.10)\n"}
+,{"stream_name":"stdout","time":22.24580033,"data":"Collecting pyparsing==3.3.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 133))\n"}
+,{"stream_name":"stdout","time":22.262375211,"data":"  Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)\n"}
+,{"stream_name":"stdout","time":22.425107406,"data":"Collecting pytest==9.1.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 134))\n"}
+,{"stream_name":"stdout","time":22.440763508,"data":"  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)\n"}
+,{"stream_name":"stdout","time":22.461589147,"data":"Requirement already satisfied: python-dateutil==2.9.0.post0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 135)) (2.9.0.post0)\n"}
+,{"stream_name":"stdout","time":22.524511839,"data":"Collecting python-dotenv==1.2.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 136))\n"}
+,{"stream_name":"stdout","time":22.54099742,"data":"  Downloading python_dotenv-1.2.3-py3-none-any.whl.metadata (29 kB)\n"}
+,{"stream_name":"stdout","time":22.612564395,"data":"Collecting python-json-logger==4.2.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 137))\n"}
+,{"stream_name":"stdout","time":22.628489649,"data":"  Downloading python_json_logger-4.2.0-py3-none-any.whl.metadata (2.9 kB)\n"}
+,{"stream_name":"stdout","time":22.706551429,"data":"Collecting python-slugify==9.1.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 138))\n"}
+,{"stream_name":"stdout","time":22.722641293,"data":"  Downloading python_slugify-9.1.2-py3-none-any.whl.metadata (12 kB)\n"}
+,{"stream_name":"stdout","time":22.743378902,"data":"Requirement already satisfied: PyYAML==6.0.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 139)) (6.0.3)\n"}
+,{"stream_name":"stdout","time":23.357561449,"data":"Collecting pyzmq==27.2.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 140))\n"}
+,{"stream_name":"stdout","time":23.374340672,"data":"  Downloading pyzmq-27.2.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (3.8 kB)\n"}
+,{"stream_name":"stdout","time":23.581724403,"data":"Collecting qdax==0.5.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 141))\n"}
+,{"stream_name":"stdout","time":23.602728214,"data":"  Downloading qdax-0.5.0-py3-none-any.whl.metadata (17 kB)\n"}
+,{"stream_name":"stdout","time":23.623086222,"data":"Requirement already satisfied: referencing==0.37.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 142)) (0.37.0)\n"}
+,{"stream_name":"stdout","time":23.714531297,"data":"Collecting requests==2.34.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 143))\n"}
+,{"stream_name":"stdout","time":23.731731667,"data":"  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)\n"}
+,{"stream_name":"stdout","time":23.751479066,"data":"Requirement already satisfied: rfc3339-validator==0.1.4 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 144)) (0.1.4)\n"}
+,{"stream_name":"stdout","time":23.75290919,"data":"Requirement already satisfied: rfc3986-validator==0.1.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 145)) (0.1.1)\n"}
+,{"stream_name":"stdout","time":23.754623472,"data":"Requirement already satisfied: rfc3987-syntax==1.1.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 146)) (1.1.0)\n"}
+,{"stream_name":"stdout","time":23.903333214,"data":"Collecting rich==15.0.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 147))\n"}
+,{"stream_name":"stdout","time":23.919158343,"data":"  Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)\n"}
+,{"stream_name":"stdout","time":24.672605724,"data":"Collecting rpds-py==2026.6.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 148))\n"}
+,{"stream_name":"stdout","time":24.689049444,"data":"  Downloading rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)\n"}
+,{"stream_name":"stdout","time":24.953198161,"data":"Collecting scikit-learn==1.9.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 149))\n"}
+,{"stream_name":"stdout","time":24.970489267,"data":"  Downloading scikit_learn-1.9.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.3 kB)\n"}
+,{"stream_name":"stdout","time":25.368755377,"data":"Collecting scipy==1.17.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 150))\n"}
+,{"stream_name":"stdout","time":25.384620632,"data":"  Downloading scipy-1.17.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)\n"}
+,{"stream_name":"stdout","time":25.426030493,"data":"Requirement already satisfied: Send2Trash==2.1.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 151)) (2.1.0)\n"}
+,{"stream_name":"stdout","time":25.782573894,"data":"Collecting setuptools==84.0.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 152))\n"}
+,{"stream_name":"stdout","time":25.798378791,"data":"  Downloading setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)\n"}
+,{"stream_name":"stdout","time":25.825705701,"data":"Requirement already satisfied: six==1.17.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 153)) (1.17.0)\n"}
+,{"stream_name":"stdout","time":25.888173211,"data":"Collecting soupsieve==2.10 (from -r /kaggle/working/code/requirements-kaggle.txt (line 154))\n"}
+,{"stream_name":"stdout","time":25.906100117,"data":"  Downloading soupsieve-2.10-py3-none-any.whl.metadata (4.4 kB)\n"}
+,{"stream_name":"stdout","time":25.973454015,"data":"Collecting stack-data==0.6.3 (from -r /kaggle/working/code/requirements-kaggle.txt (line 155))\n"}
+,{"stream_name":"stdout","time":25.990421884,"data":"  Downloading stack_data-0.6.3-py3-none-any.whl.metadata (18 kB)\n"}
+,{"stream_name":"stdout","time":26.056598785,"data":"Collecting tabulate==0.10.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 156))\n"}
+,{"stream_name":"stdout","time":26.072920533,"data":"  Downloading tabulate-0.10.0-py3-none-any.whl.metadata (40 kB)\n"}
+,{"stream_name":"stdout","time":26.151147111,"data":"Collecting tensorboardX==2.6.5 (from -r /kaggle/working/code/requirements-kaggle.txt (line 157))\n"}
+,{"stream_name":"stdout","time":26.166868485,"data":"  Downloading tensorboardx-2.6.5-py3-none-any.whl.metadata (6.6 kB)\n"}
+,{"stream_name":"stdout","time":26.237179706,"data":"Collecting tensorflow-probability==0.24.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 158))\n"}
+,{"stream_name":"stdout","time":26.255589077,"data":"  Downloading tensorflow_probability-0.24.0-py2.py3-none-any.whl.metadata (13 kB)\n"}
+,{"stream_name":"stdout","time":26.504640106,"data":"Collecting tensorstore==0.1.85 (from -r /kaggle/working/code/requirements-kaggle.txt (line 159))\n"}
+,{"stream_name":"stdout","time":26.523127063,"data":"  Downloading tensorstore-0.1.85-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (3.3 kB)\n"}
+,{"stream_name":"stdout","time":26.54581842,"data":"Requirement already satisfied: terminado==0.18.1 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 160)) (0.18.1)\n"}
+,{"stream_name":"stdout","time":26.547191857,"data":"Requirement already satisfied: text-unidecode==1.3 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 161)) (1.3)\n"}
+,{"stream_name":"stdout","time":26.596038425,"data":"Collecting threadpoolctl==3.7.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 162))\n"}
+,{"stream_name":"stdout","time":26.61168287,"data":"  Downloading threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)\n"}
+,{"stream_name":"stdout","time":26.688692457,"data":"Collecting tinycss2==1.5.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 163))\n"}
+,{"stream_name":"stdout","time":26.70432787,"data":"  Downloading tinycss2-1.5.1-py3-none-any.whl.metadata (3.0 kB)\n"}
+,{"stream_name":"stdout","time":26.77817394,"data":"Collecting toolz==1.1.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 164))\n"}
+,{"stream_name":"stdout","time":26.794085467,"data":"  Downloading toolz-1.1.0-py3-none-any.whl.metadata (5.1 kB)\n"}
+,{"stream_name":"stdout","time":26.94457104,"data":"Collecting tornado==6.5.10 (from -r /kaggle/working/code/requirements-kaggle.txt (line 165))\n"}
+,{"stream_name":"stdout","time":26.962110264,"data":"  Downloading tornado-6.5.10-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (2.8 kB)\n"}
+,{"stream_name":"stdout","time":27.113339114,"data":"Collecting tqdm==4.70.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 166))\n"}
+,{"stream_name":"stdout","time":27.130573044,"data":"  Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)\n"}
+,{"stream_name":"stdout","time":27.226042848,"data":"Collecting traitlets==5.16.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 167))\n"}
+,{"stream_name":"stdout","time":27.241817108,"data":"  Downloading traitlets-5.16.1-py3-none-any.whl.metadata (10 kB)\n"}
+,{"stream_name":"stdout","time":27.694662172,"data":"Collecting trimesh==5.1.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 168))\n"}
+,{"stream_name":"stdout","time":27.713680956,"data":"  Downloading trimesh-5.1.0-py3-none-any.whl.metadata (13 kB)\n"}
+,{"stream_name":"stdout","time":27.799754635,"data":"Collecting truststore==0.10.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 169))\n"}
+,{"stream_name":"stdout","time":27.817606972,"data":"  Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)\n"}
+,{"stream_name":"stdout","time":27.909883731,"data":"Collecting typing_extensions==4.16.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 170))\n"}
+,{"stream_name":"stdout","time":27.92707574,"data":"  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)\n"}
+,{"stream_name":"stdout","time":28.013186825,"data":"Collecting tzdata==2026.4 (from -r /kaggle/working/code/requirements-kaggle.txt (line 171))\n"}
+,{"stream_name":"stdout","time":28.029175049,"data":"  Downloading tzdata-2026.4-py2.py3-none-any.whl.metadata (1.4 kB)\n"}
+,{"stream_name":"stdout","time":28.047771297,"data":"Requirement already satisfied: uri-template==1.3.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 172)) (1.3.0)\n"}
+,{"stream_name":"stdout","time":28.186947113,"data":"Collecting urllib3==2.8.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 173))\n"}
+,{"stream_name":"stdout","time":28.203339204,"data":"  Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)\n"}
+,{"stream_name":"stdout","time":28.284151528,"data":"Collecting wcwidth==0.9.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 174))\n"}
+,{"stream_name":"stdout","time":28.299575687,"data":"  Downloading wcwidth-0.9.1-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (23 kB)\n"}
+,{"stream_name":"stdout","time":28.324547961,"data":"Requirement already satisfied: webcolors==25.10.0 in /usr/local/lib/python3.12/dist-packages (from -r /kaggle/working/code/requirements-kaggle.txt (line 175)) (25.10.0)\n"}
+,{"stream_name":"stdout","time":28.365309048,"data":"Collecting webencodings==0.6.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 176))\n"}
+,{"stream_name":"stdout","time":28.380996196,"data":"  Downloading webencodings-0.6.1-py3-none-any.whl.metadata (3.4 kB)\n"}
+,{"stream_name":"stdout","time":28.471816432,"data":"Collecting websocket-client==1.9.2 (from -r /kaggle/working/code/requirements-kaggle.txt (line 177))\n"}
+,{"stream_name":"stdout","time":28.488780791,"data":"  Downloading websocket_client-1.9.2-py3-none-any.whl.metadata (8.3 kB)\n"}
+,{"stream_name":"stdout","time":28.829632345,"data":"Collecting websockets==17.1 (from -r /kaggle/working/code/requirements-kaggle.txt (line 178))\n"}
+,{"stream_name":"stdout","time":28.845594441,"data":"  Downloading websockets-17.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)\n"}
+,{"stream_name":"stdout","time":28.956482903,"data":"Collecting Werkzeug==3.1.9 (from -r /kaggle/working/code/requirements-kaggle.txt (line 179))\n"}
+,{"stream_name":"stdout","time":28.972244197,"data":"  Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)\n"}
+,{"stream_name":"stdout","time":29.094571006,"data":"Collecting widgetsnbextension==4.0.16 (from -r /kaggle/working/code/requirements-kaggle.txt (line 180))\n"}
+,{"stream_name":"stdout","time":29.111967443,"data":"  Downloading widgetsnbextension-4.0.16-py3-none-any.whl.metadata (1.6 kB)\n"}
+,{"stream_name":"stdout","time":30.041382351,"data":"Collecting wrapt==2.5.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 181))\n"}
+,{"stream_name":"stdout","time":30.057539826,"data":"  Downloading wrapt-2.5.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (7.6 kB)\n"}
+,{"stream_name":"stdout","time":30.153614804,"data":"Collecting zipp==4.1.0 (from -r /kaggle/working/code/requirements-kaggle.txt (line 182))\n"}
+,{"stream_name":"stdout","time":30.17142756,"data":"  Downloading zipp-4.1.0-py3-none-any.whl.metadata (3.6 kB)\n"}
+,{"stream_name":"stdout","time":30.700529416,"data":"Downloading absl_py-2.5.0-py3-none-any.whl (137 kB)\n"}
+,{"stream_name":"stdout","time":30.739112283,"data":"Downloading anyio-4.15.1-py3-none-any.whl (132 kB)\n"}
+,{"stream_name":"stdout","time":30.776321935,"data":"Downloading argon2_cffi_bindings-26.1.0-cp310-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (26 kB)\n"}
+,{"stream_name":"stdout","time":30.813461512,"data":"Downloading asttokens-3.0.2-py3-none-any.whl (28 kB)\n"}
+,{"stream_name":"stdout","time":30.850328499,"data":"Downloading async_lru-2.3.0-py3-none-any.whl (8.4 kB)\n"}
+,{"stream_name":"stdout","time":30.884048471,"data":"Downloading beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)\n"}
+,{"stream_name":"stdout","time":30.919231964,"data":"Downloading bleach-6.4.0-py3-none-any.whl (165 kB)\n"}
+,{"stream_name":"stdout","time":30.95932084,"data":"Downloading brax-0.10.4-py3-none-any.whl (998 kB)\n"}
+,{"stream_name":"stdout","time":31.01763941,"data":"Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)\n"}
+,{"stream_name":"stdout","time":31.054180215,"data":"Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)\n"}
+,{"stream_name":"stdout","time":31.090491064,"data":"Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)\n"}
+,{"stream_name":"stdout","time":31.133313078,"data":"Downloading chex-0.1.86-py3-none-any.whl (98 kB)\n"}
+,{"stream_name":"stdout","time":31.171216991,"data":"Downloading click-8.5.0-py3-none-any.whl (125 kB)\n"}
+,{"stream_name":"stdout","time":31.207221685,"data":"Downloading debugpy-1.8.22-cp312-cp312-manylinux_2_34_x86_64.whl (4.0 MB)\n"}
+,{"stream_name":"stdout","time":31.277612442,"data":"Downloading dm_env-1.6-py3-none-any.whl (26 kB)\n"}
+,{"stream_name":"stdout","time":31.315838704,"data":"Downloading executing-2.2.1-py2.py3-none-any.whl (28 kB)\n"}
+,{"stream_name":"stdout","time":31.35702889,"data":"Downloading farama_notifications-0.0.6-py3-none-any.whl (2.9 kB)\n"}
+,{"stream_name":"stdout","time":31.388689953,"data":"Downloading fastjsonschema-2.22.2-py3-none-any.whl (27 kB)\n"}
+,{"stream_name":"stdout","time":31.436055072,"data":"Downloading filelock-4.0.7-py3-none-any.whl (109 kB)\n"}
+,{"stream_name":"stdout","time":31.474785935,"data":"Downloading flask_cors-6.0.5-py3-none-any.whl (16 kB)\n"}
+,{"stream_name":"stdout","time":31.512138898,"data":"Downloading flax-0.8.5-py3-none-any.whl (731 kB)\n"}
+,{"stream_name":"stdout","time":31.559130707,"data":"Downloading fonttools-4.66.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.4 MB)\n"}
+,{"stream_name":"stdout","time":31.641650113,"data":"Downloading fqdn-1.6.0-py3-none-any.whl (12 kB)\n"}
+,{"stream_name":"stdout","time":31.677984858,"data":"Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)\n"}
+,{"stream_name":"stdout","time":31.723010473,"data":"Downloading glfw-2.10.2-py2.py3-none-manylinux_2_28_x86_64.whl (248 kB)\n"}
+,{"stream_name":"stdout","time":31.765073336,"data":"Downloading grpcio-1.84.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (7.2 MB)\n"}
+,{"stream_name":"stdout","time":31.858535798,"data":"Downloading gymnasium-1.3.0-py3-none-any.whl (953 kB)\n"}
+,{"stream_name":"stdout","time":31.902071179,"data":"Downloading hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.5 MB)\n"}
+,{"stream_name":"stdout","time":31.968998825,"data":"Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)\n"}
+,{"stream_name":"stdout","time":32.007998258,"data":"Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)\n"}
+,{"stream_name":"stdout","time":32.047890624,"data":"Downloading huggingface_hub-2.0.0-py3-none-any.whl (828 kB)\n"}
+,{"stream_name":"stdout","time":32.092780398,"data":"Downloading humanize-4.16.0-py3-none-any.whl (137 kB)\n"}
+,{"stream_name":"stdout","time":32.132870498,"data":"Downloading idna-3.20-py3-none-any.whl (69 kB)\n"}
+,{"stream_name":"stdout","time":32.167996202,"data":"Downloading imageio-2.38.0-py3-none-any.whl (328 kB)\n"}
+,{"stream_name":"stdout","time":32.205683116,"data":"Downloading ipykernel-7.4.0-py3-none-any.whl (123 kB)\n"}
+,{"stream_name":"stdout","time":32.242029905,"data":"Downloading ipython-9.17.1-py3-none-any.whl (639 kB)\n"}
+,{"stream_name":"stdout","time":32.283518395,"data":"Downloading ipywidgets-8.1.9-py3-none-any.whl (140 kB)\n"}
+,{"stream_name":"stdout","time":32.321270074,"data":"Downloading jax-0.4.28-py3-none-any.whl (1.9 MB)\n"}
+,{"stream_name":"stdout","time":32.379759754,"data":"Downloading jaxlib-0.4.28-cp312-cp312-manylinux2014_x86_64.whl (77.6 MB)\n"}
+,{"stream_name":"stdout","time":33.958785843,"data":"Downloading jaxopt-0.8.5-py3-none-any.whl (172 kB)\n"}
+,{"stream_name":"stdout","time":33.998198692,"data":"Downloading jedi-0.20.0-py2.py3-none-any.whl (4.9 MB)\n"}
+,{"stream_name":"stdout","time":34.080876839,"data":"Downloading joblib-1.6.0-py3-none-any.whl (306 kB)\n"}
+,{"stream_name":"stdout","time":34.120190045,"data":"Downloading jumanji-1.1.0-py3-none-any.whl (1.2 MB)\n"}
+,{"stream_name":"stdout","time":34.175464787,"data":"Downloading jupyter-1.1.1-py2.py3-none-any.whl (2.7 kB)\n"}
+,{"stream_name":"stdout","time":34.211152426,"data":"Downloading jupyter_lsp-2.3.1-py3-none-any.whl (77 kB)\n"}
+,{"stream_name":"stdout","time":34.252355803,"data":"Downloading jupyter_builder-1.2.3-py3-none-any.whl (947 kB)\n"}
+,{"stream_name":"stdout","time":34.294735272,"data":"Downloading jupyter_client-8.10.0-py3-none-any.whl (110 kB)\n"}
+,{"stream_name":"stdout","time":34.330339406,"data":"Downloading jupyter_server-2.21.1-py3-none-any.whl (394 kB)\n"}
+,{"stream_name":"stdout","time":34.36904748,"data":"Downloading jupyterlab-4.6.4-py3-none-any.whl (17.2 MB)\n"}
+,{"stream_name":"stdout","time":34.61113136,"data":"Downloading jupyterlab_server-2.28.1-py3-none-any.whl (60 kB)\n"}
+,{"stream_name":"stdout","time":34.649188967,"data":"Downloading jupyterlab_widgets-3.0.17-py3-none-any.whl (217 kB)\n"}
+,{"stream_name":"stdout","time":34.690826294,"data":"Downloading jupytext-1.19.5-py3-none-any.whl (229 kB)\n"}
+,{"stream_name":"stdout","time":34.730460632,"data":"Downloading kaggle-2.2.4-py3-none-any.whl (126 kB)\n"}
+,{"stream_name":"stdout","time":34.768069049,"data":"Downloading kagglesdk-0.1.37-py3-none-any.whl (262 kB)\n"}
+,{"stream_name":"stdout","time":34.852713023,"data":"Downloading kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)\n"}
+,{"stream_name":"stdout","time":34.928028292,"data":"Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)\n"}
+,{"stream_name":"stdout","time":34.966468459,"data":"Downloading matplotlib-3.7.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.6 MB)\n"}
+,{"stream_name":"stdout","time":35.157778605,"data":"Downloading matplotlib_inline-0.2.2-py3-none-any.whl (9.5 kB)\n"}
+,{"stream_name":"stdout","time":35.193122205,"data":"Downloading mdit_py_plugins-0.6.1-py3-none-any.whl (66 kB)\n"}
+,{"stream_name":"stdout","time":35.22899853,"data":"Downloading mistune-3.3.4-py3-none-any.whl (66 kB)\n"}
+,{"stream_name":"stdout","time":35.272383318,"data":"Downloading msgpack-1.2.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (472 kB)\n"}
+,{"stream_name":"stdout","time":35.316316851,"data":"Downloading mujoco-3.1.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.6 MB)\n"}
+,{"stream_name":"stdout","time":35.472859947,"data":"Downloading mujoco_mjx-3.1.5-py3-none-any.whl (6.5 MB)\n"}
+,{"stream_name":"stdout","time":35.624909922,"data":"Downloading narwhals-2.26.0-py3-none-any.whl (474 kB)\n"}
+,{"stream_name":"stdout","time":35.665707186,"data":"Downloading nbclient-0.11.0-py3-none-any.whl (25 kB)\n"}
+,{"stream_name":"stdout","time":35.702851615,"data":"Downloading nbconvert-7.17.1-py3-none-any.whl (261 kB)\n"}
+,{"stream_name":"stdout","time":35.742048339,"data":"Downloading nbformat-5.11.1-py3-none-any.whl (79 kB)\n"}
+,{"stream_name":"stdout","time":35.779287275,"data":"Downloading nest_asyncio2-1.7.3-py3-none-any.whl (8.4 kB)\n"}
+,{"stream_name":"stdout","time":35.818751546,"data":"Downloading notebook-7.6.3-py3-none-any.whl (5.5 MB)\n"}
+,{"stream_name":"stdout","time":35.902281155,"data":"Downloading numpy-1.26.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.0 MB)\n"}
+,{"stream_name":"stdout","time":36.123969042,"data":"Downloading optax-0.1.9-py3-none-any.whl (197 kB)\n"}
+,{"stream_name":"stdout","time":36.169532676,"data":"Downloading orbax_checkpoint-0.6.4-py3-none-any.whl (270 kB)\n"}
+,{"stream_name":"stdout","time":36.205814175,"data":"Downloading packaging-26.3-py3-none-any.whl (129 kB)\n"}
+,{"stream_name":"stdout","time":36.241703931,"data":"Downloading pandas-3.0.6-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (10.8 MB)\n"}
+,{"stream_name":"stdout","time":36.406037441,"data":"Downloading parso-0.8.7-py2.py3-none-any.whl (107 kB)\n"}
+,{"stream_name":"stdout","time":36.441274936,"data":"Downloading pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)\n"}
+,{"stream_name":"stdout","time":36.538819444,"data":"Downloading platformdirs-4.12.2-py3-none-any.whl (32 kB)\n"}
+,{"stream_name":"stdout","time":36.579888107,"data":"Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)\n"}
+,{"stream_name":"stdout","time":36.61640265,"data":"Downloading prompt_toolkit-3.0.53-py3-none-any.whl (392 kB)\n"}
+,{"stream_name":"stdout","time":36.658643248,"data":"Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)\n"}
+,{"stream_name":"stdout","time":36.698496242,"data":"Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)\n"}
+,{"stream_name":"stdout","time":36.735914638,"data":"Downloading pure_eval-0.2.4-py3-none-any.whl (11 kB)\n"}
+,{"stream_name":"stdout","time":36.840780831000004,"data":"Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)\n"}
+,{"stream_name":"stdout","time":36.896703951,"data":"Downloading pyparsing-3.3.3-py3-none-any.whl (126 kB)\n"}
+,{"stream_name":"stdout","time":36.942234197,"data":"Downloading pytest-9.1.1-py3-none-any.whl (386 kB)\n"}
+,{"stream_name":"stdout","time":36.986014676,"data":"Downloading python_dotenv-1.2.3-py3-none-any.whl (22 kB)\n"}
+,{"stream_name":"stdout","time":37.022887944,"data":"Downloading python_json_logger-4.2.0-py3-none-any.whl (14 kB)\n"}
+,{"stream_name":"stdout","time":37.061237076,"data":"Downloading python_slugify-9.1.2-py3-none-any.whl (15 kB)\n"}
+,{"stream_name":"stdout","time":37.098032652,"data":"Downloading pyzmq-27.2.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (872 kB)\n"}
+,{"stream_name":"stdout","time":37.153029568,"data":"Downloading qdax-0.5.0-py3-none-any.whl (284 kB)\n"}
+,{"stream_name":"stdout","time":37.203520278,"data":"Downloading requests-2.34.2-py3-none-any.whl (73 kB)\n"}
+,{"stream_name":"stdout","time":37.245479067,"data":"Downloading rich-15.0.0-py3-none-any.whl (310 kB)\n"}
+,{"stream_name":"stdout","time":37.324900317,"data":"Downloading rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (366 kB)\n"}
+,{"stream_name":"stdout","time":37.365374434,"data":"Downloading scikit_learn-1.9.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.2 MB)\n"}
+,{"stream_name":"stdout","time":37.506036299,"data":"Downloading scipy-1.17.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.2 MB)\n"}
+,{"stream_name":"stdout","time":38.148657268,"data":"Downloading setuptools-84.0.0-py3-none-any.whl (818 kB)\n"}
+,{"stream_name":"stdout","time":38.193316987,"data":"Downloading soupsieve-2.10-py3-none-any.whl (38 kB)\n"}
+,{"stream_name":"stdout","time":38.238359941,"data":"Downloading stack_data-0.6.3-py3-none-any.whl (24 kB)\n"}
+,{"stream_name":"stdout","time":38.276129135,"data":"Downloading tabulate-0.10.0-py3-none-any.whl (39 kB)\n"}
+,{"stream_name":"stdout","time":38.312113599,"data":"Downloading tensorboardx-2.6.5-py3-none-any.whl (87 kB)\n"}
+,{"stream_name":"stdout","time":38.348833702,"data":"Downloading tensorflow_probability-0.24.0-py2.py3-none-any.whl (6.9 MB)\n"}
+,{"stream_name":"stdout","time":38.460909537,"data":"Downloading tensorstore-0.1.85-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (21.6 MB)\n"}
+,{"stream_name":"stdout","time":38.83096094,"data":"Downloading threadpoolctl-3.7.0-py3-none-any.whl (26 kB)\n"}
+,{"stream_name":"stdout","time":38.867549914,"data":"Downloading tinycss2-1.5.1-py3-none-any.whl (28 kB)\n"}
+,{"stream_name":"stdout","time":38.90280909,"data":"Downloading toolz-1.1.0-py3-none-any.whl (58 kB)\n"}
+,{"stream_name":"stdout","time":38.940288212,"data":"Downloading tornado-6.5.10-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (467 kB)\n"}
+,{"stream_name":"stdout","time":38.980235713,"data":"Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)\n"}
+,{"stream_name":"stdout","time":39.018523447,"data":"Downloading traitlets-5.16.1-py3-none-any.whl (86 kB)\n"}
+,{"stream_name":"stdout","time":39.065091809,"data":"Downloading trimesh-5.1.0-py3-none-any.whl (750 kB)\n"}
+,{"stream_name":"stdout","time":39.113116881,"data":"Downloading truststore-0.10.4-py3-none-any.whl (18 kB)\n"}
+,{"stream_name":"stdout","time":39.149795491,"data":"Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)\n"}
+,{"stream_name":"stdout","time":39.187419168,"data":"Downloading tzdata-2026.4-py2.py3-none-any.whl (347 kB)\n"}
+,{"stream_name":"stdout","time":39.228552607,"data":"Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)\n"}
+,{"stream_name":"stdout","time":39.272895843,"data":"Downloading wcwidth-0.9.1-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (768 kB)\n"}
+,{"stream_name":"stdout","time":39.316840713,"data":"Downloading webencodings-0.6.1-py3-none-any.whl (8.7 kB)\n"}
+,{"stream_name":"stdout","time":39.353891233,"data":"Downloading websocket_client-1.9.2-py3-none-any.whl (95 kB)\n"}
+,{"stream_name":"stdout","time":39.392633729,"data":"Downloading websockets-17.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (224 kB)\n"}
+,{"stream_name":"stdout","time":39.431138745,"data":"Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)\n"}
+,{"stream_name":"stdout","time":39.469901745,"data":"Downloading widgetsnbextension-4.0.16-py3-none-any.whl (2.2 MB)\n"}
+,{"stream_name":"stdout","time":39.530086817,"data":"Downloading wrapt-2.5.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (250 kB)\n"}
+,{"stream_name":"stdout","time":39.573110632,"data":"Downloading zipp-4.1.0-py3-none-any.whl (10 kB)\n"}
+,{"stream_name":"stdout","time":40.812151911,"data":"Installing collected packages: stack-data, pure_eval, jupyter, jaxopt, glfw, Farama-Notifications, brax, zipp, wrapt, widgetsnbextension, Werkzeug, websockets, websocket-client, webencodings, wcwidth, urllib3, tzdata, typing_extensions, truststore, trimesh, traitlets, tqdm, tornado, toolz, tinycss2, threadpoolctl, tensorstore, tensorflow-probability, tensorboardX, tabulate, soupsieve, setuptools, scipy, scikit-learn, rpds-py, rich, requests, qdax, pyzmq, python-slugify, python-json-logger, python-dotenv, pytest, pyparsing, Pygments, psutil, protobuf, prompt_toolkit, prometheus_client, platformdirs, pillow, parso, pandas, packaging, orbax-checkpoint, optax, numpy, notebook, nest-asyncio2, nbformat, nbconvert, nbclient, narwhals, mujoco-mjx, mujoco, msgpack, mistune, mdit-py-plugins, matplotlib-inline, matplotlib, markdown-it-py, kiwisolver, kagglesdk, kaggle, jupytext, jupyterlab_widgets, jupyterlab_server, jupyterlab, jupyter_server, jupyter-lsp, jupyter_client, jupyter_builder, jumanji, joblib, jedi, jaxlib, jax, ipywidgets, ipython, ipykernel, ImageIO, idna, humanize, huggingface_hub, httpx2, httpcore2, hf-xet, gymnasium, grpcio, fsspec, fqdn, fonttools, flax, flask-cors, filelock, fastjsonschema, executing, dm-env, debugpy, click, chex, charset-normalizer, cffi, certifi, bleach, beautifulsoup4, async-lru, asttokens, argon2-cffi-bindings, anyio, absl-py\n"}
+,{"stream_name":"stdout","time":41.100647127,"data":"  Attempting uninstall: Farama-Notifications\n"}
+,{"stream_name":"stdout","time":41.504818696,"data":"    Found existing installation: Farama-Notifications 0.0.4\n"}
+,{"stream_name":"stdout","time":41.509769079,"data":"    Uninstalling Farama-Notifications-0.0.4:\n"}
+,{"stream_name":"stdout","time":41.518259857,"data":"      Successfully uninstalled Farama-Notifications-0.0.4\n"}
+,{"stream_name":"stdout","time":42.064282899,"data":"  Attempting uninstall: zipp\n"}
+,{"stream_name":"stdout","time":42.348604681,"data":"    Found existing installation: zipp 3.23.1\n"}
+,{"stream_name":"stdout","time":42.360409772,"data":"    Uninstalling zipp-3.23.1:\n"}
+,{"stream_name":"stdout","time":42.379068137,"data":"      Successfully uninstalled zipp-3.23.1\n"}
+,{"stream_name":"stdout","time":42.41277404,"data":"  Attempting uninstall: wrapt\n"}
+,{"stream_name":"stdout","time":42.664602582,"data":"    Found existing installation: wrapt 2.1.2\n"}
+,{"stream_name":"stdout","time":42.670457585,"data":"    Uninstalling wrapt-2.1.2:\n"}
+,{"stream_name":"stdout","time":42.686557686,"data":"      Successfully uninstalled wrapt-2.1.2\n"}
+,{"stream_name":"stdout","time":42.750333863,"data":"  Attempting uninstall: widgetsnbextension\n"}
+,{"stream_name":"stdout","time":42.851535793,"data":"    Found existing installation: widgetsnbextension 4.0.15\n"}
+,{"stream_name":"stdout","time":42.873466264,"data":"    Uninstalling widgetsnbextension-4.0.15:\n"}
+,{"stream_name":"stdout","time":42.969091698,"data":"      Successfully uninstalled widgetsnbextension-4.0.15\n"}
+,{"stream_name":"stdout","time":43.05778421,"data":"  Attempting uninstall: Werkzeug\n"}
+,{"stream_name":"stdout","time":43.466412061,"data":"    Found existing installation: Werkzeug 3.1.8\n"}
+,{"stream_name":"stdout","time":43.481085727,"data":"    Uninstalling Werkzeug-3.1.8:\n"}
+,{"stream_name":"stdout","time":43.540488057,"data":"      Successfully uninstalled Werkzeug-3.1.8\n"}
+,{"stream_name":"stdout","time":43.729302109,"data":"  Attempting uninstall: websockets\n"}
+,{"stream_name":"stdout","time":44.104912133,"data":"    Found existing installation: websockets 15.0.1\n"}
+,{"stream_name":"stdout","time":44.117188657,"data":"    Uninstalling websockets-15.0.1:\n"}
+,{"stream_name":"stdout","time":44.189760476000004,"data":"      Successfully uninstalled websockets-15.0.1\n"}
+,{"stream_name":"stdout","time":44.368454532,"data":"  Attempting uninstall: websocket-client\n"}
+,{"stream_name":"stdout","time":44.516625801,"data":"    Found existing installation: websocket-client 1.9.0\n"}
+,{"stream_name":"stdout","time":44.528880626,"data":"    Uninstalling websocket-client-1.9.0:\n"}
+,{"stream_name":"stdout","time":44.593113857,"data":"      Successfully uninstalled websocket-client-1.9.0\n"}
+,{"stream_name":"stdout","time":44.706701934,"data":"  Attempting uninstall: webencodings\n"}
+,{"stream_name":"stdout","time":44.878121506,"data":"    Found existing installation: webencodings 0.5.1\n"}
+,{"stream_name":"stdout","time":44.882940259,"data":"    Uninstalling webencodings-0.5.1:\n"}
+,{"stream_name":"stdout","time":44.894227782,"data":"      Successfully uninstalled webencodings-0.5.1\n"}
+,{"stream_name":"stdout","time":44.921771665,"data":"  Attempting uninstall: wcwidth\n"}
+,{"stream_name":"stdout","time":45.314545216,"data":"    Found existing installation: wcwidth 0.6.0\n"}
+,{"stream_name":"stdout","time":45.323366318,"data":"    Uninstalling wcwidth-0.6.0:\n"}
+,{"stream_name":"stdout","time":45.358457129,"data":"      Successfully uninstalled wcwidth-0.6.0\n"}
+,{"stream_name":"stdout","time":45.689572699,"data":"  Attempting uninstall: urllib3\n"}
+,{"stream_name":"stdout","time":45.918371724,"data":"    Found existing installation: urllib3 2.5.0\n"}
+,{"stream_name":"stdout","time":45.932905655,"data":"    Uninstalling urllib3-2.5.0:\n"}
+,{"stream_name":"stdout","time":45.999581491,"data":"      Successfully uninstalled urllib3-2.5.0\n"}
+,{"stream_name":"stdout","time":46.114247014,"data":"  Attempting uninstall: tzdata\n"}
+,{"stream_name":"stdout","time":46.413705603,"data":"    Found existing installation: tzdata 2026.1\n"}
+,{"stream_name":"stdout","time":46.457767404,"data":"    Uninstalling tzdata-2026.1:\n"}
+,{"stream_name":"stdout","time":46.94641808,"data":"      Successfully uninstalled tzdata-2026.1\n"}
+,{"stream_name":"stdout","time":47.120201381,"data":"  Attempting uninstall: typing_extensions\n"}
+,{"stream_name":"stdout","time":47.140690109,"data":"    Found existing installation: typing_extensions 4.15.0\n"}
+,{"stream_name":"stdout","time":47.145804543,"data":"    Uninstalling typing_extensions-4.15.0:\n"}
+,{"stream_name":"stdout","time":67.371657461,"data":"      Successfully uninstalled typing_extensions-4.15.0\n"}
+,{"stream_name":"stdout","time":68.67577149,"data":"  Attempting uninstall: traitlets\n"}
+,{"stream_name":"stdout","time":68.791574009,"data":"    Found existing installation: traitlets 5.15.1\n"}
+,{"stream_name":"stdout","time":68.798322407,"data":"    Uninstalling traitlets-5.15.1:\n"}
+,{"stream_name":"stdout","time":68.826954921,"data":"      Successfully uninstalled traitlets-5.15.1\n"}
+,{"stream_name":"stdout","time":69.141340876,"data":"  Attempting uninstall: tqdm\n"}
+,{"stream_name":"stdout","time":69.550933375,"data":"    Found existing installation: tqdm 4.67.3\n"}
+,{"stream_name":"stdout","time":69.561400636,"data":"    Uninstalling tqdm-4.67.3:\n"}
+,{"stream_name":"stdout","time":69.618424857,"data":"      Successfully uninstalled tqdm-4.67.3\n"}
+,{"stream_name":"stdout","time":69.699013226,"data":"  Attempting uninstall: tornado\n"}
+,{"stream_name":"stdout","time":70.111703579,"data":"    Found existing installation: tornado 6.5.1\n"}
+,{"stream_name":"stdout","time":70.121999704,"data":"    Uninstalling tornado-6.5.1:\n"}
+,{"stream_name":"stdout","time":70.250671389,"data":"      Successfully uninstalled tornado-6.5.1\n"}
+,{"stream_name":"stdout","time":70.653346606,"data":"  Attempting uninstall: toolz\n"}
+,{"stream_name":"stdout","time":70.937098568,"data":"    Found existing installation: toolz 0.12.1\n"}
+,{"stream_name":"stdout","time":70.943578811,"data":"    Uninstalling toolz-0.12.1:\n"}
+,{"stream_name":"stdout","time":70.976427373,"data":"      Successfully uninstalled toolz-0.12.1\n"}
+,{"stream_name":"stdout","time":71.074606118,"data":"  Attempting uninstall: tinycss2\n"}
+,{"stream_name":"stdout","time":71.498576565,"data":"    Found existing installation: tinycss2 1.4.0\n"}
+,{"stream_name":"stdout","time":71.503003632,"data":"    Uninstalling tinycss2-1.4.0:\n"}
+,{"stream_name":"stdout","time":71.516011433,"data":"      Successfully uninstalled tinycss2-1.4.0\n"}
+,{"stream_name":"stdout","time":71.567554286,"data":"  Attempting uninstall: threadpoolctl\n"}
+,{"stream_name":"stdout","time":71.912624269,"data":"    Found existing installation: threadpoolctl 3.6.0\n"}
+,{"stream_name":"stdout","time":71.916943592,"data":"    Uninstalling threadpoolctl-3.6.0:\n"}
+,{"stream_name":"stdout","time":73.569616093,"data":"      Successfully uninstalled threadpoolctl-3.6.0\n"}
+,{"stream_name":"stdout","time":73.602498174,"data":"  Attempting uninstall: tensorstore\n"}
+,{"stream_name":"stdout","time":73.812353664,"data":"    Found existing installation: tensorstore 0.1.82\n"}
+,{"stream_name":"stdout","time":73.816757556,"data":"    Uninstalling tensorstore-0.1.82:\n"}
+,{"stream_name":"stdout","time":74.19325487,"data":"      Successfully uninstalled tensorstore-0.1.82\n"}
+,{"stream_name":"stdout","time":74.679079242,"data":"  Attempting uninstall: tensorflow-probability\n"}
+,{"stream_name":"stdout","time":75.104913357,"data":"    Found existing installation: tensorflow-probability 0.25.0\n"}
+,{"stream_name":"stdout","time":75.232806101,"data":"    Uninstalling tensorflow-probability-0.25.0:\n"}
+,{"stream_name":"stdout","time":76.912190003,"data":"      Successfully uninstalled tensorflow-probability-0.25.0\n"}
+,{"stream_name":"stdout","time":81.178910215,"data":"  Attempting uninstall: tabulate\n"}
+,{"stream_name":"stdout","time":81.528984816,"data":"    Found existing installation: tabulate 0.9.0\n"}
+,{"stream_name":"stdout","time":81.536871341,"data":"    Uninstalling tabulate-0.9.0:\n"}
+,{"stream_name":"stdout","time":81.558300923,"data":"      Successfully uninstalled tabulate-0.9.0\n"}
+,{"stream_name":"stdout","time":81.602449792,"data":"  Attempting uninstall: soupsieve\n"}
+,{"stream_name":"stdout","time":81.862389108,"data":"    Found existing installation: soupsieve 2.8.3\n"}
+,{"stream_name":"stdout","time":81.867301052,"data":"    Uninstalling soupsieve-2.8.3:\n"}
+,{"stream_name":"stdout","time":81.881026119,"data":"      Successfully uninstalled soupsieve-2.8.3\n"}
+,{"stream_name":"stdout","time":81.942074431,"data":"  Attempting uninstall: setuptools\n"}
+,{"stream_name":"stdout","time":81.970187698,"data":"    Found existing installation: setuptools 81.0.0\n"}
+,{"stream_name":"stdout","time":82.008443897,"data":"    Uninstalling setuptools-81.0.0:\n"}
+,{"stream_name":"stdout","time":83.803940662,"data":"      Successfully uninstalled setuptools-81.0.0\n"}
+,{"stream_name":"stdout","time":84.430329731,"data":"  Attempting uninstall: scipy\n"}
+,{"stream_name":"stdout","time":84.685145587,"data":"    Found existing installation: scipy 1.16.3\n"}
+,{"stream_name":"stdout","time":84.789174565,"data":"    Uninstalling scipy-1.16.3:\n"}
+,{"stream_name":"stdout","time":87.27553295,"data":"      Successfully uninstalled scipy-1.16.3\n"}
+,{"stream_name":"stdout","time":92.951718521,"data":"  Attempting uninstall: scikit-learn\n"}
+,{"stream_name":"stdout","time":93.368113386,"data":"    Found existing installation: scikit-learn 1.6.1\n"}
+,{"stream_name":"stdout","time":93.434678794,"data":"    Uninstalling scikit-learn-1.6.1:\n"}
+,{"stream_name":"stdout","time":94.636976805,"data":"      Successfully uninstalled scikit-learn-1.6.1\n"}
+,{"stream_name":"stdout","time":97.679145229,"data":"  Attempting uninstall: rpds-py\n"}
+,{"stream_name":"stdout","time":98.04158286,"data":"    Found existing installation: rpds-py 0.30.0\n"}
+,{"stream_name":"stdout","time":98.045751828,"data":"    Uninstalling rpds-py-0.30.0:\n"}
+,{"stream_name":"stdout","time":98.06311717,"data":"      Successfully uninstalled rpds-py-0.30.0\n"}
+,{"stream_name":"stdout","time":98.100124883,"data":"  Attempting uninstall: rich\n"}
+,{"stream_name":"stdout","time":98.551436138,"data":"    Found existing installation: rich 13.9.4\n"}
+,{"stream_name":"stdout","time":98.561777435,"data":"    Uninstalling rich-13.9.4:\n"}
+,{"stream_name":"stdout","time":98.707830936,"data":"      Successfully uninstalled rich-13.9.4\n"}
+,{"stream_name":"stdout","time":99.457875454,"data":"  Attempting uninstall: requests\n"}
+,{"stream_name":"stdout","time":99.78070425,"data":"    Found existing installation: requests 2.32.4\n"}
+,{"stream_name":"stdout","time":99.786674182,"data":"    Uninstalling requests-2.32.4:\n"}
+,{"stream_name":"stdout","time":99.830465825,"data":"      Successfully uninstalled requests-2.32.4\n"}
+,{"stream_name":"stdout","time":100.211758871,"data":"  Attempting uninstall: pyzmq\n"}
+,{"stream_name":"stdout","time":100.362507482,"data":"    Found existing installation: pyzmq 26.2.1\n"}
+,{"stream_name":"stdout","time":100.374335203,"data":"    Uninstalling pyzmq-26.2.1:\n"}
+,{"stream_name":"stdout","time":100.51400514,"data":"      Successfully uninstalled pyzmq-26.2.1\n"}
+,{"stream_name":"stdout","time":100.691415277,"data":"  Attempting uninstall: python-slugify\n"}
+,{"stream_name":"stdout","time":100.997804933,"data":"    Found existing installation: python-slugify 8.0.4\n"}
+,{"stream_name":"stdout","time":101.004713528,"data":"    Uninstalling python-slugify-8.0.4:\n"}
+,{"stream_name":"stdout","time":101.02830253,"data":"      Successfully uninstalled python-slugify-8.0.4\n"}
+,{"stream_name":"stdout","time":101.062633629,"data":"  Attempting uninstall: python-json-logger\n"}
+,{"stream_name":"stdout","time":101.311981479,"data":"    Found existing installation: python-json-logger 4.1.0\n"}
+,{"stream_name":"stdout","time":101.316871889,"data":"    Uninstalling python-json-logger-4.1.0:\n"}
+,{"stream_name":"stdout","time":101.341090871,"data":"      Successfully uninstalled python-json-logger-4.1.0\n"}
+,{"stream_name":"stdout","time":101.377589743,"data":"  Attempting uninstall: python-dotenv\n"}
+,{"stream_name":"stdout","time":101.780260043,"data":"    Found existing installation: python-dotenv 1.2.2\n"}
+,{"stream_name":"stdout","time":101.787414834,"data":"    Uninstalling python-dotenv-1.2.2:\n"}
+,{"stream_name":"stdout","time":101.815601444,"data":"      Successfully uninstalled python-dotenv-1.2.2\n"}
+,{"stream_name":"stdout","time":101.855514683,"data":"  Attempting uninstall: pytest\n"}
+,{"stream_name":"stdout","time":102.04279699,"data":"    Found existing installation: pytest 8.4.2\n"}
+,{"stream_name":"stdout","time":102.055325147,"data":"    Uninstalling pytest-8.4.2:\n"}
+,{"stream_name":"stdout","time":104.30341629,"data":"      Successfully uninstalled pytest-8.4.2\n"}
+,{"stream_name":"stdout","time":104.656542386,"data":"  Attempting uninstall: pyparsing\n"}
+,{"stream_name":"stdout","time":104.867011274,"data":"    Found existing installation: pyparsing 3.3.2\n"}
+,{"stream_name":"stdout","time":104.873303087,"data":"    Uninstalling pyparsing-3.3.2:\n"}
+,{"stream_name":"stdout","time":104.916866682,"data":"      Successfully uninstalled pyparsing-3.3.2\n"}
+,{"stream_name":"stdout","time":105.04057683,"data":"  Attempting uninstall: Pygments\n"}
+,{"stream_name":"stdout","time":105.416538032,"data":"    Found existing installation: Pygments 2.20.0\n"}
+,{"stream_name":"stdout","time":105.446281422,"data":"    Uninstalling Pygments-2.20.0:\n"}
+,{"stream_name":"stdout","time":105.799651711,"data":"      Successfully uninstalled Pygments-2.20.0\n"}
+,{"stream_name":"stdout","time":106.74188519,"data":"  Attempting uninstall: psutil\n"}
+,{"stream_name":"stdout","time":106.889848402,"data":"    Found existing installation: psutil 5.9.5\n"}
+,{"stream_name":"stdout","time":106.896667004,"data":"    Uninstalling psutil-5.9.5:\n"}
+,{"stream_name":"stdout","time":106.94565485,"data":"      Successfully uninstalled psutil-5.9.5\n"}
+,{"stream_name":"stdout","time":107.047156353,"data":"  Attempting uninstall: protobuf\n"}
+,{"stream_name":"stdout","time":107.082870396,"data":"    Found existing installation: protobuf 5.29.5\n"}
+,{"stream_name":"stdout","time":107.091178782,"data":"    Uninstalling protobuf-5.29.5:\n"}
+,{"stream_name":"stdout","time":107.154897641,"data":"      Successfully uninstalled protobuf-5.29.5\n"}
+,{"stream_name":"stdout","time":107.352831495,"data":"  Attempting uninstall: prompt_toolkit\n"}
+,{"stream_name":"stdout","time":107.723796669,"data":"    Found existing installation: prompt_toolkit 3.0.52\n"}
+,{"stream_name":"stdout","time":107.741735926,"data":"    Uninstalling prompt_toolkit-3.0.52:\n"}
+,{"stream_name":"stdout","time":108.005958548,"data":"      Successfully uninstalled prompt_toolkit-3.0.52\n"}
+,{"stream_name":"stdout","time":108.390783474,"data":"  Attempting uninstall: prometheus_client\n"}
+,{"stream_name":"stdout","time":108.756285789,"data":"    Found existing installation: prometheus_client 0.25.0\n"}
+,{"stream_name":"stdout","time":108.763358355,"data":"    Uninstalling prometheus_client-0.25.0:\n"}
+,{"stream_name":"stdout","time":108.821891586,"data":"      Successfully uninstalled prometheus_client-0.25.0\n"}
+,{"stream_name":"stdout","time":108.910137105,"data":"  Attempting uninstall: platformdirs\n"}
+,{"stream_name":"stdout","time":109.33990271,"data":"    Found existing installation: platformdirs 4.9.6\n"}
+,{"stream_name":"stdout","time":109.344567422,"data":"    Uninstalling platformdirs-4.9.6:\n"}
+,{"stream_name":"stdout","time":109.365465533,"data":"      Successfully uninstalled platformdirs-4.9.6\n"}
+,{"stream_name":"stdout","time":109.413488163,"data":"  Attempting uninstall: pillow\n"}
+,{"stream_name":"stdout","time":109.755272836,"data":"    Found existing installation: pillow 11.3.0\n"}
+,{"stream_name":"stdout","time":109.767850477,"data":"    Uninstalling pillow-11.3.0:\n"}
+,{"stream_name":"stdout","time":110.032634833,"data":"      Successfully uninstalled pillow-11.3.0\n"}
+,{"stream_name":"stdout","time":110.528378044,"data":"  Attempting uninstall: parso\n"}
+,{"stream_name":"stdout","time":110.743948763,"data":"    Found existing installation: parso 0.8.6\n"}
+,{"stream_name":"stdout","time":110.750664315,"data":"    Uninstalling parso-0.8.6:\n"}
+,{"stream_name":"stdout","time":110.811819703,"data":"      Successfully uninstalled parso-0.8.6\n"}
+,{"stream_name":"stdout","time":110.916759728,"data":"  Attempting uninstall: pandas\n"}
+,{"stream_name":"stdout","time":110.9887153,"data":"    Found existing installation: pandas 2.3.3\n"}
+,{"stream_name":"stdout","time":111.131645556,"data":"    Uninstalling pandas-2.3.3:\n"}
+,{"stream_name":"stdout","time":113.006254148,"data":"      Successfully uninstalled pandas-2.3.3\n"}
+,{"stream_name":"stdout","time":119.058802416,"data":"  Attempting uninstall: packaging\n"}
+,{"stream_name":"stdout","time":119.410992488,"data":"    Found existing installation: packaging 26.1\n"}
+,{"stream_name":"stdout","time":119.416722128,"data":"    Uninstalling packaging-26.1:\n"}
+,{"stream_name":"stdout","time":119.458208159,"data":"      Successfully uninstalled packaging-26.1\n"}
+,{"stream_name":"stdout","time":119.581594305,"data":"  Attempting uninstall: orbax-checkpoint\n"}
+,{"stream_name":"stdout","time":119.725569456,"data":"    Found existing installation: orbax-checkpoint 0.11.36\n"}
+,{"stream_name":"stdout","time":119.808659464,"data":"    Uninstalling orbax-checkpoint-0.11.36:\n"}
+,{"stream_name":"stdout","time":120.56320454,"data":"      Successfully uninstalled orbax-checkpoint-0.11.36\n"}
+,{"stream_name":"stdout","time":120.858722763,"data":"  Attempting uninstall: optax\n"}
+,{"stream_name":"stdout","time":121.159183995,"data":"    Found existing installation: optax 0.2.8\n"}
+,{"stream_name":"stdout","time":121.174200815,"data":"    Uninstalling optax-0.2.8:\n"}
+,{"stream_name":"stdout","time":121.310239823,"data":"      Successfully uninstalled optax-0.2.8\n"}
+,{"stream_name":"stdout","time":121.538800953,"data":"  Attempting uninstall: numpy\n"}
+,{"stream_name":"stdout","time":121.883176877,"data":"    Found existing installation: numpy 2.0.2\n"}
+,{"stream_name":"stdout","time":121.941493236,"data":"    Uninstalling numpy-2.0.2:\n"}
+,{"stream_name":"stdout","time":123.170008884,"data":"      Successfully uninstalled numpy-2.0.2\n"}
+,{"stream_name":"stdout","time":125.710430657,"data":"  Attempting uninstall: notebook\n"}
+,{"stream_name":"stdout","time":125.98575309,"data":"    Found existing installation: notebook 6.5.7\n"}
+,{"stream_name":"stdout","time":126.012361106,"data":"    Uninstalling notebook-6.5.7:\n"}
+,{"stream_name":"stdout","time":126.262255974,"data":"      Successfully uninstalled notebook-6.5.7\n"}
+,{"stream_name":"stdout","time":126.517961173,"data":"  Attempting uninstall: nbformat\n"}
+,{"stream_name":"stdout","time":126.786657411,"data":"    Found existing installation: nbformat 5.10.4\n"}
+,{"stream_name":"stdout","time":126.795868247,"data":"    Uninstalling nbformat-5.10.4:\n"}
+,{"stream_name":"stdout","time":126.895036206,"data":"      Successfully uninstalled nbformat-5.10.4\n"}
+,{"stream_name":"stdout","time":126.972474868,"data":"  Attempting uninstall: nbconvert\n"}
+,{"stream_name":"stdout","time":127.087513633,"data":"    Found existing installation: nbconvert 6.4.5\n"}
+,{"stream_name":"stdout","time":127.120063955,"data":"    Uninstalling nbconvert-6.4.5:\n"}
+,{"stream_name":"stdout","time":127.345590771,"data":"      Successfully uninstalled nbconvert-6.4.5\n"}
+,{"stream_name":"stdout","time":127.483830118,"data":"  Attempting uninstall: nbclient\n"}
+,{"stream_name":"stdout","time":127.605941164,"data":"    Found existing installation: nbclient 0.5.13\n"}
+,{"stream_name":"stdout","time":127.613148133,"data":"    Uninstalling nbclient-0.5.13:\n"}
+,{"stream_name":"stdout","time":127.664659218,"data":"      Successfully uninstalled nbclient-0.5.13\n"}
+,{"stream_name":"stdout","time":127.707458541,"data":"  Attempting uninstall: narwhals\n"}
+,{"stream_name":"stdout","time":128.023421318,"data":"    Found existing installation: narwhals 2.20.0\n"}
+,{"stream_name":"stdout","time":128.041329211,"data":"    Uninstalling narwhals-2.20.0:\n"}
+,{"stream_name":"stdout","time":128.248620199,"data":"      Successfully uninstalled narwhals-2.20.0\n"}
+,{"stream_name":"stdout","time":129.488839069,"data":"  Attempting uninstall: msgpack\n"}
+,{"stream_name":"stdout","time":129.7706074,"data":"    Found existing installation: msgpack 1.1.2\n"}
+,{"stream_name":"stdout","time":129.775093808,"data":"    Uninstalling msgpack-1.1.2:\n"}
+,{"stream_name":"stdout","time":129.792937032,"data":"      Successfully uninstalled msgpack-1.1.2\n"}
+,{"stream_name":"stdout","time":129.840741435,"data":"  Attempting uninstall: mistune\n"}
+,{"stream_name":"stdout","time":129.997552101,"data":"    Found existing installation: mistune 0.8.4\n"}
+,{"stream_name":"stdout","time":130.002031755,"data":"    Uninstalling mistune-0.8.4:\n"}
+,{"stream_name":"stdout","time":131.483734729,"data":"      Successfully uninstalled mistune-0.8.4\n"}
+,{"stream_name":"stdout","time":131.580482874,"data":"  Attempting uninstall: mdit-py-plugins\n"}
+,{"stream_name":"stdout","time":131.982425219,"data":"    Found existing installation: mdit-py-plugins 0.5.0\n"}
+,{"stream_name":"stdout","time":131.991306004,"data":"    Uninstalling mdit-py-plugins-0.5.0:\n"}
+,{"stream_name":"stdout","time":132.053867659,"data":"      Successfully uninstalled mdit-py-plugins-0.5.0\n"}
+,{"stream_name":"stdout","time":132.137743293,"data":"  Attempting uninstall: matplotlib-inline\n"}
+,{"stream_name":"stdout","time":132.400496218,"data":"    Found existing installation: matplotlib-inline 0.2.1\n"}
+,{"stream_name":"stdout","time":132.405860489,"data":"    Uninstalling matplotlib-inline-0.2.1:\n"}
+,{"stream_name":"stdout","time":132.418394332,"data":"      Successfully uninstalled matplotlib-inline-0.2.1\n"}
+,{"stream_name":"stdout","time":132.447005599,"data":"  Attempting uninstall: matplotlib\n"}
+,{"stream_name":"stdout","time":132.681065107,"data":"    Found existing installation: matplotlib 3.10.0\n"}
+,{"stream_name":"stdout","time":132.717222206,"data":"    Uninstalling matplotlib-3.10.0:\n"}
+,{"stream_name":"stdout","time":134.897703389,"data":"      Successfully uninstalled matplotlib-3.10.0\n"}
+,{"stream_name":"stdout","time":137.071987395,"data":"  Attempting uninstall: markdown-it-py\n"}
+,{"stream_name":"stdout","time":137.256434071,"data":"    Found existing installation: markdown-it-py 4.0.0\n"}
+,{"stream_name":"stdout","time":137.268884583,"data":"    Uninstalling markdown-it-py-4.0.0:\n"}
+,{"stream_name":"stdout","time":137.398627186,"data":"      Successfully uninstalled markdown-it-py-4.0.0\n"}
+,{"stream_name":"stdout","time":137.513994203,"data":"  Attempting uninstall: kiwisolver\n"}
+,{"stream_name":"stdout","time":137.934676068,"data":"    Found existing installation: kiwisolver 1.5.0\n"}
+,{"stream_name":"stdout","time":137.939472563,"data":"    Uninstalling kiwisolver-1.5.0:\n"}
+,{"stream_name":"stdout","time":137.996266393,"data":"      Successfully uninstalled kiwisolver-1.5.0\n"}
+,{"stream_name":"stdout","time":138.058505158,"data":"  Attempting uninstall: kagglesdk\n"}
+,{"stream_name":"stdout","time":138.363359883,"data":"    Found existing installation: kagglesdk 0.1.20\n"}
+,{"stream_name":"stdout","time":138.384722537,"data":"    Uninstalling kagglesdk-0.1.20:\n"}
+,{"stream_name":"stdout","time":138.50678137,"data":"      Successfully uninstalled kagglesdk-0.1.20\n"}
+,{"stream_name":"stdout","time":138.932606412,"data":"  Attempting uninstall: kaggle\n"}
+,{"stream_name":"stdout","time":139.259008048,"data":"    Found existing installation: kaggle 2.0.2\n"}
+,{"stream_name":"stdout","time":139.266814432,"data":"    Uninstalling kaggle-2.0.2:\n"}
+,{"stream_name":"stdout","time":139.302411026,"data":"      Successfully uninstalled kaggle-2.0.2\n"}
+,{"stream_name":"stdout","time":139.44647804,"data":"  Attempting uninstall: jupytext\n"}
+,{"stream_name":"stdout","time":139.715543736,"data":"    Found existing installation: jupytext 1.19.1\n"}
+,{"stream_name":"stdout","time":139.730387241,"data":"    Uninstalling jupytext-1.19.1:\n"}
+,{"stream_name":"stdout","time":139.874654432,"data":"      Successfully uninstalled jupytext-1.19.1\n"}
+,{"stream_name":"stdout","time":140.009731401,"data":"  Attempting uninstall: jupyterlab_widgets\n"}
+,{"stream_name":"stdout","time":140.359884363,"data":"    Found existing installation: jupyterlab_widgets 3.0.16\n"}
+,{"stream_name":"stdout","time":140.372013184,"data":"    Uninstalling jupyterlab_widgets-3.0.16:\n"}
+,{"stream_name":"stdout","time":140.441529789,"data":"      Successfully uninstalled jupyterlab_widgets-3.0.16\n"}
+,{"stream_name":"stdout","time":140.475105231,"data":"  Attempting uninstall: jupyterlab_server\n"}
+,{"stream_name":"stdout","time":140.620875217,"data":"    Found existing installation: jupyterlab_server 2.28.0\n"}
+,{"stream_name":"stdout","time":140.627906461,"data":"    Uninstalling jupyterlab_server-2.28.0:\n"}
+,{"stream_name":"stdout","time":140.67115512,"data":"      Successfully uninstalled jupyterlab_server-2.28.0\n"}
+,{"stream_name":"stdout","time":140.843449106,"data":"  Attempting uninstall: jupyterlab\n"}
+,{"stream_name":"stdout","time":140.946051929,"data":"    Found existing installation: jupyterlab 3.6.8\n"}
+,{"stream_name":"stdout","time":141.00674137,"data":"    Uninstalling jupyterlab-3.6.8:\n"}
+,{"stream_name":"stdout","time":141.799466215,"data":"      Successfully uninstalled jupyterlab-3.6.8\n"}
+,{"stream_name":"stdout","time":142.420999334,"data":"  Attempting uninstall: jupyter_server\n"}
+,{"stream_name":"stdout","time":142.517190705,"data":"    Found existing installation: jupyter_server 2.12.5\n"}
+,{"stream_name":"stdout","time":142.533544438,"data":"    Uninstalling jupyter_server-2.12.5:\n"}
+,{"stream_name":"stdout","time":142.672879324,"data":"      Successfully uninstalled jupyter_server-2.12.5\n"}
+,{"stream_name":"stdout","time":142.920434305,"data":"  Attempting uninstall: jupyter-lsp\n"}
+,{"stream_name":"stdout","time":143.01748594,"data":"    Found existing installation: jupyter-lsp 1.5.1\n"}
+,{"stream_name":"stdout","time":143.026734322,"data":"    Uninstalling jupyter-lsp-1.5.1:\n"}
+,{"stream_name":"stdout","time":143.101002203,"data":"      Successfully uninstalled jupyter-lsp-1.5.1\n"}
+,{"stream_name":"stdout","time":143.177933691,"data":"  Attempting uninstall: jupyter_client\n"}
+,{"stream_name":"stdout","time":143.598611293,"data":"    Found existing installation: jupyter_client 7.4.9\n"}
+,{"stream_name":"stdout","time":143.610326075,"data":"    Uninstalling jupyter_client-7.4.9:\n"}
+,{"stream_name":"stdout","time":143.733301181,"data":"      Successfully uninstalled jupyter_client-7.4.9\n"}
+,{"stream_name":"stdout","time":144.345553251,"data":"  Attempting uninstall: joblib\n"}
+,{"stream_name":"stdout","time":144.716013894,"data":"    Found existing installation: joblib 1.5.3\n"}
+,{"stream_name":"stdout","time":144.727800121,"data":"    Uninstalling joblib-1.5.3:\n"}
+,{"stream_name":"stdout","time":144.890117451,"data":"      Successfully uninstalled joblib-1.5.3\n"}
+,{"stream_name":"stdout","time":145.135524151,"data":"  Attempting uninstall: jedi\n"}
+,{"stream_name":"stdout","time":145.278533262,"data":"    Found existing installation: jedi 0.19.2\n"}
+,{"stream_name":"stdout","time":145.361398462,"data":"    Uninstalling jedi-0.19.2:\n"}
+,{"stream_name":"stdout","time":147.090381914,"data":"      Successfully uninstalled jedi-0.19.2\n"}
+,{"stream_name":"stdout","time":148.599586819,"data":"  Attempting uninstall: jaxlib\n"}
+,{"stream_name":"stdout","time":148.789621396,"data":"    Found existing installation: jaxlib 0.7.2\n"}
+,{"stream_name":"stdout","time":148.800977273,"data":"    Uninstalling jaxlib-0.7.2:\n"}
+,{"stream_name":"stdout","time":150.616600568,"data":"      Successfully uninstalled jaxlib-0.7.2\n"}
+,{"stream_name":"stdout","time":152.784720012,"data":"  Attempting uninstall: jax\n"}
+,{"stream_name":"stdout","time":153.041546101,"data":"    Found existing installation: jax 0.7.2\n"}
+,{"stream_name":"stdout","time":153.093647321,"data":"    Uninstalling jax-0.7.2:\n"}
+,{"stream_name":"stdout","time":153.67681176,"data":"      Successfully uninstalled jax-0.7.2\n"}
+,{"stream_name":"stdout","time":155.641777603,"data":"  Attempting uninstall: ipywidgets\n"}
+,{"stream_name":"stdout","time":155.715226557,"data":"    Found existing installation: ipywidgets 8.1.5\n"}
+,{"stream_name":"stdout","time":155.724040456,"data":"    Uninstalling ipywidgets-8.1.5:\n"}
+,{"stream_name":"stdout","time":155.786216168,"data":"      Successfully uninstalled ipywidgets-8.1.5\n"}
+,{"stream_name":"stdout","time":155.93035608899999,"data":"  Attempting uninstall: ipython\n"}
+,{"stream_name":"stdout","time":156.144379792,"data":"    Found existing installation: ipython 7.34.0\n"}
+,{"stream_name":"stdout","time":156.179754051,"data":"    Uninstalling ipython-7.34.0:\n"}
+,{"stream_name":"stdout","time":157.257581302,"data":"      Successfully uninstalled ipython-7.34.0\n"}
+,{"stream_name":"stdout","time":157.745455611,"data":"  Attempting uninstall: ipykernel\n"}
+,{"stream_name":"stdout","time":158.14190897,"data":"    Found existing installation: ipykernel 6.17.1\n"}
+,{"stream_name":"stdout","time":158.155459839,"data":"    Uninstalling ipykernel-6.17.1:\n"}
+,{"stream_name":"stdout","time":159.721228134,"data":"      Successfully uninstalled ipykernel-6.17.1\n"}
+,{"stream_name":"stdout","time":159.843790406,"data":"  Attempting uninstall: ImageIO\n"}
+,{"stream_name":"stdout","time":160.068622362,"data":"    Found existing installation: ImageIO 2.37.3\n"}
+,{"stream_name":"stdout","time":160.078450104,"data":"    Uninstalling ImageIO-2.37.3:\n"}
+,{"stream_name":"stdout","time":160.166996758,"data":"      Successfully uninstalled ImageIO-2.37.3\n"}
+,{"stream_name":"stdout","time":160.42919887,"data":"  Attempting uninstall: idna\n"}
+,{"stream_name":"stdout","time":160.861160335,"data":"    Found existing installation: idna 3.13\n"}
+,{"stream_name":"stdout","time":160.865970069,"data":"    Uninstalling idna-3.13:\n"}
+,{"stream_name":"stdout","time":160.885710552,"data":"      Successfully uninstalled idna-3.13\n"}
+,{"stream_name":"stdout","time":160.959087427,"data":"  Attempting uninstall: humanize\n"}
+,{"stream_name":"stdout","time":161.394179565,"data":"    Found existing installation: humanize 4.15.0\n"}
+,{"stream_name":"stdout","time":161.408566307,"data":"    Uninstalling humanize-4.15.0:\n"}
+,{"stream_name":"stdout","time":161.504470556,"data":"      Successfully uninstalled humanize-4.15.0\n"}
+,{"stream_name":"stdout","time":161.742168645,"data":"  Attempting uninstall: huggingface_hub\n"}
+,{"stream_name":"stdout","time":161.998282407,"data":"    Found existing installation: huggingface_hub 1.11.0\n"}
+,{"stream_name":"stdout","time":162.017762961,"data":"    Uninstalling huggingface_hub-1.11.0:\n"}
+,{"stream_name":"stdout","time":162.226610397,"data":"      Successfully uninstalled huggingface_hub-1.11.0\n"}
+,{"stream_name":"stdout","time":163.076704464,"data":"  Attempting uninstall: hf-xet\n"}
+,{"stream_name":"stdout","time":163.330325824,"data":"    Found existing installation: hf-xet 1.4.3\n"}
+,{"stream_name":"stdout","time":163.334758937,"data":"    Uninstalling hf-xet-1.4.3:\n"}
+,{"stream_name":"stdout","time":163.402959327,"data":"      Successfully uninstalled hf-xet-1.4.3\n"}
+,{"stream_name":"stdout","time":163.509635121,"data":"  Attempting uninstall: gymnasium\n"}
+,{"stream_name":"stdout","time":163.643354975,"data":"    Found existing installation: gymnasium 1.2.0\n"}
+,{"stream_name":"stdout","time":163.661369645,"data":"    Uninstalling gymnasium-1.2.0:\n"}
+,{"stream_name":"stdout","time":163.876015719,"data":"      Successfully uninstalled gymnasium-1.2.0\n"}
+,{"stream_name":"stdout","time":164.213134343,"data":"  Attempting uninstall: grpcio\n"}
+,{"stream_name":"stdout","time":164.286028686,"data":"    Found existing installation: grpcio 1.81.1\n"}
+,{"stream_name":"stdout","time":164.295343086,"data":"    Uninstalling grpcio-1.81.1:\n"}
+,{"stream_name":"stdout","time":164.457822366,"data":"      Successfully uninstalled grpcio-1.81.1\n"}
+,{"stream_name":"stdout","time":164.744104466,"data":"  Attempting uninstall: fsspec\n"}
+,{"stream_name":"stdout","time":165.021854279,"data":"    Found existing installation: fsspec 2025.3.0\n"}
+,{"stream_name":"stdout","time":165.03080096,"data":"    Uninstalling fsspec-2025.3.0:\n"}
+,{"stream_name":"stdout","time":165.092195365,"data":"      Successfully uninstalled fsspec-2025.3.0\n"}
+,{"stream_name":"stdout","time":165.325467192,"data":"  Attempting uninstall: fqdn\n"}
+,{"stream_name":"stdout","time":165.514942575,"data":"    Found existing installation: fqdn 1.5.1\n"}
+,{"stream_name":"stdout","time":165.518823945,"data":"    Uninstalling fqdn-1.5.1:\n"}
+,{"stream_name":"stdout","time":165.530663111,"data":"      Successfully uninstalled fqdn-1.5.1\n"}
+,{"stream_name":"stdout","time":165.556498962,"data":"  Attempting uninstall: fonttools\n"}
+,{"stream_name":"stdout","time":165.860718024,"data":"    Found existing installation: fonttools 4.62.1\n"}
+,{"stream_name":"stdout","time":165.895846127,"data":"    Uninstalling fonttools-4.62.1:\n"}
+,{"stream_name":"stdout","time":166.661109635,"data":"      Successfully uninstalled fonttools-4.62.1\n"}
+,{"stream_name":"stdout","time":167.897529664,"data":"  Attempting uninstall: flax\n"}
+,{"stream_name":"stdout","time":168.188664886,"data":"    Found existing installation: flax 0.11.2\n"}
+,{"stream_name":"stdout","time":168.203169273,"data":"    Uninstalling flax-0.11.2:\n"}
+,{"stream_name":"stdout","time":168.334216331,"data":"      Successfully uninstalled flax-0.11.2\n"}
+,{"stream_name":"stdout","time":168.791523377,"data":"  Attempting uninstall: filelock\n"}
+,{"stream_name":"stdout","time":169.198381274,"data":"    Found existing installation: filelock 3.29.0\n"}
+,{"stream_name":"stdout","time":169.203277549,"data":"    Uninstalling filelock-3.29.0:\n"}
+,{"stream_name":"stdout","time":169.221619609,"data":"      Successfully uninstalled filelock-3.29.0\n"}
+,{"stream_name":"stdout","time":169.329384339,"data":"  Attempting uninstall: fastjsonschema\n"}
+,{"stream_name":"stdout","time":169.54915259,"data":"    Found existing installation: fastjsonschema 2.21.2\n"}
+,{"stream_name":"stdout","time":169.554512394,"data":"    Uninstalling fastjsonschema-2.21.2:\n"}
+,{"stream_name":"stdout","time":169.579604533,"data":"      Successfully uninstalled fastjsonschema-2.21.2\n"}
+,{"stream_name":"stdout","time":169.711287938,"data":"  Attempting uninstall: debugpy\n"}
+,{"stream_name":"stdout","time":170.012754922,"data":"    Found existing installation: debugpy 1.8.15\n"}
+,{"stream_name":"stdout","time":170.041836686,"data":"    Uninstalling debugpy-1.8.15:\n"}
+,{"stream_name":"stdout","time":170.561437805,"data":"      Successfully uninstalled debugpy-1.8.15\n"}
+,{"stream_name":"stdout","time":171.710199593,"data":"  Attempting uninstall: click\n"}
+,{"stream_name":"stdout","time":172.123401439,"data":"    Found existing installation: click 8.3.3\n"}
+,{"stream_name":"stdout","time":172.129012133,"data":"    Uninstalling click-8.3.3:\n"}
+,{"stream_name":"stdout","time":172.178866836,"data":"      Successfully uninstalled click-8.3.3\n"}
+,{"stream_name":"stdout","time":172.29773181,"data":"  Attempting uninstall: chex\n"}
+,{"stream_name":"stdout","time":172.443064586,"data":"    Found existing installation: chex 0.1.90\n"}
+,{"stream_name":"stdout","time":172.449632878,"data":"    Uninstalling chex-0.1.90:\n"}
+,{"stream_name":"stdout","time":172.480240955,"data":"      Successfully uninstalled chex-0.1.90\n"}
+,{"stream_name":"stdout","time":172.595845429,"data":"  Attempting uninstall: charset-normalizer\n"}
+,{"stream_name":"stdout","time":172.93111825,"data":"    Found existing installation: charset-normalizer 3.4.7\n"}
+,{"stream_name":"stdout","time":172.939435072,"data":"    Uninstalling charset-normalizer-3.4.7:\n"}
+,{"stream_name":"stdout","time":174.40284669,"data":"      Successfully uninstalled charset-normalizer-3.4.7\n"}
+,{"stream_name":"stdout","time":174.476044888,"data":"  Attempting uninstall: cffi\n"}
+,{"stream_name":"stdout","time":174.714748994,"data":"    Found existing installation: cffi 2.0.0\n"}
+,{"stream_name":"stdout","time":174.721268666,"data":"    Uninstalling cffi-2.0.0:\n"}
+,{"stream_name":"stdout","time":176.190729695,"data":"      Successfully uninstalled cffi-2.0.0\n"}
+,{"stream_name":"stdout","time":176.311710366,"data":"  Attempting uninstall: certifi\n"}
+,{"stream_name":"stdout","time":176.530366895,"data":"    Found existing installation: certifi 2026.4.22\n"}
+,{"stream_name":"stdout","time":176.54874951,"data":"    Uninstalling certifi-2026.4.22:\n"}
+,{"stream_name":"stdout","time":176.584604291,"data":"      Successfully uninstalled certifi-2026.4.22\n"}
+,{"stream_name":"stdout","time":176.785256371,"data":"  Attempting uninstall: bleach\n"}
+,{"stream_name":"stdout","time":177.041199309,"data":"    Found existing installation: bleach 6.3.0\n"}
+,{"stream_name":"stdout","time":177.051013751,"data":"    Uninstalling bleach-6.3.0:\n"}
+,{"stream_name":"stdout","time":177.107381766,"data":"      Successfully uninstalled bleach-6.3.0\n"}
+,{"stream_name":"stdout","time":177.280383691,"data":"  Attempting uninstall: beautifulsoup4\n"}
+,{"stream_name":"stdout","time":177.473503432,"data":"    Found existing installation: beautifulsoup4 4.13.5\n"}
+,{"stream_name":"stdout","time":177.479274868,"data":"    Uninstalling beautifulsoup4-4.13.5:\n"}
+,{"stream_name":"stdout","time":177.504716749,"data":"      Successfully uninstalled beautifulsoup4-4.13.5\n"}
+,{"stream_name":"stdout","time":177.624378619,"data":"  Attempting uninstall: asttokens\n"}
+,{"stream_name":"stdout","time":177.784960197,"data":"    Found existing installation: asttokens 3.0.1\n"}
+,{"stream_name":"stdout","time":177.789717694,"data":"    Uninstalling asttokens-3.0.1:\n"}
+,{"stream_name":"stdout","time":177.803581356,"data":"      Successfully uninstalled asttokens-3.0.1\n"}
+,{"stream_name":"stdout","time":177.842659473,"data":"  Attempting uninstall: argon2-cffi-bindings\n"}
+,{"stream_name":"stdout","time":178.223383601,"data":"    Found existing installation: argon2-cffi-bindings 25.1.0\n"}
+,{"stream_name":"stdout","time":178.227662155,"data":"    Uninstalling argon2-cffi-bindings-25.1.0:\n"}
+,{"stream_name":"stdout","time":178.239203179,"data":"      Successfully uninstalled argon2-cffi-bindings-25.1.0\n"}
+,{"stream_name":"stdout","time":178.263566022,"data":"  Attempting uninstall: anyio\n"}
+,{"stream_name":"stdout","time":178.641386579,"data":"    Found existing installation: anyio 4.13.0\n"}
+,{"stream_name":"stdout","time":178.650233368,"data":"    Uninstalling anyio-4.13.0:\n"}
+,{"stream_name":"stdout","time":179.359662881,"data":"      Successfully uninstalled anyio-4.13.0\n"}
+,{"stream_name":"stdout","time":179.542570681,"data":"  Attempting uninstall: absl-py\n"}
+,{"stream_name":"stdout","time":180.099498567,"data":"    Found existing installation: absl-py 1.4.0\n"}
+,{"stream_name":"stdout","time":180.105511398,"data":"    Uninstalling absl-py-1.4.0:\n"}
+,{"stream_name":"stdout","time":180.153707682,"data":"      Successfully uninstalled absl-py-1.4.0\n"}
+,{"stream_name":"stdout","time":184.583245694,"data":"Successfully installed Farama-Notifications-0.0.6 ImageIO-2.38.0 Pygments-2.21.0 Werkzeug-3.1.9 absl-py-2.5.0 anyio-4.15.1 argon2-cffi-bindings-26.1.0 asttokens-3.0.2 async-lru-2.3.0 beautifulsoup4-4.15.0 bleach-6.4.0 brax-0.10.4 certifi-2026.7.22 cffi-2.1.1 charset-normalizer-3.5.2 chex-0.1.86 click-8.5.0 debugpy-1.8.22 dm-env-1.6 executing-2.2.1 fastjsonschema-2.22.2 filelock-4.0.7 flask-cors-6.0.5 flax-0.8.5 fonttools-4.66.1 fqdn-1.6.0 fsspec-2026.9.0 glfw-2.10.2 grpcio-1.84.0 gymnasium-1.3.0 hf-xet-1.6.0 httpcore2-2.13.1 httpx2-2.13.1 huggingface_hub-2.0.0 humanize-4.16.0 idna-3.20 ipykernel-7.4.0 ipython-9.17.1 ipywidgets-8.1.9 jax-0.4.28 jaxlib-0.4.28 jaxopt-0.8.5 jedi-0.20.0 joblib-1.6.0 jumanji-1.1.0 jupyter-1.1.1 jupyter-lsp-2.3.1 jupyter_builder-1.2.3 jupyter_client-8.10.0 jupyter_server-2.21.1 jupyterlab-4.6.4 jupyterlab_server-2.28.1 jupyterlab_widgets-3.0.17 jupytext-1.19.5 kaggle-2.2.4 kagglesdk-0.1.37 kiwisolver-1.5.1 markdown-it-py-4.2.0 matplotlib-3.7.5 matplotlib-inline-0.2.2 mdit-py-plugins-0.6.1 mistune-3.3.4 msgpack-1.2.3 mujoco-3.1.5 mujoco-mjx-3.1.5 narwhals-2.26.0 nbclient-0.11.0 nbconvert-7.17.1 nbformat-5.11.1 nest-asyncio2-1.7.3 notebook-7.6.3 numpy-1.26.4 optax-0.1.9 orbax-checkpoint-0.6.4 packaging-26.3 pandas-3.0.6 parso-0.8.7 pillow-12.3.0 platformdirs-4.12.2 prometheus_client-0.26.0 prompt_toolkit-3.0.53 protobuf-7.36.2 psutil-7.2.2 pure_eval-0.2.4 pyparsing-3.3.3 pytest-9.1.1 python-dotenv-1.2.3 python-json-logger-4.2.0 python-slugify-9.1.2 pyzmq-27.2.0 qdax-0.5.0 requests-2.34.2 rich-15.0.0 rpds-py-2026.6.3 scikit-learn-1.9.1 scipy-1.17.1 setuptools-84.0.0 soupsieve-2.10 stack-data-0.6.3 tabulate-0.10.0 tensorboardX-2.6.5 tensorflow-probability-0.24.0 tensorstore-0.1.85 threadpoolctl-3.7.0 tinycss2-1.5.1 toolz-1.1.0 tornado-6.5.10 tqdm-4.70.1 traitlets-5.16.1 trimesh-5.1.0 truststore-0.10.4 typing_extensions-4.16.0 tzdata-2026.4 urllib3-2.8.0 wcwidth-0.9.1 webencodings-0.6.1 websocket-client-1.9.2 websockets-17.1 widgetsnbextension-4.0.16 wrapt-2.5.0 zipp-4.1.0\n"}
+,{"stream_name":"stdout","time":186.860033767,"data":"$ /usr/bin/python3 -m pip install --progress-bar off --no-deps -e /kaggle/working/code\n"}
+,{"stream_name":"stdout","time":188.231596546,"data":"Obtaining file:///kaggle/working/code\n"}
+,{"stream_name":"stdout","time":188.235289741,"data":"  Installing build dependencies: started\n"}
+,{"stream_name":"stdout","time":193.70072686,"data":"  Installing build dependencies: finished with status 'done'\n"}
+,{"stream_name":"stdout","time":193.701900209,"data":"  Checking if build backend supports build_editable: started\n"}
+,{"stream_name":"stdout","time":193.925965987,"data":"  Checking if build backend supports build_editable: finished with status 'done'\n"}
+,{"stream_name":"stdout","time":193.927557065,"data":"  Getting requirements to build editable: started\n"}
+,{"stream_name":"stdout","time":194.212904385,"data":"  Getting requirements to build editable: finished with status 'done'\n"}
+,{"stream_name":"stdout","time":194.214427375,"data":"  Preparing editable metadata (pyproject.toml): started\n"}
+,{"stream_name":"stdout","time":194.497895366,"data":"  Preparing editable metadata (pyproject.toml): finished with status 'done'\n"}
+,{"stream_name":"stdout","time":194.937254541,"data":"Building wheels for collected packages: qd-damage\n"}
+,{"stream_name":"stdout","time":194.938640197,"data":"  Building editable for qd-damage (pyproject.toml): started\n"}
+,{"stream_name":"stdout","time":195.249637762,"data":"  Building editable for qd-damage (pyproject.toml): finished with status 'done'\n"}
+,{"stream_name":"stdout","time":195.250966647,"data":"  Created wheel for qd-damage: filename=qd_damage-0.1.0-0.editable-py3-none-any.whl size=2879 sha256=cc5302bbff32c532ea5501ade2e1c9c857983807f55709b621061a54edf49d4d\n"}
+,{"stream_name":"stdout","time":195.251371823,"data":"  Stored in directory: /tmp/pip-ephem-wheel-cache-95o2flgv/wheels/4d/e3/8b/d49455c2c45c13dd705160d903875f5b3278dc511828f883e4\n"}
+,{"stream_name":"stdout","time":195.254861136,"data":"Successfully built qd-damage\n"}
+,{"stream_name":"stdout","time":195.255271138,"data":"Installing collected packages: qd-damage\n"}
+,{"stream_name":"stdout","time":195.352533273,"data":"Successfully installed qd-damage-0.1.0\n"}
+,{"stream_name":"stdout","time":195.470120799,"data":"$ /usr/bin/python3 -m pip install --progress-bar off jax[cuda12]==0.4.28\n"}
+,{"stream_name":"stdout","time":196.822208073,"data":"Requirement already satisfied: jax==0.4.28 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (0.4.28)\n"}
+,{"stream_name":"stdout","time":196.831429713,"data":"Requirement already satisfied: ml-dtypes\u003e=0.2.0 in /usr/local/lib/python3.12/dist-packages (from jax==0.4.28-\u003ejax[cuda12]==0.4.28) (0.5.4)\n"}
+,{"stream_name":"stdout","time":196.839027363,"data":"Requirement already satisfied: numpy\u003e=1.22 in /usr/local/lib/python3.12/dist-packages (from jax==0.4.28-\u003ejax[cuda12]==0.4.28) (1.26.4)\n"}
+,{"stream_name":"stdout","time":196.840485781,"data":"Requirement already satisfied: opt-einsum in /usr/local/lib/python3.12/dist-packages (from jax==0.4.28-\u003ejax[cuda12]==0.4.28) (3.4.0)\n"}
+,{"stream_name":"stdout","time":196.847977865,"data":"Requirement already satisfied: scipy\u003e=1.9 in /usr/local/lib/python3.12/dist-packages (from jax==0.4.28-\u003ejax[cuda12]==0.4.28) (1.17.1)\n"}
+,{"stream_name":"stdout","time":196.886309013,"data":"Requirement already satisfied: jaxlib==0.4.28 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (0.4.28)\n"}
+,{"stream_name":"stdout","time":197.409974719,"data":"Collecting jax-cuda12-plugin==0.4.28 (from jax[cuda12]==0.4.28)\n"}
+,{"stream_name":"stdout","time":197.486398326,"data":"  Downloading jax_cuda12_plugin-0.4.28-cp312-cp312-manylinux2014_x86_64.whl.metadata (560 bytes)\n"}
+,{"stream_name":"stdout","time":197.504140403,"data":"Requirement already satisfied: nvidia-cublas-cu12\u003e=12.1.3.1 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (12.8.4.1)\n"}
+,{"stream_name":"stdout","time":197.505638824,"data":"Requirement already satisfied: nvidia-cuda-cupti-cu12\u003e=12.1.105 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (12.8.90)\n"}
+,{"stream_name":"stdout","time":197.507184709,"data":"Requirement already satisfied: nvidia-cuda-nvcc-cu12\u003e=12.1.105 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (12.8.93)\n"}
+,{"stream_name":"stdout","time":197.508706611,"data":"Requirement already satisfied: nvidia-cuda-runtime-cu12\u003e=12.1.105 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (12.8.90)\n"}
+,{"stream_name":"stdout","time":197.586046366,"data":"Collecting nvidia-cudnn-cu12\u003c9.0,\u003e=8.9.2.26 (from jax[cuda12]==0.4.28)\n"}
+,{"stream_name":"stdout","time":197.608052564,"data":"  Downloading nvidia_cudnn_cu12-8.9.7.29-py3-none-manylinux1_x86_64.whl.metadata (1.6 kB)\n"}
+,{"stream_name":"stdout","time":197.631088182,"data":"Requirement already satisfied: nvidia-cufft-cu12\u003e=11.0.2.54 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (11.3.3.83)\n"}
+,{"stream_name":"stdout","time":197.63263769,"data":"Requirement already satisfied: nvidia-cusolver-cu12\u003e=11.4.5.107 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (11.7.3.90)\n"}
+,{"stream_name":"stdout","time":197.63418777,"data":"Requirement already satisfied: nvidia-cusparse-cu12\u003e=12.1.0.106 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (12.5.8.93)\n"}
+,{"stream_name":"stdout","time":197.635698631,"data":"Requirement already satisfied: nvidia-nccl-cu12\u003e=2.18.1 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (2.27.5)\n"}
+,{"stream_name":"stdout","time":197.637206424,"data":"Requirement already satisfied: nvidia-nvjitlink-cu12\u003e=12.1.105 in /usr/local/lib/python3.12/dist-packages (from jax[cuda12]==0.4.28) (12.8.93)\n"}
+,{"stream_name":"stdout","time":197.691335504,"data":"Collecting jax-cuda12-pjrt==0.4.28 (from jax-cuda12-plugin==0.4.28-\u003ejax[cuda12]==0.4.28)\n"}
+,{"stream_name":"stdout","time":197.715594473,"data":"  Downloading jax_cuda12_pjrt-0.4.28-py3-none-manylinux2014_x86_64.whl.metadata (349 bytes)\n"}
+,{"stream_name":"stdout","time":197.783745404,"data":"Requirement already satisfied: nvidia-cuda-nvrtc-cu12 in /usr/local/lib/python3.12/dist-packages (from nvidia-cudnn-cu12\u003c9.0,\u003e=8.9.2.26-\u003ejax[cuda12]==0.4.28) (12.8.93)\n"}
+,{"stream_name":"stdout","time":197.83328015,"data":"Downloading jax_cuda12_plugin-0.4.28-cp312-cp312-manylinux2014_x86_64.whl (12.4 MB)\n"}
+,{"stream_name":"stdout","time":198.135462225,"data":"Downloading jax_cuda12_pjrt-0.4.28-py3-none-manylinux2014_x86_64.whl (86.8 MB)\n"}
+,{"stream_name":"stdout","time":200.179777133,"data":"Downloading nvidia_cudnn_cu12-8.9.7.29-py3-none-manylinux1_x86_64.whl (704.7 MB)\n"}
+,{"stream_name":"stdout","time":219.009413526,"data":"Installing collected packages: jax-cuda12-pjrt, nvidia-cudnn-cu12, jax-cuda12-plugin\n"}
+,{"stream_name":"stdout","time":219.009878001,"data":"  Attempting uninstall: jax-cuda12-pjrt\n"}
+,{"stream_name":"stdout","time":219.22291354,"data":"    Found existing installation: jax-cuda12-pjrt 0.7.2\n"}
+,{"stream_name":"stdout","time":219.227971586,"data":"    Uninstalling jax-cuda12-pjrt-0.7.2:\n"}
+,{"stream_name":"stdout","time":221.438584243,"data":"      Successfully uninstalled jax-cuda12-pjrt-0.7.2\n"}
+,{"stream_name":"stdout","time":223.265011976,"data":"  Attempting uninstall: nvidia-cudnn-cu12\n"}
+,{"stream_name":"stdout","time":223.660047807,"data":"    Found existing installation: nvidia-cudnn-cu12 9.10.2.21\n"}
+,{"stream_name":"stdout","time":223.664974428,"data":"    Uninstalling nvidia-cudnn-cu12-9.10.2.21:\n"}
+,{"stream_name":"stdout","time":231.069108921,"data":"      Successfully uninstalled nvidia-cudnn-cu12-9.10.2.21\n"}
+,{"stream_name":"stdout","time":241.85695955,"data":"  Attempting uninstall: jax-cuda12-plugin\n"}
+,{"stream_name":"stdout","time":242.087164042,"data":"    Found existing installation: jax-cuda12-plugin 0.7.2\n"}
+,{"stream_name":"stdout","time":242.091482,"data":"    Uninstalling jax-cuda12-plugin-0.7.2:\n"}
+,{"stream_name":"stdout","time":242.205661588,"data":"      Successfully uninstalled jax-cuda12-plugin-0.7.2\n"}
+,{"stream_name":"stderr","time":242.682310938,"data":"ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n"}
+,{"stream_name":"stderr","time":242.682369794,"data":"torch 2.10.0+cu128 requires nvidia-cudnn-cu12==9.10.2.21; platform_system == \"Linux\", but you have nvidia-cudnn-cu12 8.9.7.29 which is incompatible.\n"}
+,{"stream_name":"stdout","time":242.682686865,"data":"Successfully installed jax-cuda12-pjrt-0.4.28 jax-cuda12-plugin-0.4.28 nvidia-cudnn-cu12-8.9.7.29\n"}
+,{"stream_name":"stdout","time":243.049106792,"data":"répertoires : ['dcrlme_seed0', 'dcrlme_seed1', 'dcrlme_seed2', 'me_seed0', 'me_seed1', 'me_seed2', 'pgame_seed0', 'pgame_seed1', 'pgame_seed2']\n"}
+,{"stream_name":"stdout","time":243.090525499,"data":"[GPU 0] début rl_leg4_paralysed_scratch_s0[GPU 1] début rl_leg4_paralysed_scratch_s1\n"}
+,{"stream_name":"stdout","time":243.090666079,"data":"\n"}
+,{"stream_name":"stdout","time":985.693517971,"data":"[GPU 0] fin rl_leg4_paralysed_scratch_s0 : ok en 12.4 min\n"}
+,{"stream_name":"stdout","time":985.693603344,"data":"[GPU 0] début rl_leg4_paralysed_finetune_s0\n"}
+,{"stream_name":"stdout","time":993.124804262,"data":"[GPU 1] fin rl_leg4_paralysed_scratch_s1 : ok en 12.5 min\n"}
+,{"stream_name":"stdout","time":993.124986983,"data":"[GPU 1] début rl_leg4_paralysed_finetune_s1\n"}
+,{"stream_name":"stdout","time":1724.951792701,"data":"[GPU 0] fin rl_leg4_paralysed_finetune_s0 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":1724.951861455,"data":"[GPU 0] début rl_leg2_weak_scratch_s0\n"}
+,{"stream_name":"stdout","time":1732.763308393,"data":"[GPU 1] fin rl_leg4_paralysed_finetune_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":1732.763350708,"data":"[GPU 1] début rl_leg2_weak_scratch_s1\n"}
+,{"stream_name":"stdout","time":2463.39775726,"data":"[GPU 0] fin rl_leg2_weak_scratch_s0 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":2463.397804606,"data":"[GPU 0] début rl_leg2_weak_finetune_s0\n"}
+,{"stream_name":"stdout","time":2472.780273441,"data":"[GPU 1] fin rl_leg2_weak_scratch_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":2472.780322654,"data":"[GPU 1] début rl_leg2_weak_finetune_s1\n"}
+,{"stream_name":"stdout","time":3206.324994685,"data":"[GPU 0] fin rl_leg2_weak_finetune_s0 : ok en 12.4 min\n"}
+,{"stream_name":"stdout","time":3206.325063825,"data":"[GPU 0] début rl_legs14_paralysed_scratch_s0\n"}
+,{"stream_name":"stdout","time":3213.537190285,"data":"[GPU 1] fin rl_leg2_weak_finetune_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":3213.537235532,"data":"[GPU 1] début rl_legs14_paralysed_scratch_s1\n"}
+,{"stream_name":"stdout","time":3944.963621308,"data":"[GPU 0] fin rl_legs14_paralysed_scratch_s0 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":3944.963670653,"data":"[GPU 0] début rl_legs14_paralysed_finetune_s0\n"}
+,{"stream_name":"stdout","time":3950.564451062,"data":"[GPU 1] fin rl_legs14_paralysed_scratch_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":3950.564501557,"data":"[GPU 1] début rl_legs14_paralysed_finetune_s1\n"}
+,{"stream_name":"stdout","time":4685.231820618,"data":"[GPU 0] fin rl_legs14_paralysed_finetune_s0 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":4685.231899652,"data":"[GPU 0] début rl_ankle1_paralysed_scratch_s0\n"}
+,{"stream_name":"stdout","time":4689.549134257,"data":"[GPU 1] fin rl_legs14_paralysed_finetune_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":4689.549171943,"data":"[GPU 1] début rl_ankle1_paralysed_scratch_s1\n"}
+,{"stream_name":"stdout","time":5426.536623755,"data":"[GPU 1] fin rl_ankle1_paralysed_scratch_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":5426.536671671,"data":"[GPU 1] début rl_ankle1_paralysed_finetune_s0\n"}
+,{"stream_name":"stdout","time":5428.3696084,"data":"[GPU 0] fin rl_ankle1_paralysed_scratch_s0 : ok en 12.4 min\n"}
+,{"stream_name":"stdout","time":5428.369665036,"data":"[GPU 0] début rl_ankle1_paralysed_finetune_s1\n"}
+,{"stream_name":"stdout","time":6164.923458753,"data":"[GPU 0] fin rl_ankle1_paralysed_finetune_s1 : ok en 12.3 min\n"}
+,{"stream_name":"stdout","time":6164.923505928,"data":"[GPU 0] début post_dcrlme_seed0\n"}
+,{"stream_name":"stdout","time":6168.484302739,"data":"[GPU 1] fin rl_ankle1_paralysed_finetune_s0 : ok en 12.4 min\n"}
+,{"stream_name":"stdout","time":6168.484340011,"data":"[GPU 1] début post_dcrlme_seed1\n"}
+,{"stream_name":"stdout","time":6763.85981789,"data":"[GPU 0] fin post_dcrlme_seed0 : ok en 10.0 min\n"}
+,{"stream_name":"stdout","time":6763.85986863,"data":"[GPU 0] début post_dcrlme_seed2\n"}
+,{"stream_name":"stdout","time":6769.548630988,"data":"[GPU 1] fin post_dcrlme_seed1 : ok en 10.0 min\n"}
+,{"stream_name":"stdout","time":6769.548685423,"data":"[GPU 1] début post_me_seed0\n"}
+,{"stream_name":"stdout","time":7363.277417421,"data":"[GPU 0] fin post_dcrlme_seed2 : ok en 10.0 min\n"}
+,{"stream_name":"stdout","time":7363.277462151,"data":"[GPU 0] début post_me_seed1\n"}
+,{"stream_name":"stdout","time":7372.82748984,"data":"[GPU 1] fin post_me_seed0 : ok en 10.1 min\n"}
+,{"stream_name":"stdout","time":7372.827538471,"data":"[GPU 1] début post_me_seed2\n"}
+,{"stream_name":"stdout","time":7965.927769306,"data":"[GPU 0] fin post_me_seed1 : ok en 10.0 min\n"}
+,{"stream_name":"stdout","time":7965.927825738,"data":"[GPU 0] début post_pgame_seed0\n"}
+,{"stream_name":"stdout","time":7979.706656312,"data":"[GPU 1] fin post_me_seed2 : ok en 10.1 min\n"}
+,{"stream_name":"stdout","time":7979.7067011,"data":"[GPU 1] début post_pgame_seed1\n"}
+,{"stream_name":"stdout","time":8568.171640437,"data":"[GPU 0] fin post_pgame_seed0 : ok en 10.0 min\n"}
+,{"stream_name":"stdout","time":8568.171723232,"data":"[GPU 0] début post_pgame_seed2\n"}
+,{"stream_name":"stdout","time":8586.372385146,"data":"[GPU 1] fin post_pgame_seed1 : ok en 10.1 min\n"}
+,{"stream_name":"stdout","time":9162.013712835,"data":"[GPU 0] fin post_pgame_seed2 : ok en 9.9 min\n"}
+,{"stream_name":"stdout","time":9162.013883559,"data":"ALL_DONE\n"}
+,{"stream_name":"stderr","time":9166.50927364,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":9166.946381204,"data":"[NbConvertApp] Writing 283052 bytes to __results__.html\n"}
+]

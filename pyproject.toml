@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qd-damage"
+version = "0.1.0"
+description = "Damage recovery for a simulated quadruped: QD repertoires built with and without RL + Intelligent Trial & Error vs RL re-training."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"  # jax 0.4.28 has no wheel for 3.13
+dependencies = [
+    # QDax 0.5.0 and the exact versions of its requirements.txt (tag v0.5.0).
+    # Without these pins pip installs a recent Brax that no longer has `brax.v1`, which QDax needs.
+    "qdax==0.5.0",
+    "jax==0.4.28",
+    "jaxlib==0.4.28",
+    "brax==0.10.4",
+    "mujoco==3.1.5",      # brax imports mujoco; recent versions break with jax 0.4.28
+    "mujoco-mjx==3.1.5",
+    "flax==0.8.5",
+    "chex==0.1.86",
+    "optax==0.1.9",
+    "numpy==1.26.4",
+    "tensorflow-probability==0.24.0",
+    "scipy",
+    "pandas",
+    "pyyaml",
+    "matplotlib",
+    "imageio",      # GIF / videos
+    "tqdm",
+    "tabulate",     # Markdown tables of the analysis
+]
+
+[project.optional-dependencies]
+# NVIDIA GPU (Kaggle / Colab T4): jax with CUDA 12.
+cuda12 = ["jax[cuda12]==0.4.28"]
+dev = ["pytest", "jupyter", "ipykernel"]
+# Video rendering (qd_damage.viz), local only: pytinyrenderer has no Linux wheel for Python 3.12
+# and does not build on Kaggle.
+viz = ["pytinyrenderer", "imageio-ffmpeg"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+qd_damage = ["assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: tests that run a simulation (even a tiny one)"]

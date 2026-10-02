@@ -1,0 +1,10 @@
+{
+  "run_dir": "results/repertoires/me_seed0_demo",
+  "code_commit": "39ac70e0ed872564c7208f69e0d6226ad6303315-dirty",
+  "n_episodes": 4,
+  "seed": 1234,
+  "devices": [
+    "TFRT_CPU_0"
+  ],
+  "time_s": 328.35807394981384
+}

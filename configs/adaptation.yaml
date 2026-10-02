@@ -1,0 +1,31 @@
+# Intelligent Trial & Error (M-BOA, Cully et al. 2015) and baselines.
+# All values were frozen before the final campaign (docs/protocol.md).
+
+# Performance scale, PER time step (x episode length: 250 steps gives f0 = 1058.7 and scale = 300):
+# p = (F - f0) / scale. f0 = mean return of a STANDING robot (zero actions, 64 episodes of 250 steps: 1058.7),
+# i.e. the reward offset (3.24 per step) plus the survival bonus (1 per step). The scale is about the progress
+# of the best gait found (~300, i.e. ~15 m in 12.5 s). On this scale the noise of one episode has a variance
+# of ~0.001 (measured on the oracle), the value of Cully et al., so their parameters apply as they are.
+performance:
+  f0_still_per_step: 4.2348
+  scale_per_step: 1.2
+
+ite:
+  kernel: matern52
+  # kappa and alpha are those of Cully et al. 2015. The Gaussian-process hyper-parameters were fitted by maximum
+  # marginal likelihood (python -m qd_damage.calibrate) on the DEVELOPMENT repertoires (demo runs, 200 iterations,
+  # 3 algorithms x 12 damages), then frozen. Cully's setting (length-scale 0.4, variance 1, noise 0.001) has a
+  # log-likelihood of -1280 against +4059 here; on the development set ITE stopped too early (3.4 trials) and
+  # plateaued. kappa in {0.05, 0.5, 1, 2} made little difference, so Cully's value is kept (docs/notes.md).
+  lengthscale: 0.4        # on descriptors in [0,1]^4 (same as Cully)
+  signal_variance: 0.05   # prior variance of the residuals (damaged - intact), normalised units
+  noise_variance: 0.02    # noise of one episode (~0.001) plus local variability between neighbouring cells
+  kappa: 0.05             # UCB: mean + kappa x standard deviation
+  alpha: 0.9              # stop when best observed >= alpha x best prediction
+  max_trials: 20
+  n_repeats: 5            # episodes are noisy: 5 repetitions per (repertoire, damage)
+
+baselines:
+  best_intact: {}                   # only tries the best intact gait
+  top_k: {max_trials: 20}           # cells in decreasing order of intact fitness, no GP
+  random: {max_trials: 20, n_repeats: 5}

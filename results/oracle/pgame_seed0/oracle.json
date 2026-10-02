@@ -1,0 +1,10 @@
+{
+  "run_dir": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/pgame_seed0",
+  "code_commit": "1d0bc8f",
+  "n_episodes": 4,
+  "seed": 1234,
+  "devices": [
+    "cuda:0"
+  ],
+  "time_s": 43.448524951934814
+}

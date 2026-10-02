@@ -1,0 +1,47 @@
+{
+  "run": "dcrlme_seed0",
+  "algo": "dcrlme",
+  "seed": 0,
+  "scenario": "leg4_paralysed",
+  "rep": 2,
+  "code_commit": "037549130d88823e31aba91f71613caf89a1278a-dirty",
+  "ite_trials_to_stop": 6,
+  "ite_cell": 636,
+  "best_intact_cell": 43,
+  "clips": {
+    "intact": {
+      "label": "1. Intact",
+      "shown_episode": "médian sur 8",
+      "distance_x_m": 30.51936912536621,
+      "fitness": 1592.4297165870667,
+      "distance_mean_m": 30.55000615119934,
+      "distance_std_m": 0.9680610350416566,
+      "fitness_mean": 1592.1696780920029,
+      "fitness_std": 18.75159247513449,
+      "perf_norm_mean": 1.778232260306676
+    },
+    "blesse": {
+      "label": "2. Blessé, même démarche",
+      "shown_episode": "médian sur 8",
+      "distance_x_m": 3.009953022003174,
+      "fitness": 1097.167308330536,
+      "distance_mean_m": 2.838783383369446,
+      "distance_std_m": 0.339827568971887,
+      "fitness_mean": 1094.6322933733463,
+      "fitness_std": 6.9821475314799635,
+      "perf_norm_mean": 0.1197743112444876
+    },
+    "apres_ite": {
+      "label": "3. Blessé, après ITE (6 essais)",
+      "shown_episode": "médian sur 8",
+      "distance_x_m": 10.403105735778809,
+      "fitness": 1216.5169150829315,
+      "distance_mean_m": 9.384574294090271,
+      "distance_std_m": 1.9416563949686492,
+      "fitness_mean": 1202.266291975975,
+      "fitness_std": 35.88832631251436,
+      "perf_norm_mean": 0.4785543065865833
+    }
+  },
+  "command": "python -m qd_damage.viz_ite --run results/repertoires/dcrlme_seed0 --scenario leg4_paralysed --out media/final/ite_main --rep 2"
+}

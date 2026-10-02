@@ -1,0 +1,149 @@
+{
+  "generated": "2026-10-01T02:33:42",
+  "code_commit": "cbec89b",
+  "command": "python -m qd_damage.viz --runs results/repertoires/me_seed0 results/repertoires/me_seed1 results/repertoires/me_seed2 results/repertoires/pgame_seed0 results/repertoires/pgame_seed1 results/repertoires/pgame_seed2 results/repertoires/dcrlme_seed0 results/repertoires/dcrlme_seed1 results/repertoires/dcrlme_seed2 --out media/final/repertoires --title \"Répertoires finaux — 3 algos × 3 seeds, 2000 itérations\"",
+  "best_policy": {
+    "algo": "pgame",
+    "run": "pgame_seed1",
+    "cell_index": 581,
+    "repertoire_fitness": 2158.053955078125
+  },
+  "rollouts": {
+    "intact": {
+      "label": "Intact",
+      "distance_x_m": 39.74868392944336,
+      "fitness": 1660.6990118026733,
+      "duration_s": 12.500000186264515,
+      "paralysed_actions": []
+    },
+    "damaged": {
+      "label": "Patte 4 paralysée",
+      "distance_x_m": 12.862092971801758,
+      "fitness": 1187.8560013771057,
+      "duration_s": 12.500000186264515,
+      "paralysed_actions": [
+        6,
+        7
+      ]
+    }
+  },
+  "runs": {
+    "me_seed0": {
+      "algo": "me",
+      "run_dir": "results/repertoires/me_seed0",
+      "profile": null,
+      "seed": 0,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 71.38671875,
+      "max_fitness": 1234.85009765625,
+      "qd_score": 808112.125,
+      "time_min": 7.646767524878184,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "me_seed1": {
+      "algo": "me",
+      "run_dir": "results/repertoires/me_seed1",
+      "profile": null,
+      "seed": 1,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 74.21875,
+      "max_fitness": 1233.317626953125,
+      "qd_score": 818420.4375,
+      "time_min": 7.685353350639343,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "me_seed2": {
+      "algo": "me",
+      "run_dir": "results/repertoires/me_seed2",
+      "profile": null,
+      "seed": 2,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 72.265625,
+      "max_fitness": 1293.704833984375,
+      "qd_score": 813674.5,
+      "time_min": 7.6670199751853945,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "pgame_seed0": {
+      "algo": "pgame",
+      "run_dir": "results/repertoires/pgame_seed0",
+      "profile": null,
+      "seed": 0,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 76.7578125,
+      "max_fitness": 1867.207763671875,
+      "qd_score": 953790.5,
+      "time_min": 52.44111063480377,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "pgame_seed1": {
+      "algo": "pgame",
+      "run_dir": "results/repertoires/pgame_seed1",
+      "profile": null,
+      "seed": 1,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 77.63671875,
+      "max_fitness": 2158.053955078125,
+      "qd_score": 1003795.375,
+      "time_min": 53.08806968530019,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "pgame_seed2": {
+      "algo": "pgame",
+      "run_dir": "results/repertoires/pgame_seed2",
+      "profile": null,
+      "seed": 2,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 75.78125,
+      "max_fitness": 1922.4622802734375,
+      "qd_score": 962482.75,
+      "time_min": 52.31350438197454,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "dcrlme_seed0": {
+      "algo": "dcrlme",
+      "run_dir": "results/repertoires/dcrlme_seed0",
+      "profile": null,
+      "seed": 0,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 84.1796875,
+      "max_fitness": 1609.9405517578125,
+      "qd_score": 1053168.0,
+      "time_min": 81.7098372777303,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "dcrlme_seed1": {
+      "algo": "dcrlme",
+      "run_dir": "results/repertoires/dcrlme_seed1",
+      "profile": null,
+      "seed": 1,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 83.7890625,
+      "max_fitness": 1654.9158935546875,
+      "qd_score": 1078811.25,
+      "time_min": 81.54502885341644,
+      "device": "cuda:0 (Tesla T4)"
+    },
+    "dcrlme_seed2": {
+      "algo": "dcrlme",
+      "run_dir": "results/repertoires/dcrlme_seed2",
+      "profile": null,
+      "seed": 2,
+      "run_commit": "577ffad",
+      "total_evaluations": 512256,
+      "coverage_pct": 83.3984375,
+      "max_fitness": 1624.890625,
+      "qd_score": 1074222.75,
+      "time_min": 83.23446285327276,
+      "device": "cuda:0 (Tesla T4)"
+    }
+  }
+}
