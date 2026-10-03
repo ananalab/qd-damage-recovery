@@ -24,14 +24,25 @@ sys.path.insert(0, f"{CODE}/kaggle")
 import kernel_utils as ku  # noqa: E402
 
 env = ku.install(CODE)
-OUT, py = "/kaggle/working/outputs", sys.executable
+OUT, py = "/kaggle/working/outputs", ku.PYTHON
 jobs = []
 for seed in [0, 1, 2]:
     run = f"{OUT}/repertoires/dcrlme_seed{seed}"
-    jobs.append((f"bonus_dcrlme_seed{seed}", ["bash", "-c", " && ".join([
-        f"{py} -m qd_damage.repertoires --algo dcrlme --seed {seed} --out {OUT}/repertoires",
-        f"{py} -m qd_damage.oracle --runs {run} --out {OUT}/oracle",
-        f"{py} -m qd_damage.adaptation --runs {run} --oracle-root {OUT}/oracle --out {OUT}/adaptation",
-        f"{py} -m qd_damage.ite_continuous --runs {run} --out {OUT}/continuous",
-    ])]))
+    jobs.append(
+        (
+            f"bonus_dcrlme_seed{seed}",
+            [
+                "bash",
+                "-c",
+                " && ".join(
+                    [
+                        f"{py} -m qd_damage.repertoires --algo dcrlme --seed {seed} --out {OUT}/repertoires",
+                        f"{py} -m qd_damage.oracle --runs {run} --out {OUT}/oracle",
+                        f"{py} -m qd_damage.adaptation --runs {run} --oracle-root {OUT}/oracle --out {OUT}/adaptation",
+                        f"{py} -m qd_damage.ite_continuous --runs {run} --out {OUT}/continuous",
+                    ]
+                ),
+            ],
+        )
+    )
 ku.run_jobs(jobs, CODE, env, log_dir="/kaggle/working/logs")

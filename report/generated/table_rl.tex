@@ -1,22 +1,14 @@
 \begin{tabular}{lrrrrr}
 \toprule
-Damage & RL & Seed & ITE trials & RL episodes to match & RL budget \\
+Damage & ITE trials & Scratch & Fine-tune & Warm-up & Pre-trained critic \\
 \midrule
-FL ankle paralysed & from intact policy & 0 & 10 & 1264 & 2000 \\
-FL ankle paralysed & from intact policy & 1 & 6 & -- & 2000 \\
-FL ankle paralysed & from scratch & 0 & 10 & 1072 & 2000 \\
-FL ankle paralysed & from scratch & 1 & 6 & 1808 & 2000 \\
-HL leg weakened & from intact policy & 0 & 1 & 0 & 2000 \\
-HL leg weakened & from intact policy & 1 & 6 & 1536 & 2000 \\
-HL leg weakened & from scratch & 0 & 1 & -- & 2000 \\
-HL leg weakened & from scratch & 1 & 6 & -- & 2000 \\
-FR leg paralysed & from intact policy & 0 & 7 & -- & 2000 \\
-FR leg paralysed & from intact policy & 1 & 15 & -- & 2000 \\
-FR leg paralysed & from scratch & 0 & 7 & -- & 2000 \\
-FR leg paralysed & from scratch & 1 & 15 & 1264 & 2000 \\
-FL + FR legs paralysed & from intact policy & 0 & 19 & -- & 2000 \\
-FL + FR legs paralysed & from intact policy & 1 & 20 & -- & 2000 \\
-FL + FR legs paralysed & from scratch & 0 & 19 & -- & 2000 \\
-FL + FR legs paralysed & from scratch & 1 & 20 & -- & 2000 \\
+FL ankle paralysed, seed 0 & 10.0 & 1072 & -- & 496 & 112 \\
+FL ankle paralysed, seed 1 & 5.6 & 1808 & -- & 400 & 576 \\
+HL leg weakened, seed 0 & 1.4 & -- & 0 & 0 & 1088 \\
+HL leg weakened, seed 1 & 6.4 & -- & 1536 & 336 & 224 \\
+FR leg paralysed, seed 0 & 6.6 & -- & -- & 496 & 192 \\
+FR leg paralysed, seed 1 & 15.0 & 1264 & -- & 224 & 192 \\
+FL + FR legs paralysed, seed 0 & 18.8 & -- & -- & 1008 & 1344 \\
+FL + FR legs paralysed, seed 1 & 20.0 & -- & -- & 720 & 720 \\
 \bottomrule
 \end{tabular}

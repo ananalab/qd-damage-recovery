@@ -1,0 +1,3 @@
+,Descriptor,Length-scale,Signal var.,Noise var.,Gain per pair
+0,feet contact (4D),0.4,0.05,0.02,51.70000000000001
+1,joint usage (8D),0.2,0.1,0.003,152.20277777777775

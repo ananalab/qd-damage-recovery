@@ -1,0 +1,57 @@
+{
+  "scenario": "leg2_weak",
+  "variant": "finetune_warmup",
+  "seed": 0,
+  "repertoire": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/dcrlme_seed0",
+  "init_cell": 43,
+  "init_cell_source": "oracle",
+  "warmup_episodes": 160,
+  "pretrain_time_s": 0.0,
+  "config": {
+    "td3": {
+      "batch_size": 256,
+      "policy_delay": 2,
+      "soft_tau_update": 0.005,
+      "expl_noise": 0.1,
+      "critic_hidden_layer_size": [
+        256,
+        256
+      ],
+      "critic_learning_rate": 0.0003,
+      "policy_learning_rate": 0.0003,
+      "discount": 0.99,
+      "noise_clip": 0.5,
+      "policy_noise": 0.2,
+      "reward_scaling": 1.0
+    },
+    "n_envs": 16,
+    "updates_per_step": 16,
+    "buffer_size": 1000000,
+    "max_episodes": 2000,
+    "eval_episodes": 8,
+    "warmup_episodes": 160,
+    "pretrain_episodes": 512,
+    "robust": {
+      "p_damaged": 0.25,
+      "episodes": 10000,
+      "eval_every": 800,
+      "final_eval_episodes": 32
+    },
+    "variants": {
+      "scratch": "RL from scratch on the damaged robot",
+      "finetune": "RL from the best intact policy of the repertoire (new critic)",
+      "finetune_warmup": "same, actor frozen during the first warmup_episodes",
+      "finetune_pretrained": "same, critic pre-trained on the intact robot in simulation"
+    },
+    "init_from_algo": "dcrlme",
+    "seeds": [
+      0,
+      1
+    ]
+  },
+  "time_s": 700.3226675987244,
+  "code_commit": "5a7efcf-dirty",
+  "devices": [
+    "cuda:0 (Tesla T4)"
+  ]
+}

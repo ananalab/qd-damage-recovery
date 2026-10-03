@@ -147,6 +147,42 @@ Two findings that changed the analysis:
   needed because the first campaign did not save the actor.
 - Clear negative result: the actor's gaits are much weaker than the elites, both for ITE and for the oracle.
 
+## Review and robustness checks
+
+A critical review of the first version listed several weaknesses; each one was addressed as follows.
+
+- Symbol clash: the normalised performance is now written v, and p is kept for p-values.
+- Oracle bias: the best cell of every scenario is re-evaluated on 16 fresh episodes (`oracle --check-best`). The
+  oracle over-estimates the best gait by 0.06 to 0.08 in v, slightly more for PGA-ME. With the checked values, the
+  resilience of PGA-ME is a few points higher than that of MAP-Elites; RL never makes repertoires less resilient.
+- Dependence between units: linear mixed models with a random intercept per repertoire complement the rank tests
+  (`analysis/stats.py`). They agree with the rank tests, except that the gain of ITE over top-k on DCRL-ME is
+  significant in mean after 3 and 5 trials while its median is close to zero: a few damages carry the gain.
+- Descriptor ablation: a second descriptor, the mean absolute action of each actuator (`qd_damage.joint_usage`),
+  calibrated on the same development repertoires. Its marginal likelihood is much higher (7677 against 4059; noise
+  variance 0.003 instead of 0.02): the "nugget" came mostly from the feet-contact descriptor, which says little about
+  which joints a gait relies on. ITE with this descriptor runs on CPU, so ITE and top-k were re-run on CPU as a
+  same-machine control (`results/adaptation_cpu`).
+- Reality gap: the prior comes from the simulator, but trials run on a robot with 30 % less ground friction, a 20 %
+  heavier torso and 10 % weaker motors (`configs/adaptation.yaml`, fixed before running). Computed on Kaggle with the
+  RL baselines, since the oracle on the perturbed robot is too slow on CPU.
+  Result: the gap alone keeps 91 % of the intact progress; ITE's lead over top-k after 3 trials is slightly larger
+  than without the gap, and still gone after 5.
+- Stronger RL baselines: fine-tuning with a 160-episode critic warm-up (actor frozen), fine-tuning with a critic
+  pre-trained on the intact robot in simulation, and a damage-robust TD3 policy trained on random damages and used
+  without any trial (`rl_retrain.py`, `kaggle/rl_kernel`). Both remedies make fine-tuning match ITE in 8 of 8 runs
+  (median 400 to 450 episodes), which confirms that the collapse came from the untrained critic. The robust policy
+  matches ITE on PGA-ME repertoires with zero trials on damages from its training distribution, and fails with two
+  paralysed legs.
+- Kaggle moved to Python 3.13, for which jax 0.4.28 has no wheel: `kaggle/kernel_utils.py` now creates a Python 3.12
+  environment with uv (in /tmp, so that it is not saved with the outputs).
+- The project folder was on an iCloud-synced Desktop with an almost full disk, so macOS evicted files (even git
+  objects) and every read waited for a download. The repository now lives outside iCloud.
+- Code: the analysis is split into data, statistics, figures, LaTeX and checks; HTML pages are templates in
+  `src/qd_damage/templates/` (checked to reproduce the existing pages byte for byte); ruff lint and format, a GitHub
+  Actions workflow for the fast tests, and generated PDFs without timestamps so that re-running the analysis does not
+  change them.
+
 ## Open points
 
 - The QDax example notebook: make the demo more telling (stronger damage or longer repertoire) before any PR.

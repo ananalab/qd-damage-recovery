@@ -6,7 +6,6 @@ the network or the budget (see docs/protocol.md).
 """
 
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -33,7 +32,7 @@ def load_yaml(name: str) -> dict:
         return yaml.safe_load(f)
 
 
-def load_run_config(algo: str, profile: Optional[str] = None) -> dict:
+def load_run_config(algo: str, profile: str | None = None) -> dict:
     """Full config of a run: {"common": ..., "algo": ..., "profile": ...}.
 
     profile=None is a full run; "smoke" is tiny (CPU tests); "local" and "demo" are 200-iteration demos.

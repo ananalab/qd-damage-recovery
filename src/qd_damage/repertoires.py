@@ -90,9 +90,7 @@ def make_emitter(algo: str, algo_cfg: dict, common: dict, env, policy_network):
     """The only part that differs between algorithms. Each emitter produces `batch_size` offspring."""
     batch_size = common["budget"]["batch_size"]
     em = algo_cfg["emitter"]
-    variation_fn = functools.partial(
-        isoline_variation, iso_sigma=em["iso_sigma"], line_sigma=em["line_sigma"]
-    )
+    variation_fn = functools.partial(isoline_variation, iso_sigma=em["iso_sigma"], line_sigma=em["line_sigma"])
 
     if algo == "me":
         return MixingEmitter(
@@ -122,9 +120,7 @@ def make_emitter(algo: str, algo_cfg: dict, common: dict, env, policy_network):
             num_pg_training_steps=td3["num_pg_training_steps"],
             policy_delay=td3["policy_delay"],
         )
-        return PGAMEEmitter(
-            config=config, policy_network=policy_network, env=env, variation_fn=variation_fn
-        )
+        return PGAMEEmitter(config=config, policy_network=policy_network, env=env, variation_fn=variation_fn)
 
     if algo == "dcrlme":
         dcrl = algo_cfg["dcrl"]
@@ -213,6 +209,7 @@ def _to_host(tree):
         if isinstance(x, jax.Array) and jnp.issubdtype(x.dtype, jax.dtypes.prng_key):
             return _Key(np.asarray(jax.random.key_data(x)))
         return np.asarray(x) if isinstance(x, jax.Array) else x
+
     return jax.tree.map(leaf, tree)
 
 
@@ -221,6 +218,7 @@ def _to_device(tree):
         if isinstance(x, _Key):
             return jax.random.wrap_key_data(jnp.asarray(x.data))
         return jnp.asarray(x) if isinstance(x, np.ndarray) else x
+
     return jax.tree.map(leaf, tree, is_leaf=lambda x: isinstance(x, _Key))
 
 
@@ -261,9 +259,7 @@ def build(
     key = jax.random.key(seed)
     key, subkey = jax.random.split(key)
     keys = jax.random.split(subkey, num=budget["batch_size"])
-    init_params = jax.vmap(policy_network.init)(
-        keys, jnp.zeros((budget["batch_size"], env.observation_size))
-    )
+    init_params = jax.vmap(policy_network.init)(keys, jnp.zeros((budget["batch_size"], env.observation_size)))
 
     key, subkey = jax.random.split(key)
     centroids = compute_cvt_centroids(
@@ -278,12 +274,14 @@ def build(
     t0 = time.time()
     key, subkey = jax.random.split(key)
     repertoire, emitter_state, init_metrics = map_elites.init(init_params, centroids, subkey)
-    rows = [{
-        "iteration": 0,
-        "evaluations": budget["batch_size"],
-        **{k: float(init_metrics[k]) for k in ("qd_score", "coverage", "max_fitness")},
-        "time_s": time.time() - t0,
-    }]
+    rows = [
+        {
+            "iteration": 0,
+            "evaluations": budget["batch_size"],
+            **{k: float(init_metrics[k]) for k in ("qd_score", "coverage", "max_fitness")},
+            "time_s": time.time() - t0,
+        }
+    ]
 
     num_loops = budget["num_iterations"] // log_period
     checkpoint_path = out_dir / "checkpoint.pkl"
@@ -310,16 +308,21 @@ def build(
         (repertoire, emitter_state, key), metrics = run_block((repertoire, emitter_state, key))
         jax.block_until_ready(repertoire.fitnesses)
         iteration = log_period * (i + 1)
-        rows.append({
-            "iteration": iteration,
-            "evaluations": budget["batch_size"] * (iteration + 1),  # +1: the initial batch
-            **{k: float(metrics[k][-1]) for k in ("qd_score", "coverage", "max_fitness")},
-            "time_s": time.time() - start,  # the first block includes JIT compilation
-        })
+        rows.append(
+            {
+                "iteration": iteration,
+                "evaluations": budget["batch_size"] * (iteration + 1),  # +1: the initial batch
+                **{k: float(metrics[k][-1]) for k in ("qd_score", "coverage", "max_fitness")},
+                "time_s": time.time() - start,  # the first block includes JIT compilation
+            }
+        )
         print(f"[{run_name}] {rows[-1]}", flush=True)
         if iteration % checkpoint_every == 0 and iteration < budget["num_iterations"]:
             _save_checkpoint(
-                checkpoint_path, (repertoire, emitter_state, key), iteration, rows,
+                checkpoint_path,
+                (repertoire, emitter_state, key),
+                iteration,
+                rows,
                 previous_elapsed + time.time() - t0,
             )
             if stop_after is not None and iteration >= stop_after:
@@ -375,8 +378,9 @@ def make_dc_actor_network(common: dict, action_size: int) -> MLPDC:
 def load_dc_actor(run_dir: Path, common: dict, env):
     """(network, parameters) of the conditioned actor saved by a DCRL-ME run (actor.npz)."""
     actor = make_dc_actor_network(common, env.action_size)
-    template = actor.init(jax.random.key(0), obs=jnp.zeros((env.observation_size,)),
-                          desc=jnp.zeros((env.descriptor_length,)))
+    template = actor.init(
+        jax.random.key(0), obs=jnp.zeros((env.observation_size,)), desc=jnp.zeros((env.descriptor_length,))
+    )
     _, unravel = ravel_pytree(template)
     return actor, unravel(jnp.asarray(np.load(Path(run_dir) / "actor.npz")["params"]))
 

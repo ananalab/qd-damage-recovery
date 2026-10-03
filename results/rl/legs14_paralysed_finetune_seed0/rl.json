@@ -3,6 +3,10 @@
   "variant": "finetune",
   "seed": 0,
   "repertoire": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/dcrlme_seed0",
+  "init_cell": 43,
+  "init_cell_source": "oracle",
+  "warmup_episodes": 0,
+  "pretrain_time_s": 0.0,
   "config": {
     "td3": {
       "batch_size": 256,
@@ -25,9 +29,19 @@
     "buffer_size": 1000000,
     "max_episodes": 2000,
     "eval_episodes": 8,
+    "warmup_episodes": 160,
+    "pretrain_episodes": 512,
+    "robust": {
+      "p_damaged": 0.25,
+      "episodes": 10000,
+      "eval_every": 800,
+      "final_eval_episodes": 32
+    },
     "variants": {
-      "scratch": "RL de z\u00e9ro sur le robot bless\u00e9",
-      "finetune": "RL depuis la meilleure politique intacte du r\u00e9pertoire (critique neuf)"
+      "scratch": "RL from scratch on the damaged robot",
+      "finetune": "RL from the best intact policy of the repertoire (new critic)",
+      "finetune_warmup": "same, actor frozen during the first warmup_episodes",
+      "finetune_pretrained": "same, critic pre-trained on the intact robot in simulation"
     },
     "init_from_algo": "dcrlme",
     "seeds": [
@@ -35,9 +49,9 @@
       1
     ]
   },
-  "code_commit": "1d0bc8f",
+  "time_s": 706.4354190826416,
+  "code_commit": "5a7efcf-dirty",
   "devices": [
     "cuda:0 (Tesla T4)"
-  ],
-  "time_s": 714.591450214386
+  ]
 }

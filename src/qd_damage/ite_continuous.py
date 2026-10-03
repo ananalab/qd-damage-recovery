@@ -43,8 +43,9 @@ class ConditionedPolicy:
         return self.actor.apply(self.actor_params, obs, desc)
 
 
-def run_continuous(run_dir: Path, n_candidates: int = 2048, n_episodes: int = 4, scenarios=None, n_repeats=None,
-                   out_root: Path = OUT):
+def run_continuous(
+    run_dir: Path, n_candidates: int = 2048, n_episodes: int = 4, scenarios=None, n_repeats=None, out_root: Path = OUT
+):
     run_dir = Path(run_dir)
     run = json.loads((run_dir / "run.json").read_text())
     common = load_run_config(run["algo"], run["profile"])["common"]
@@ -69,13 +70,20 @@ def run_continuous(run_dir: Path, n_candidates: int = 2048, n_episodes: int = 4,
         fitness[s["name"]] = f
         if s["name"] == "intact":
             achieved = d  # descriptors actually reached on the intact robot: input of the Gaussian process
-        print(f"[continuous {run_dir.name}] {s['name']:18s} best: {f.mean(1).max():7.1f} ({time.time() - t0:.0f} s)",
-              flush=True)
+        print(
+            f"[continuous {run_dir.name}] {s['name']:18s} best: {f.mean(1).max():7.1f} ({time.time() - t0:.0f} s)",
+            flush=True,
+        )
 
     out_dir = Path(out_root) / run_dir.name
     out_dir.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(out_dir / "candidates.npz", targets=np.asarray(targets), achieved=achieved,
-                        scenarios=np.array(list(fitness)), fitness=np.stack(list(fitness.values())))
+    np.savez_compressed(
+        out_dir / "candidates.npz",
+        targets=np.asarray(targets),
+        achieved=achieved,
+        scenarios=np.array(list(fitness)),
+        fitness=np.stack(list(fitness.values())),
+    )
 
     prior = fitness["intact"].mean(1)
     oracle_intact = float(prior.max())
@@ -89,33 +97,69 @@ def run_continuous(run_dir: Path, n_candidates: int = 2048, n_episodes: int = 4,
             key, method_key = jax.random.split(key)
             keys = iter(jax.random.split(method_key, ite["max_trials"] + 1))
 
-            def trial_fn(i, _keys=keys):
-                f, _ = evaluate(targets[i:i + 1], next(_keys), scale_vec)
+            def trial_fn(i, _keys=keys, scale_vec=scale_vec):
+                f, _ = evaluate(targets[i : i + 1], next(_keys), scale_vec)
                 return float(f[0])
 
-            hist = run_ite(achieved, prior, trial_fn, normalizer, kappa=ite["kappa"], alpha=ite["alpha"],
-                           lengthscale=ite["lengthscale"], noise_variance=ite["noise_variance"],
-                           signal_variance=ite["signal_variance"], max_trials=ite["max_trials"])
+            hist = run_ite(
+                achieved,
+                prior,
+                trial_fn,
+                normalizer,
+                kappa=ite["kappa"],
+                alpha=ite["alpha"],
+                lengthscale=ite["lengthscale"],
+                noise_variance=ite["noise_variance"],
+                signal_variance=ite["signal_variance"],
+                max_trials=ite["max_trials"],
+            )
             for t in range(len(hist.cells)):
                 rec = hist.best_cell(t + 1)
-                rows.append({"run": run_dir.name, "seed": run["seed"], "scenario": s["name"], "rep": rep, "trial": t + 1,
-                             "recommended_true": float(true_mean[rec]),
-                             "perf_abs": float(normalizer(true_mean[rec])),
-                             "pct_intact": 100 * (true_mean[rec] - f0) / (oracle_intact - f0)})
+                rows.append(
+                    {
+                        "run": run_dir.name,
+                        "seed": run["seed"],
+                        "scenario": s["name"],
+                        "rep": rep,
+                        "trial": t + 1,
+                        "recommended_true": float(true_mean[rec]),
+                        "perf_abs": float(normalizer(true_mean[rec])),
+                        "pct_intact": 100 * (true_mean[rec] - f0) / (oracle_intact - f0),
+                    }
+                )
             stop = hist.stop_trial or len(hist.cells)
             rec = hist.best_cell(stop)
             # pct_intact is relative to the best actor gait, not to the best elite: compare with the grid
             # using perf_abs only.
-            summary.append({"run": run_dir.name, "seed": run["seed"], "scenario": s["name"], "rep": rep,
-                            "method": "ite_continuous", "trials_used": stop,
-                            "recommended_true": float(true_mean[rec]), "perf_abs": float(normalizer(true_mean[rec])),
-                            "pct_intact": 100 * (true_mean[rec] - f0) / (oracle_intact - f0),
-                            "oracle_continuous_abs": float(normalizer(true_mean.max()))})
+            summary.append(
+                {
+                    "run": run_dir.name,
+                    "seed": run["seed"],
+                    "scenario": s["name"],
+                    "rep": rep,
+                    "method": "ite_continuous",
+                    "trials_used": stop,
+                    "recommended_true": float(true_mean[rec]),
+                    "perf_abs": float(normalizer(true_mean[rec])),
+                    "pct_intact": 100 * (true_mean[rec] - f0) / (oracle_intact - f0),
+                    "oracle_continuous_abs": float(normalizer(true_mean.max())),
+                }
+            )
     write_csv(out_dir / "trials.csv", rows)
     write_csv(out_dir / "summary.csv", summary)
-    (out_dir / "continuous.json").write_text(json.dumps({
-        "run_dir": str(run_dir), "code_commit": git_commit(), "n_candidates": n_candidates,
-        "n_episodes": n_episodes, "ite": ite, "time_s": time.time() - t0}, indent=2))
+    (out_dir / "continuous.json").write_text(
+        json.dumps(
+            {
+                "run_dir": str(run_dir),
+                "code_commit": git_commit(),
+                "n_candidates": n_candidates,
+                "n_episodes": n_episodes,
+                "ite": ite,
+                "time_s": time.time() - t0,
+            },
+            indent=2,
+        )
+    )
     return out_dir
 
 

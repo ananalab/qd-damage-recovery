@@ -113,24 +113,40 @@ Runs: dcrlme_seed0, dcrlme_seed1, dcrlme_seed2, me_seed0, me_seed1, me_seed2, pg
 
 ## rl_episodes_to_match_ite
 
-|    | scenario         | variant   |   seed |   ite_trials |   ite_fitness |   rl_episodes_to_match |   rl_best_fitness |   rl_max_episodes |
-|---:|:-----------------|:----------|-------:|-------------:|--------------:|-----------------------:|------------------:|------------------:|
-|  0 | ankle1_paralysed | finetune  |      0 |         10   |       1169.58 |                   1264 |           1209.82 |              2000 |
-|  1 | ankle1_paralysed | finetune  |      1 |          5.6 |       1247.55 |                    nan |           1159.15 |              2000 |
-|  2 | ankle1_paralysed | scratch   |      0 |         10   |       1169.58 |                   1072 |           1409.54 |              2000 |
-|  3 | ankle1_paralysed | scratch   |      1 |          5.6 |       1247.55 |                   1808 |           1285.95 |              2000 |
-|  4 | leg2_weak        | finetune  |      0 |          1.4 |       1437.62 |                      0 |           1464.29 |              2000 |
-|  5 | leg2_weak        | finetune  |      1 |          6.4 |       1253.55 |                   1536 |           1376.04 |              2000 |
-|  6 | leg2_weak        | scratch   |      0 |          1.4 |       1437.62 |                    nan |           1041.61 |              2000 |
-|  7 | leg2_weak        | scratch   |      1 |          6.4 |       1253.55 |                    nan |           1052.26 |              2000 |
-|  8 | leg4_paralysed   | finetune  |      0 |          6.6 |       1212.35 |                    nan |           1095.73 |              2000 |
-|  9 | leg4_paralysed   | finetune  |      1 |         15   |       1115.41 |                    nan |           1100.81 |              2000 |
-| 10 | leg4_paralysed   | scratch   |      0 |          6.6 |       1212.35 |                    nan |           1056.93 |              2000 |
-| 11 | leg4_paralysed   | scratch   |      1 |         15   |       1115.41 |                   1264 |           1166.91 |              2000 |
-| 12 | legs14_paralysed | finetune  |      0 |         18.8 |       1087.39 |                    nan |           1056.23 |              2000 |
-| 13 | legs14_paralysed | finetune  |      1 |         20   |       1060.65 |                    nan |           1052.5  |              2000 |
-| 14 | legs14_paralysed | scratch   |      0 |         18.8 |       1087.39 |                    nan |           1052.18 |              2000 |
-| 15 | legs14_paralysed | scratch   |      1 |         20   |       1060.65 |                    nan |           1054.75 |              2000 |
+|    | scenario         | variant             |   seed |   ite_trials |   ite_fitness |   rl_episodes_to_match |   rl_best_fitness |   rl_max_episodes |
+|---:|:-----------------|:--------------------|-------:|-------------:|--------------:|-----------------------:|------------------:|------------------:|
+|  0 | ankle1_paralysed | finetune            |      0 |         10   |       1169.58 |                    nan |           1058.25 |              2000 |
+|  1 | ankle1_paralysed | finetune            |      1 |          5.6 |       1247.55 |                    nan |           1159.15 |              2000 |
+|  2 | ankle1_paralysed | finetune_pretrained |      0 |         10   |       1169.58 |                    112 |           1983.66 |              2000 |
+|  3 | ankle1_paralysed | finetune_pretrained |      1 |          5.6 |       1247.55 |                    576 |           1655.48 |              2000 |
+|  4 | ankle1_paralysed | finetune_warmup     |      0 |         10   |       1169.58 |                    496 |           1526.06 |              2000 |
+|  5 | ankle1_paralysed | finetune_warmup     |      1 |          5.6 |       1247.55 |                    400 |           1905.22 |              2000 |
+|  6 | ankle1_paralysed | scratch             |      0 |         10   |       1169.58 |                   1072 |           1409.54 |              2000 |
+|  7 | ankle1_paralysed | scratch             |      1 |          5.6 |       1247.55 |                   1808 |           1285.95 |              2000 |
+|  8 | leg2_weak        | finetune            |      0 |          1.4 |       1437.62 |                      0 |           1445.71 |              2000 |
+|  9 | leg2_weak        | finetune            |      1 |          6.4 |       1253.55 |                   1536 |           1376.04 |              2000 |
+| 10 | leg2_weak        | finetune_pretrained |      0 |          1.4 |       1437.62 |                   1088 |           1558.17 |              2000 |
+| 11 | leg2_weak        | finetune_pretrained |      1 |          6.4 |       1253.55 |                    224 |           1873.42 |              2000 |
+| 12 | leg2_weak        | finetune_warmup     |      0 |          1.4 |       1437.62 |                      0 |           1957.34 |              2000 |
+| 13 | leg2_weak        | finetune_warmup     |      1 |          6.4 |       1253.55 |                    336 |           1966.79 |              2000 |
+| 14 | leg2_weak        | scratch             |      0 |          1.4 |       1437.62 |                    nan |           1041.61 |              2000 |
+| 15 | leg2_weak        | scratch             |      1 |          6.4 |       1253.55 |                    nan |           1052.26 |              2000 |
+| 16 | leg4_paralysed   | finetune            |      0 |          6.6 |       1212.35 |                    nan |           1095.29 |              2000 |
+| 17 | leg4_paralysed   | finetune            |      1 |         15   |       1115.41 |                    nan |           1100.81 |              2000 |
+| 18 | leg4_paralysed   | finetune_pretrained |      0 |          6.6 |       1212.35 |                    192 |           1606.91 |              2000 |
+| 19 | leg4_paralysed   | finetune_pretrained |      1 |         15   |       1115.41 |                    192 |           1649.04 |              2000 |
+| 20 | leg4_paralysed   | finetune_warmup     |      0 |          6.6 |       1212.35 |                    496 |           1611.82 |              2000 |
+| 21 | leg4_paralysed   | finetune_warmup     |      1 |         15   |       1115.41 |                    224 |           1624.95 |              2000 |
+| 22 | leg4_paralysed   | scratch             |      0 |          6.6 |       1212.35 |                    nan |           1056.93 |              2000 |
+| 23 | leg4_paralysed   | scratch             |      1 |         15   |       1115.41 |                   1264 |           1166.91 |              2000 |
+| 24 | legs14_paralysed | finetune            |      0 |         18.8 |       1087.39 |                    nan |           1052.54 |              2000 |
+| 25 | legs14_paralysed | finetune            |      1 |         20   |       1060.65 |                    nan |           1052.5  |              2000 |
+| 26 | legs14_paralysed | finetune_pretrained |      0 |         18.8 |       1087.39 |                   1344 |           1179.05 |              2000 |
+| 27 | legs14_paralysed | finetune_pretrained |      1 |         20   |       1060.65 |                    720 |           1243.56 |              2000 |
+| 28 | legs14_paralysed | finetune_warmup     |      0 |         18.8 |       1087.39 |                   1008 |           1279.58 |              2000 |
+| 29 | legs14_paralysed | finetune_warmup     |      1 |         20   |       1060.65 |                    720 |           1299.34 |              2000 |
+| 30 | legs14_paralysed | scratch             |      0 |         18.8 |       1087.39 |                    nan |           1052.18 |              2000 |
+| 31 | legs14_paralysed | scratch             |      1 |         20   |       1060.65 |                    nan |           1054.75 |              2000 |
 
 ## Key numbers
 

@@ -1,0 +1,24 @@
+{
+  "run_dir": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/dcrlme_seed2",
+  "code_commit": "5a7efcf-dirty",
+  "ite": {
+    "kernel": "matern52",
+    "lengthscale": 0.4,
+    "signal_variance": 0.05,
+    "noise_variance": 0.02,
+    "kappa": 0.05,
+    "alpha": 0.9,
+    "max_trials": 20,
+    "n_repeats": 5
+  },
+  "f0": 1058.7,
+  "oracle_intact": 1584.72314453125,
+  "physics": {
+    "friction": 0.7,
+    "torso_mass": 12.0,
+    "gear_scale": 0.9
+  },
+  "descriptor_file": "",
+  "prior_oracle_root": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-campaign/outputs/oracle",
+  "time_s": 363.1562044620514
+}

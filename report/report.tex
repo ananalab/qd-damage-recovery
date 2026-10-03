@@ -49,12 +49,14 @@ learned beforehand in simulation. Recent Quality-Diversity (QD) algorithms build
 reinforcement-learning (RL) critics and reach much higher performance, but it is not known whether they keep the
 diversity that makes a repertoire useful after damage. On the Brax Ant, we build repertoires at equal budget with
 \ME, \PGA{} and \DCRL{} (\NSeeds{} seeds each), measure their resilience to \NScenarios{} damage scenarios, and adapt
-them with ITE, simple baselines and RL re-training (TD3), counting episodes on the damaged robot. Repertoires built
-with RL are as resilient as those of \ME{} in relative terms and keep much better gaits in absolute terms. ITE needs a
-median of \ITETrials{} trials, recovers \ITEPctIntact\% of the progress of the best intact gait (against
-\BestIntactPct\% without adaptation), but is barely better than trying gaits in decreasing order of their intact
-performance: its small advantage after three trials is gone after five. Except in one case where the intact policy already matched ITE before any training, TD3 needs
-more than a thousand episodes to reach the same performance, when it reaches it at all.
+them with ITE, simple baselines and RL (TD3), counting episodes on the damaged robot. Repertoires built with RL are
+as resilient as those of \ME{} in relative terms and keep much better gaits in absolute terms. ITE needs a median of
+\ITETrials{} trials and recovers \ITEPctIntact\% of the progress of the best intact gait (against \BestIntactPct\%
+without adaptation), but it is barely better than trying gaits in decreasing order of intact performance, even with a
+descriptor that models the damage three times better or with a gap between simulator and robot. Re-training with TD3
+needs hundreds of episodes once its critic is warmed up. A TD3 policy trained in simulation on random damages,
+however, matches ITE on the best repertoires without any trial, as long as the damage belongs to its training
+distribution.
 \end{abstract}
 
 \begin{figure}[h]
@@ -91,8 +93,11 @@ fastest gaits (best fitness \MaxFitPGA). The \emph{relative} resilience to damag
 algorithms, but the best gait left after damage is much better in repertoires built with RL. (ii) ITE stops after a
 median of \ITETrials{} trials and recovers \ITEPctIntact\% of the intact progress, against \BestIntactPct\% for the
 best intact gait; however, a model-free strategy that tries gaits in decreasing order of intact performance (top-$k$)
-does almost as well: ITE is slightly ahead after three trials, mostly on \DCRL{} repertoires, and no longer after five. (iii) RL re-training needs more than a thousand episodes, and
-starting from the intact policy does not help. (iv) Searching the continuous descriptor space with the \DCRL{}
+does almost as well: ITE is slightly ahead after three trials, mostly on \DCRL{} repertoires, and no longer after
+five; a better descriptor or a reality gap do not change this. (iii) RL re-training needs hundreds of episodes on the
+damaged robot, and fine-tuning the intact policy only works once its critic is warmed up or pre-trained; a
+damage-robust TD3 policy, trained in simulation, matches ITE without any trial on damages it was trained for.
+(iv) Searching the continuous descriptor space with the \DCRL{}
 conditioned actor, instead of the repertoire cells, is clearly worse.
 
 \paragraph{Questions}
@@ -124,7 +129,17 @@ one is kept. QD methods were more robust to large perturbations, and PGA-ME adap
 ITE \citep{cully2015robots} uses the M-BOA algorithm described in \cref{sec:ite}. Follow-ups removed the need for
 resets \citep{chatzilygeroudis2018reset}, selected among several priors \citep{kaushik2020adaptive}, or used
 hierarchical repertoires \citep{allard2022online}. We keep the original algorithm and study the effect of
-\emph{how the repertoire was built}.
+\emph{how the repertoire was built}. Noisy evaluations, which make elites look better than they are, are the topic of
+uncertain QD \citep{flageat2023uncertain}.
+
+\subsection{Adaptation without a repertoire}
+Other approaches prepare a single policy for a family of conditions. Domain randomisation trains it on randomised
+dynamics so that it works zero-shot \citep{tobin2017domain,peng2018sim}; strategy optimisation searches a small
+latent space of a conditioned policy on the new robot \citep{yu2019policy}; meta-learning trains a policy, or a model,
+to adapt from a few gradient steps or a few seconds of data \citep{finn2017model,nagabandi2019learning}; RMA infers the
+current dynamics online from the recent history \citep{kumar2021rma}. We compare ITE with the simplest member of this
+family, a TD3 policy trained on random damages (\cref{sec:rlbaselines}), and leave meta-learned baselines for future
+work.
 
 % ================================================================ 3
 \section{Experimental setup}
@@ -146,6 +161,13 @@ output), the repertoire, and the number of evaluations per iteration (256); hype
 algorithm are those of the official QDax notebooks (\cref{tab:hparams}). Each run lasts \NIterations{}
 iterations, i.e.\ \NEvaluations{} episodes; \NSeeds{} seeds per algorithm. A test checks that the three
 configurations only differ by their emitter.
+
+\paragraph{What ``equal budget'' means} The budget is equal in \emph{episodes}, which is what a robot would pay, not in
+computation: per iteration, \PGA{} also makes 300 critic and 100 policy-gradient steps and \DCRL{} 3000 and 150
+(\cref{tab:hparams}), so \DCRL{} makes about eight times more gradient steps than \PGA{} (82 against 52 minutes per run on
+a T4, against 8 for \ME). The hyper-parameters of each algorithm come from the official notebooks, which use other
+tasks (Walker2d, Ant-omni) and were not tuned for \texttt{ant\_uni}; the ranking between \PGA{} and \DCRL{} may
+depend on this choice.
 
 \begin{table}[htbp]
 \centering\small
@@ -173,8 +195,8 @@ weakened, two legs paralysed (FL+HL, same side; FL+FR, both front legs), and one
 \subsection{Performance scale}\label{sec:scale}
 Episodes are noisy (random initial state), and a robot that does not move still collects the survival bonus: its
 return $F_0$ was measured at $4.23$ per step (1058.7 per episode). We report
-\[ p = \frac{F - F_0}{S}, \qquad S = 1.2 \text{ per step } (300 \text{ per episode}), \]
-so that $p\approx0$ for a standing robot and $p\approx1$ for $\approx$15\,m in 12.5\,s, or percentages of the
+\[ v = \frac{F - F_0}{S}, \qquad S = 1.2 \text{ per step } (300 \text{ per episode}), \]
+so that $v\approx0$ for a standing robot and $v\approx1$ for $\approx$15\,m in 12.5\,s, or percentages of the
 progress $F-F_0$ of the best intact gait. With this scale, the variance of a single episode's performance is
 $\approx10^{-3}$, the value used by \citet{cully2015robots}.
 
@@ -186,6 +208,10 @@ performance, an upper bound for any method that picks a gait from the repertoire
 \OraclePolicies{} policies of a repertoire, for every damage).
 The \emph{resilience} of a repertoire to a damage is the fraction of the intact oracle progress still reachable:
 $(F^\star_{\text{damaged}}-F_0)/(F^\star_{\text{intact}}-F_0)$.
+
+\paragraph{Selection bias of the oracle} The oracle is the maximum of noisy means over several hundred cells, so it is
+biased upwards, and possibly more for repertoires with more cells. As a check, the cell selected by the oracle is
+re-evaluated on \OracleCheckEpisodes{} fresh episodes, which removes the selection bias (\cref{sec:robustness}).
 
 \subsection{Intelligent Trial \& Error}\label{sec:ite}
 Let $P(\mathbf{d}_i)$ be the prior performance of cell $i$ on the intact robot. ITE models the residual between
@@ -221,17 +247,28 @@ per (repertoire, damage); the quality of the recommended gait (best observed so 
 The repetitions of an adaptation only differ by episode noise, so they are averaged first: the statistical unit is a
 (repertoire, damage) pair, i.e.\ \NUnits{} units per algorithm. Algorithms are compared with two-sided Mann-Whitney
 tests on these units, and two adaptation methods with paired two-sided Wilcoxon signed-rank tests. Units of the same
-seed share a repertoire and are not fully independent, so p-values should be read as indicative. Medians in the tables
-are taken over all repetitions.
+seed share a repertoire and are not independent. As a check that accounts for this, we also fit linear mixed models
+with a random intercept per repertoire, \texttt{value \textasciitilde{} algorithm + damage + (1 | repertoire)} for the
+comparisons between algorithms and \texttt{difference \textasciitilde{} algorithm + (1 | repertoire)} for the paired
+comparisons between methods, and report differences with 95\% confidence intervals (\cref{sec:robustness}). With 3
+repertoires per algorithm these intervals are approximate. Medians in the tables are taken over all repetitions.
+Throughout, $v$ denotes the normalised performance and $p$ a p-value.
 
 \subsection{RL re-training}
 TD3 (QDax implementation) is trained on the damaged robot, either from scratch or starting from the best intact
 \DCRL{} policy (same architecture; the critic starts from scratch), on 4 damages (FR leg paralysed, HL leg weakened,
 FL+FR legs paralysed, FL ankle paralysed) and 2 seeds, for \RLMaxEpisodes{} episodes with 16 robots in parallel and
 one gradient step per transition. The deterministic policy is evaluated on 8 episodes after every 16 training
-episodes. In the reported runs the starting policy is the elite with the highest \emph{stored} fitness, because the
-oracle ran in parallel; for seed~1 it is also the best re-evaluated elite, for seed~0 it is a different elite whose
-re-evaluated intact fitness is 1.4\% below the best one. The code now starts from the best re-evaluated elite.
+episodes. Fine-tuning starts from the best re-evaluated elite. Because the new critic is untrained at first, we also
+test two remedies: a \emph{warm-up}, where the actor is frozen during the first 160 episodes on the damaged robot
+(counted), and a \emph{pre-trained critic}, trained for 512 episodes on the intact robot in simulation with the actor
+frozen (not counted, since no damaged robot is involved).
+
+\paragraph{Damage-robust policy} The strongest alternative to adaptation is not to adapt at all: train one policy
+that works under many damages. We train TD3 from scratch in simulation for 10{,}000 episodes, drawing a new damage at
+every episode (each joint independently paralysed or weakened with probability 0.25), and evaluate it without any
+trial on the damaged robot (32 episodes per damage). The test damages lie inside this training distribution, which
+favours the robust policy: unlike ITE, it needs to know in advance what kind of damage can happen.
 
 % ================================================================ 5
 \section{Results}
@@ -269,7 +306,7 @@ touch the ground only briefly. The stored fitness of these elites is optimistic 
 
 \begin{table}[htbp]
 \centering\small
-\caption{Resilience (\%) and absolute oracle performance $p$ after damage (median over seeds).}
+\caption{Resilience (\%) and absolute oracle performance $v$ after damage (median over seeds).}
 \label{tab:resilience}
 \resizebox{\linewidth}{!}{\input{generated/table_resilience}}
 \end{table}
@@ -279,7 +316,7 @@ that remains reachable after damage is \ResME\% for \ME, \ResPGA\% for \PGA{} an
 the pairwise differences is significant (Mann-Whitney, $p\PResMEPGA$, $p\PResMEDCRL$ and $p\PResPGADCRL$;
 \cref{fig:resilience}). We therefore find no sign that RL makes repertoires less useful after damage. In absolute terms,
 the difference is large (\cref{tab:resilience}): after damage, the best gait available is worth a median
-$p=\OracleAbsPGA$ in \PGA{} repertoires, $p=\OracleAbsDCRL$ in \DCRL{} ones and only $p=\OracleAbsME$ in \ME{} ones.
+$v=\OracleAbsPGA$ in \PGA{} repertoires, $v=\OracleAbsDCRL$ in \DCRL{} ones and only $v=\OracleAbsME$ in \ME{} ones.
 Weakening a leg is usually mild; paralysing a whole leg removes roughly half of the progress; with two paralysed
 legs, no repertoire keeps a useful gait.
 
@@ -316,16 +353,16 @@ The comparison with top-$k$, which tries gaits in decreasing order of intact per
 favourable: after three trials ITE reaches \ITEAtThree\% and top-$k$ \TopKAtThree\%; after 20 trials, \ITEAtTwenty\%
 and \TopKAtTwenty\% (\cref{fig:trials,tab:equal}). Paired over the \NPairsTopK{} (repertoire, damage) units, ITE is
 better than top-$k$ after five trials in \ITEWinsTopK\% of them, equal in \ITETiesTopK\% and worse in \ITELosesTopK\%
-(Wilcoxon $p\PTopKFive$). After three trials ITE has a small advantage (mean difference \DiffTopKThree{} in $p$,
+(Wilcoxon $p\PTopKFive$). After three trials ITE has a small advantage (mean difference \DiffTopKThree{} in $v$,
 $p\PTopKThree$), which comes mostly from \DCRL{} repertoires (\DiffTopKThreeDCRL, $p\PTopKThreeDCRL$) and disappears
 after five and ten trials (\cref{tab:itevstopk}). The pooled medians of \cref{tab:equalalgo} suggest a larger gap on
 \DCRL{} repertoires ($\ITEAbsTenDCRL$ against $\TopKAbsTenDCRL$ after ten trials), but the paired test does not support it
 ($p\PTopKTenDCRL$): unit by unit, ITE is better as often as it is worse (\cref{tab:itevstopk}). On \PGA{} repertoires, the best intact gait already keeps most of its
-performance ($p=\ITEAbsOnePGA$ at the first trial). On \ME{} repertoires, all methods stay close to a standing robot.
+performance ($v=\ITEAbsOnePGA$ at the first trial). On \ME{} repertoires, all methods stay close to a standing robot.
 
 \begin{table}[htbp]
 \centering\small
-\caption{ITE against top-$k$ at equal numbers of trials: mean difference in absolute performance $p$ (ITE $-$ top-$k$),
+\caption{ITE against top-$k$ at equal numbers of trials: mean difference in absolute performance $v$ (ITE $-$ top-$k$),
 number of units where ITE is better / equal / worse, and paired Wilcoxon test, over the (repertoire, damage) units.}
 \label{tab:itevstopk}
 \resizebox{\linewidth}{!}{\input{generated/table_ite_vs_topk}}
@@ -333,7 +370,7 @@ number of units where ITE is better / equal / worse, and paired Wilcoxon test, o
 
 \begin{table}[htbp]
 \centering\small
-\caption{Absolute performance $p$ of the recommended gait at equal numbers of trials, by repertoire (median).}
+\caption{Absolute performance $v$ of the recommended gait at equal numbers of trials, by repertoire (median).}
 \label{tab:equalalgo}
 \input{generated/table_equal_trials_by_algo}
 \end{table}
@@ -346,7 +383,7 @@ number of units where ITE is better / equal / worse, and paired Wilcoxon test, o
 \end{table}
 
 What a robot finally gets depends mostly on how its repertoire was built (\cref{tab:itealgo}): with ITE, the
-recommended gait is worth $p=\ITEAbsPGA$ with \PGA, $p=\ITEAbsDCRL$ with \DCRL{} and $p=\ITEAbsME$ with \ME{}
+recommended gait is worth $v=\ITEAbsPGA$ with \PGA, $v=\ITEAbsDCRL$ with \DCRL{} and $v=\ITEAbsME$ with \ME{}
 (Mann-Whitney on the (repertoire, damage) units: $p\PITEAbsMEPGA$ for \ME{} against \PGA, $p\PITEAbsMEDCRL$ against
 \DCRL{} and $p\PITEAbsPGADCRL$ between \PGA{} and \DCRL; at the level of seeds, every \PGA{} repertoire is above every
 \DCRL{} repertoire, itself above every \ME{} repertoire). \Cref{fig:itetrials,fig:map} show one ITE run.
@@ -371,27 +408,50 @@ gait, after 6 or 7 trials, and this one used 6): feet-contact profile of each ga
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{rl_curves}
-\caption{TD3 on the damaged robot, from scratch and from the best intact \DCRL{} policy (two seeds each), against the
-performance of the gait found by ITE on the \DCRL{} repertoire of the same seed (dashed lines).}
+\caption{TD3 on the damaged robot (two seeds each): from scratch, from the best intact \DCRL{} policy, and from the
+same policy with a critic warm-up or a pre-trained critic, against the performance of the gait found by ITE on the
+\DCRL{} repertoire of the same seed (dashed lines).}
 \label{fig:rl}
 \end{figure}
 
 \IfFileExists{generated/table_rl.tex}{%
 \begin{table}[htbp]
 \centering\small
-\caption{Episodes needed by TD3 to match the gait found by ITE (\DCRL{} repertoire of the same seed); ``--'': not
-reached within \RLMaxEpisodes{} episodes.}
+\caption{Episodes on the damaged robot needed by each TD3 variant to match the gait found by ITE (\DCRL{} repertoire
+of the same seed, mean number of ITE trials in the first column); ``--'': not reached within \RLMaxEpisodes{}
+episodes.}
 \label{tab:rl}
 \input{generated/table_rl}
 \end{table}}{}
 
 Within \RLMaxEpisodes{} episodes, TD3 from scratch matches the gait found by ITE in \RLScratchReached{} runs (median
-\RLScratchEpisodes{} episodes when it does), and TD3 from the intact policy in \RLFinetuneReached{} runs
-(\cref{fig:rl,tab:rl}), against 1 to 20 trials for ITE. In one of the latter cases, the intact policy already matched
-ITE before any training. Otherwise, starting from the intact policy does not help: its performance collapses at the first
-evaluation (after 16 episodes), and the robot has to learn again almost from scratch. The most likely cause is that the
-policy starts following the gradient of a new critic that has not been trained yet; we did not test it. A pre-trained
-critic, a warm-up period without policy updates, or a smaller policy learning rate could make fine-tuning useful.
+\RLScratchEpisodes{} episodes when it does), and plain fine-tuning in only \RLFinetuneReached{} runs, one of them
+because the intact policy already matched ITE before any training (\cref{fig:rl,tab:rl}). Plain fine-tuning collapses
+at the first evaluation. The two remedies show why: with a critic warm-up, fine-tuning matches ITE in
+\RLWarmupReached{} runs (median \RLWarmupEpisodes{} episodes), and with a critic pre-trained on the intact robot in
+\RLPretrainedReached{} runs (median \RLPretrainedEpisodes{} episodes). The collapse came from following the gradient
+of an untrained critic. Even so, the best re-training still needs hundreds of episodes on the damaged robot, against 1
+to 20 trials for ITE.
+
+\subsection{A damage-robust policy}\label{sec:rlbaselines}
+\begin{table}[htbp]
+\centering\small
+\caption{Performance $v$ after damage of the damage-robust TD3 policy (zero trials, mean of \RobustNSeeds{} seeds)
+and of the gait found by ITE (mean over seeds and repetitions), on the nominal robot and with the reality gap of
+\cref{sec:robustness}.}
+\label{tab:robust}
+\resizebox{\linewidth}{!}{\input{generated/table_robust}}
+\end{table}
+
+The robust policy changes the picture (\cref{tab:robust}). Without any trial on the damaged robot it reaches a median
+$v=\RobustDamaged$ over the damages, better than ITE on \DCRL{} repertoires in \RobustBeatsITEDCRL{} of the
+\RobustNScenarios{} damages and as good as ITE on the best repertoires, those of \PGA{} (better in
+\RobustBeatsITEPGA{} of \RobustNScenarios; median $v=\ITEPGAMedianByDamage$ for ITE). It is also a strong intact
+gait ($v=\RobustIntact$) and is little affected by the reality gap ($v=\RobustGapDamaged$ against
+$\ITEPGAGapMedianByDamage$ for ITE on \PGA). It fails, however, when two legs are paralysed, where it does worse than a
+standing robot, while the repertoires still offer a gait that barely moves. Two caveats limit this comparison: the test
+damages belong to the training distribution of the robust policy, and ITE assumes nothing about the damage. A damage
+outside that distribution, or a real robot, could reverse the ranking; this is precisely the case ITE was designed for.
 
 \FloatBarrier
 \subsection{Bonus: searching the continuous descriptor space}
@@ -401,7 +461,7 @@ critic, a warm-up period without policy updates, or a smaller policy learning ra
 \includegraphics[width=\linewidth]{bonus_grid_vs_continuous}
 \end{minipage}\hfill
 \begin{minipage}{0.48\linewidth}\centering\small
-\input{generated/table_bonus}
+\resizebox{\linewidth}{!}{\input{generated/table_bonus}}
 \end{minipage}
 \caption{ITE on the cells of a \DCRL{} repertoire against ITE on 2048 gaits generated by its descriptor-conditioned
 actor for targets spread over $[0,1]^4$ (\BonusNRuns{} dedicated runs, same runs for both).}
@@ -411,22 +471,106 @@ actor for targets spread over $[0,1]^4$ (\BonusNRuns{} dedicated runs, same runs
 \DCRL{} also learns an actor $\pi(a\mid o,\mathbf{d})$ that should produce a gait with any requested feet-contact
 profile $\mathbf{d}$. We let ITE search 2048 such gaits instead of the repertoire cells, on \BonusNRuns{} dedicated
 \DCRL{} runs where the actor was saved. The answer is clearly negative (\cref{fig:bonus}): the gaits produced by the actor
-are much weaker than the elites (best available gait after damage $p=\BonusOracleCont$ against $p=\BonusOracleGrid$, and
-never better in any of the (run, damage) pairs), and ITE on the actor finds $p=\BonusContAbs$ against $p=\BonusGridAbs$
+are much weaker than the elites (best available gait after damage $v=\BonusOracleCont$ against $v=\BonusOracleGrid$, and
+never better in any of the (run, damage) pairs), and ITE on the actor finds $v=\BonusContAbs$ against $v=\BonusGridAbs$
 on the grid (better in only \BonusContWins{} of the \BonusN{} (run, damage) pairs; Wilcoxon $p\BonusP$). The actor is a
 useful source of offspring during training, but it does not replace the elites that were selected and refined.
+
+\FloatBarrier
+\subsection{Robustness of the conclusions}\label{sec:robustness}
+\paragraph{Oracle bias} Re-evaluating the cell chosen by the oracle on \OracleCheckEpisodes{} fresh episodes shows that
+the oracle over-estimates the best gait by $v\approx\OracleBiasME$ (\ME), $\OracleBiasPGA$ (\PGA) and $\OracleBiasDCRL$
+(\DCRL) on average (\cref{tab:oraclecheck}). With these unbiased values the median resilience is \ResCheckedME\%,
+\ResCheckedPGA\% and \ResCheckedDCRL\%; the mixed model now finds \PGA{} slightly more resilient than \ME{}
+(difference \MixResCheckedPGAvsME{} with the correction, $p\PMixResCheckedPGAvsME$, against \MixResPGAvsME{}
+without it), but the rank test does not. Either way,
+building the repertoire with RL does not make it less resilient.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Oracle re-evaluated on fresh episodes: mean bias of the 4-episode oracle, and medians of the resilience and
+of the best gait after damage computed with the re-evaluated values.}
+\label{tab:oraclecheck}
+\input{generated/table_oracle_check}
+\end{table}
+
+\paragraph{Mixed models} Linear mixed models with a random intercept per repertoire confirm the comparisons between
+algorithms (\cref{tab:mixed}): no significant difference in relative resilience, large differences in absolute
+performance. For ITE against top-$k$ (\cref{tab:mixedtopk}), they agree with the Wilcoxon tests on \ME{} and \PGA,
+but on \DCRL{} they find a positive mean gain after three and five trials (\MixTopKFiveDCRL{} after five trials,
+$p\PMixTopKFiveDCRL$) while the median gain is zero: the model helps a lot on a few damages and not at all on the
+others.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Differences between algorithms from linear mixed models (fixed effects: algorithm and damage; random
+intercept per repertoire), with 95\% confidence intervals.}
+\label{tab:mixed}
+\resizebox{\linewidth}{!}{\input{generated/table_mixed}}
+\vspace{1em}
+\caption{Mean gain of ITE over top-$k$ in $v$ (95\% confidence interval) from a mixed model per repertoire type.}
+\label{tab:mixedtopk}
+\input{generated/table_mixed_topk}
+\end{table}
+
+\paragraph{Is the descriptor the bottleneck?} With the feet-contact descriptor the fitted noise variance
+($\CalibFeetNoise$) is not small compared with the signal variance ($\CalibFeetSignal$): neighbouring cells react
+differently to the same damage. A damage acts on joints, so we built a second descriptor, the mean absolute action of
+each of the 8 actuators on the intact robot, and fitted the Gaussian process on it in the same way, on the same
+development repertoires (\cref{tab:calibration}). It explains the residuals much better: the log-likelihood gained
+over independent cells is $\CalibJointGain$ per (repertoire, damage) pair against $\CalibFeetGain$, and the fitted
+noise drops to $\CalibJointNoise$. Yet ITE barely improves (\cref{tab:jointfeet}): against ITE on feet contact the
+mean gain is \JointVsFeetFive{} after five trials ($p\PJointVsFeetFive$) and \JointVsFeetTen{} after ten
+($p\PJointVsFeetTen$). Against top-$k$, ITE on joint usage is ahead after three trials (\JointVsTopKThree, $p\PJointVsTopKThree$)
+and, on \DCRL, after five (\JointVsTopKFiveDCRL, $p\PJointVsTopKFiveDCRL$), but not after ten. These runs were made on
+a CPU, so ITE and top-$k$ were re-run on the same machine for these comparisons. A better model of the damage
+therefore does not translate into a better choice of gait: in these repertoires, the gaits that remain good after a
+damage are mostly among the best intact ones, which top-$k$ tries first anyway.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Gaussian-process hyper-parameters fitted by maximum marginal likelihood on the development repertoires for
+each descriptor, and log-likelihood gained over independent cells, per (repertoire, damage) pair.}
+\label{tab:calibration}
+\input{generated/table_calibration}
+\vspace{1em}
+\caption{ITE on joint usage minus ITE on feet contact: mean difference in $v$ and paired Wilcoxon test, over the
+(repertoire, damage) units.}
+\label{tab:jointfeet}
+\input{generated/table_joint_vs_feet}
+\end{table}
+\paragraph{Reality gap} Here the simulator also plays the robot: prior and trials come from the same physics, which
+is the easy case. To mimic a deployment, the trials now run on a robot whose physics differ from the simulator that
+built the repertoire and gave the prior: ground friction $\times0.7$, torso mass $\times1.2$, actuator strength
+$\times0.9$, values fixed before the experiment. The gap alone costs little: the best intact gait keeps
+\GapIntactRetained\% of its progress. With a damage on top of it (\cref{tab:gap}), the gait found by ITE is worth
+$v=\GapITEAbs$ after a median of \GapITETrials{} trials, top-$k$ reaches $\GapTopKAbs$ after 20 trials, and the best
+intact gait $\GapBestIntactAbs$. ITE's early lead over top-$k$ is slightly larger than without the gap: \GapDiffTopKThree{} after three trials
+($p\GapPTopKThree$), \GapDiffTopKThreeDCRL{} on \DCRL{} ($p\GapPTopKThreeDCRL$); but it is gone after five trials
+(\GapDiffTopKFive, $p\GapPTopKFive$), and on \PGA{} top-$k$ is ahead after ten (\GapDiffTopKTenPGA,
+$p\GapPTopKTenPGA$). A moderate gap therefore makes the prior less reliable without changing the conclusion: the model
+mostly helps in the first trials.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Adaptation with a reality gap: prior from the nominal simulator, trials on the perturbed robot (medians over
+repertoires, damages and repetitions; ``\% intact'': share of the progress of the best intact gait of the perturbed
+robot).}
+\label{tab:gap}
+\input{generated/table_reality_gap}
+\end{table}
 
 % ================================================================ 6
 \FloatBarrier
 \section{Discussion}\label{sec:discussion}
 \paragraph{Why ITE is not much better than top-$k$} ITE helps when trying one gait tells something about
-\emph{similar} gaits. Here, the effect of damage is only weakly correlated between neighbouring cells of the
-feet-contact descriptor: on development repertoires, a large part of the variance of the residuals is already present
-between the closest cells (the ``nugget'' of the variogram, from a few percent of the variance for \ME{} to more than half
-for \PGA), and the noise variance fitted by maximum likelihood (0.02) is not small compared with the signal variance
-(0.05). The Gaussian process can therefore generalise little, while the
-re-evaluated intact performance is already a good guide. A descriptor closer to what a damage affects (e.g.\ the torque
-or contact pattern of each leg separately) might make the model more useful.
+\emph{similar} gaits, and when the best gait after damage is not among the first ones a ranking would try. With the
+feet-contact descriptor the first condition is weak: neighbouring cells react differently to the same damage. The
+descriptor ablation (\cref{sec:robustness}) shows that a descriptor based on joint usage fixes this, with a noise
+variance seven times smaller, but ITE still gains little: the second condition fails. A damaged repertoire mostly keeps
+some of its best gaits, so the re-evaluated intact ranking is already a strong guide, and 20 trials are enough for
+top-$k$ to reach them. ITE should matter more when the prior is misleading, for instance when the simulator and the
+robot differ (\cref{sec:robustness}), or for damages that remove the best gaits altogether.
 
 \paragraph{Noisy elites} A repertoire stores the fitness of a single noisy episode, and MAP-Elites keeps the luckiest
 ones: elites are over-estimated. Re-evaluating the repertoire before damage, offline in simulation, is cheap and was
@@ -439,18 +583,24 @@ upwards; percentages of the oracle under-estimate all methods.
 each episode costs time, wear and supervision. We therefore compare trials and episodes, not wall-clock time.
 
 \section{Limitations}
-Simulation only; one robot; damages modelled as action scaling; one repertoire size and one budget; \NSeeds{} seeds per
-algorithm, so the (repertoire, damage) units used in the tests are not independent and the p-values are indicative;
-ITE hyper-parameters fitted on development repertoires of the same algorithms; RL re-training with standard TD3 settings
-only (no tuning of the fine-tuning variant), 2 seeds and 4 damages.
+Simulation only, one robot, and damages modelled as action scaling; the reality gap is simulated by changing a few
+physical parameters. One repertoire size and one budget, with the hyper-parameters of the official notebooks.
+\NSeeds{} seeds per algorithm, so the (repertoire, damage) units used in the tests are not independent and the
+p-values are indicative, even with mixed models. ITE hyper-parameters fitted on development repertoires of the same
+algorithms. RL baselines on 4 damages and 2 seeds; the robust policy is trained on the family of damages it is tested
+on, and no meta-learned or history-based adaptive policy \citep{nagabandi2019learning,kumar2021rma} was tested.
+Results on GPU and CPU differ slightly for the same seed (different floating-point rounding), so ITE with the
+joint-usage descriptor is compared with ITE and top-$k$ re-run on the same CPU.
 
 \section{Conclusion and future work}
 Repertoires built with the help of RL critics are not less useful after damage: they are as resilient in relative
 terms and keep much better gaits in absolute terms, so that the quality of the repertoire, more than the adaptation
-algorithm, decides how well a damaged robot walks. ITE finds a good gait in a handful of trials, orders of magnitude
-fewer than RL re-training, but in this setting most of its benefit comes from a good prior: a simple ranking of
-re-evaluated gaits is almost as good. Future work: descriptors that make the effect of damage smoother, pre-trained
-critics for RL fine-tuning, and tests on a physical robot.
+algorithm, decides how well a damaged robot walks. ITE finds a good gait in a handful of trials, far fewer than RL
+re-training, but in this setting most of its benefit comes from a good prior: a simple ranking of re-evaluated gaits
+is almost as good, and a better model of the damage does not change this. A single policy trained on random damages in
+simulation is a serious competitor when the possible damages are known in advance. The case for repertoires and ITE is
+therefore the unexpected damage on a real robot, which is where future work should test them, together with damages
+outside the training distribution of robust policies and meta-learned adaptive policies.
 
 \small
 \bibliographystyle{plainnat}
@@ -459,14 +609,23 @@ critics for RL fine-tuning, and tests on a physical robot.
 \normalsize
 \appendix
 \section{Reproducibility}
-\begin{small}\ttfamily\noindent
+\begin{footnotesize}\ttfamily\noindent
 python -m qd\_damage.repertoires --algo \{me,pgame,dcrlme\} --seed S\\
 python -m qd\_damage.oracle --runs results/repertoires/<run>\\
+python -m qd\_damage.oracle --check-best --runs results/repertoires/<run>\\
 python -m qd\_damage.adaptation --runs results/repertoires/<run>\\
-python -m qd\_damage.rl\_retrain --scenario <s> --variant \{scratch,finetune\} --seed S\\
+python -m qd\_damage.calibrate [--joint-usage] --oracles results/oracle/*\_demo\\
+python -m qd\_damage.joint\_usage --runs results/repertoires/<run>\\
+python -m qd\_damage.adaptation --joint-usage --methods ite ...\\
+python -m qd\_damage.oracle --reality-gap --out results/oracle\_gap --runs ...\\
+python -m qd\_damage.adaptation --reality-gap --oracle-root results/oracle\_gap ...\\
+python -m qd\_damage.rl\_retrain --scenario <s> --variant <variant> --seed S\\
+python -m qd\_damage.rl\_retrain --robust --seed S\\
 python -m qd\_damage.analysis.report
-\end{small}
-Versions: QDax 0.5.0, JAX 0.4.28, Brax 0.10.4 (pinned; see \texttt{requirements-lock.txt}). Repertoires were built
-on Kaggle (2$\times$ Tesla T4). Every run stores its configuration, seed, code commit, library versions and device.
+\end{footnotesize}
+
+Versions: QDax 0.5.0, JAX 0.4.28, Brax 0.10.4 (pinned; see \texttt{requirements-lock.txt}). The GPU runs were made on
+Kaggle (2$\times$ Tesla T4) with the scripts of \texttt{kaggle/}; the oracle check, the joint-usage descriptor and its
+CPU control on a laptop CPU. Every run stores its configuration, seed, code commit, library versions and device.
 
 \end{document}

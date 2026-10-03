@@ -11,21 +11,63 @@
 \newcommand{\BonusOracleContBetter}{0}
 \newcommand{\BonusOracleGrid}{0.90}
 \newcommand{\BonusP}{<0.001}
+\newcommand{\CalibFeetGain}{51.7}
+\newcommand{\CalibFeetLengthscale}{0.4}
+\newcommand{\CalibFeetNoise}{0.020}
+\newcommand{\CalibFeetSignal}{0.050}
+\newcommand{\CalibJointGain}{152.2}
+\newcommand{\CalibJointLengthscale}{0.2}
+\newcommand{\CalibJointNoise}{0.003}
+\newcommand{\CalibJointSignal}{0.100}
 \newcommand{\CovDCRL}{83.8}
 \newcommand{\CovME}{72.3}
 \newcommand{\CovPGA}{76.8}
-\newcommand{\DiffTopKFive}{+0.02}
-\newcommand{\DiffTopKFiveDCRL}{+0.08}
-\newcommand{\DiffTopKFiveME}{+0.00}
-\newcommand{\DiffTopKFivePGA}{-0.03}
-\newcommand{\DiffTopKTen}{+0.01}
-\newcommand{\DiffTopKTenDCRL}{+0.04}
-\newcommand{\DiffTopKTenME}{+0.01}
-\newcommand{\DiffTopKTenPGA}{-0.03}
-\newcommand{\DiffTopKThree}{+0.05}
-\newcommand{\DiffTopKThreeDCRL}{+0.13}
-\newcommand{\DiffTopKThreeME}{+0.01}
-\newcommand{\DiffTopKThreePGA}{+0.03}
+\newcommand{\DiffTopKFive}{\ensuremath{+0.02}}
+\newcommand{\DiffTopKFiveDCRL}{\ensuremath{+0.08}}
+\newcommand{\DiffTopKFiveME}{\ensuremath{+0.00}}
+\newcommand{\DiffTopKFivePGA}{\ensuremath{-0.03}}
+\newcommand{\DiffTopKTen}{\ensuremath{+0.01}}
+\newcommand{\DiffTopKTenDCRL}{\ensuremath{+0.04}}
+\newcommand{\DiffTopKTenME}{\ensuremath{+0.01}}
+\newcommand{\DiffTopKTenPGA}{\ensuremath{-0.03}}
+\newcommand{\DiffTopKThree}{\ensuremath{+0.05}}
+\newcommand{\DiffTopKThreeDCRL}{\ensuremath{+0.13}}
+\newcommand{\DiffTopKThreeME}{\ensuremath{+0.01}}
+\newcommand{\DiffTopKThreePGA}{\ensuremath{+0.03}}
+\newcommand{\GapBestIntactAbs}{0.10}
+\newcommand{\GapBestIntactPct}{12}
+\newcommand{\GapBestIntactTrials}{1}
+\newcommand{\GapDiffTopKFive}{\ensuremath{+0.03}}
+\newcommand{\GapDiffTopKFiveDCRL}{\ensuremath{+0.13}}
+\newcommand{\GapDiffTopKFiveME}{\ensuremath{+0.01}}
+\newcommand{\GapDiffTopKFivePGA}{\ensuremath{-0.06}}
+\newcommand{\GapDiffTopKTen}{\ensuremath{+0.00}}
+\newcommand{\GapDiffTopKTenDCRL}{\ensuremath{+0.08}}
+\newcommand{\GapDiffTopKTenME}{\ensuremath{+0.01}}
+\newcommand{\GapDiffTopKTenPGA}{\ensuremath{-0.08}}
+\newcommand{\GapDiffTopKThree}{\ensuremath{+0.06}}
+\newcommand{\GapDiffTopKThreeDCRL}{\ensuremath{+0.16}}
+\newcommand{\GapDiffTopKThreeME}{\ensuremath{+0.01}}
+\newcommand{\GapDiffTopKThreePGA}{\ensuremath{+0.01}}
+\newcommand{\GapITEAbs}{0.28}
+\newcommand{\GapITEPct}{26}
+\newcommand{\GapITETrials}{6}
+\newcommand{\GapIntactRetained}{91}
+\newcommand{\GapPTopKFive}{=0.390}
+\newcommand{\GapPTopKFiveDCRL}{=0.052}
+\newcommand{\GapPTopKFiveME}{=0.406}
+\newcommand{\GapPTopKFivePGA}{=0.131}
+\newcommand{\GapPTopKTen}{=0.686}
+\newcommand{\GapPTopKTenDCRL}{=0.209}
+\newcommand{\GapPTopKTenME}{=0.287}
+\newcommand{\GapPTopKTenPGA}{=0.009}
+\newcommand{\GapPTopKThree}{=0.002}
+\newcommand{\GapPTopKThreeDCRL}{=0.003}
+\newcommand{\GapPTopKThreeME}{=0.254}
+\newcommand{\GapPTopKThreePGA}{=0.400}
+\newcommand{\GapTopKAbs}{0.27}
+\newcommand{\GapTopKPct}{33}
+\newcommand{\GapTopKTrials}{20}
 \newcommand{\ITEAbsDCRL}{0.59}
 \newcommand{\ITEAbsFiveDCRL}{0.47}
 \newcommand{\ITEAbsFiveME}{0.11}
@@ -48,6 +90,8 @@
 \newcommand{\ITEAtThree}{28}
 \newcommand{\ITEAtTwenty}{33}
 \newcommand{\ITELosesTopK}{48}
+\newcommand{\ITEPGAGapMedianByDamage}{1.24}
+\newcommand{\ITEPGAMedianByDamage}{1.51}
 \newcommand{\ITEPctIntact}{33}
 \newcommand{\ITEPctIntactDCRL}{33}
 \newcommand{\ITEPctIntactME}{24}
@@ -62,9 +106,55 @@
 \newcommand{\ITETrialsQone}{2}
 \newcommand{\ITETrialsQthree}{10}
 \newcommand{\ITEWinsTopK}{47}
+\newcommand{\JointControlCPU}{yes}
+\newcommand{\JointVsFeetFive}{\ensuremath{+0.02}}
+\newcommand{\JointVsFeetFiveDCRL}{\ensuremath{+0.04}}
+\newcommand{\JointVsFeetFiveME}{\ensuremath{-0.01}}
+\newcommand{\JointVsFeetFivePGA}{\ensuremath{+0.03}}
+\newcommand{\JointVsFeetTen}{\ensuremath{+0.03}}
+\newcommand{\JointVsFeetTenDCRL}{\ensuremath{+0.06}}
+\newcommand{\JointVsFeetTenME}{\ensuremath{-0.01}}
+\newcommand{\JointVsFeetTenPGA}{\ensuremath{+0.03}}
+\newcommand{\JointVsFeetThree}{\ensuremath{+0.02}}
+\newcommand{\JointVsFeetThreeDCRL}{\ensuremath{+0.01}}
+\newcommand{\JointVsFeetThreeME}{\ensuremath{-0.01}}
+\newcommand{\JointVsFeetThreePGA}{\ensuremath{+0.06}}
+\newcommand{\JointVsTopKFive}{\ensuremath{+0.04}}
+\newcommand{\JointVsTopKFiveDCRL}{\ensuremath{+0.13}}
+\newcommand{\JointVsTopKFiveME}{\ensuremath{-0.01}}
+\newcommand{\JointVsTopKFivePGA}{\ensuremath{+0.01}}
+\newcommand{\JointVsTopKTen}{\ensuremath{+0.03}}
+\newcommand{\JointVsTopKTenDCRL}{\ensuremath{+0.09}}
+\newcommand{\JointVsTopKTenME}{\ensuremath{-0.01}}
+\newcommand{\JointVsTopKTenPGA}{\ensuremath{+0.01}}
+\newcommand{\JointVsTopKThree}{\ensuremath{+0.07}}
+\newcommand{\JointVsTopKThreeDCRL}{\ensuremath{+0.14}}
+\newcommand{\JointVsTopKThreeME}{\ensuremath{-0.00}}
+\newcommand{\JointVsTopKThreePGA}{\ensuremath{+0.07}}
 \newcommand{\MaxFitDCRL}{1625}
 \newcommand{\MaxFitME}{1235}
 \newcommand{\MaxFitPGA}{1922}
+\newcommand{\MixITEAbsDCRLvsME}{\ensuremath{+0.48\ [+0.29, +0.68]}}
+\newcommand{\MixITEAbsDCRLvsPGA}{\ensuremath{-0.68\ [-0.88, -0.48]}}
+\newcommand{\MixITEAbsPGAvsME}{\ensuremath{+1.16\ [+0.97, +1.36]}}
+\newcommand{\MixOracleAbsDCRLvsME}{\ensuremath{+0.74\ [+0.53, +0.94]}}
+\newcommand{\MixOracleAbsDCRLvsPGA}{\ensuremath{-0.57\ [-0.78, -0.37]}}
+\newcommand{\MixOracleAbsPGAvsME}{\ensuremath{+1.31\ [+1.10, +1.51]}}
+\newcommand{\MixResCheckedDCRLvsME}{\ensuremath{+0.04\ [-0.03, +0.12]}}
+\newcommand{\MixResCheckedDCRLvsPGA}{\ensuremath{-0.04\ [-0.12, +0.03]}}
+\newcommand{\MixResCheckedPGAvsME}{\ensuremath{+0.08\ [+0.01, +0.16]}}
+\newcommand{\MixResDCRLvsME}{\ensuremath{+0.01\ [-0.08, +0.09]}}
+\newcommand{\MixResDCRLvsPGA}{\ensuremath{-0.03\ [-0.11, +0.05]}}
+\newcommand{\MixResPGAvsME}{\ensuremath{+0.04\ [-0.04, +0.12]}}
+\newcommand{\MixTopKFiveDCRL}{\ensuremath{+0.08\ [+0.02, +0.15]}}
+\newcommand{\MixTopKFiveME}{\ensuremath{+0.00\ [-0.06, +0.07]}}
+\newcommand{\MixTopKFivePGA}{\ensuremath{-0.03\ [-0.09, +0.04]}}
+\newcommand{\MixTopKTenDCRL}{\ensuremath{+0.04\ [-0.04, +0.12]}}
+\newcommand{\MixTopKTenME}{\ensuremath{+0.01\ [-0.07, +0.09]}}
+\newcommand{\MixTopKTenPGA}{\ensuremath{-0.03\ [-0.11, +0.05]}}
+\newcommand{\MixTopKThreeDCRL}{\ensuremath{+0.13\ [+0.08, +0.18]}}
+\newcommand{\MixTopKThreeME}{\ensuremath{+0.01\ [-0.04, +0.06]}}
+\newcommand{\MixTopKThreePGA}{\ensuremath{+0.03\ [-0.02, +0.08]}}
 \newcommand{\NEvaluations}{512{,}256}
 \newcommand{\NIterations}{2000}
 \newcommand{\NPairsTopK}{108}
@@ -74,11 +164,64 @@
 \newcommand{\OracleAbsDCRL}{1.14}
 \newcommand{\OracleAbsME}{0.23}
 \newcommand{\OracleAbsPGA}{1.84}
+\newcommand{\OracleBiasDCRL}{0.06}
+\newcommand{\OracleBiasME}{0.06}
+\newcommand{\OracleBiasPGA}{0.08}
+\newcommand{\OracleCheckEpisodes}{16}
+\newcommand{\OracleCheckedDCRL}{1.04}
+\newcommand{\OracleCheckedME}{0.17}
+\newcommand{\OracleCheckedPGA}{1.68}
 \newcommand{\OraclePolicies}{731--862}
 \newcommand{\PITEAbsMEDCRL}{<0.001}
 \newcommand{\PITEAbsMEPGA}{<0.001}
 \newcommand{\PITEAbsMin}{<0.001}
 \newcommand{\PITEAbsPGADCRL}{=0.002}
+\newcommand{\PJointVsFeetFive}{=0.923}
+\newcommand{\PJointVsFeetFiveDCRL}{=0.351}
+\newcommand{\PJointVsFeetFiveME}{=0.369}
+\newcommand{\PJointVsFeetFivePGA}{=0.808}
+\newcommand{\PJointVsFeetTen}{=0.757}
+\newcommand{\PJointVsFeetTenDCRL}{=0.265}
+\newcommand{\PJointVsFeetTenME}{=0.062}
+\newcommand{\PJointVsFeetTenPGA}{=0.793}
+\newcommand{\PJointVsFeetThree}{=0.870}
+\newcommand{\PJointVsFeetThreeDCRL}{=0.728}
+\newcommand{\PJointVsFeetThreeME}{=0.023}
+\newcommand{\PJointVsFeetThreePGA}{=0.445}
+\newcommand{\PJointVsTopKFive}{=0.154}
+\newcommand{\PJointVsTopKFiveDCRL}{=0.015}
+\newcommand{\PJointVsTopKFiveME}{=0.139}
+\newcommand{\PJointVsTopKFivePGA}{=0.397}
+\newcommand{\PJointVsTopKTen}{=0.389}
+\newcommand{\PJointVsTopKTenDCRL}{=0.123}
+\newcommand{\PJointVsTopKTenME}{=0.252}
+\newcommand{\PJointVsTopKTenPGA}{=0.521}
+\newcommand{\PJointVsTopKThree}{=0.013}
+\newcommand{\PJointVsTopKThreeDCRL}{=0.007}
+\newcommand{\PJointVsTopKThreeME}{=0.258}
+\newcommand{\PJointVsTopKThreePGA}{=0.072}
+\newcommand{\PMixITEAbsDCRLvsME}{<0.001}
+\newcommand{\PMixITEAbsDCRLvsPGA}{<0.001}
+\newcommand{\PMixITEAbsPGAvsME}{<0.001}
+\newcommand{\PMixOracleAbsDCRLvsME}{<0.001}
+\newcommand{\PMixOracleAbsDCRLvsPGA}{<0.001}
+\newcommand{\PMixOracleAbsPGAvsME}{<0.001}
+\newcommand{\PMixResCheckedDCRLvsME}{=0.283}
+\newcommand{\PMixResCheckedDCRLvsPGA}{=0.275}
+\newcommand{\PMixResCheckedPGAvsME}{=0.030}
+\newcommand{\PMixResDCRLvsME}{=0.888}
+\newcommand{\PMixResDCRLvsPGA}{=0.435}
+\newcommand{\PMixResPGAvsME}{=0.357}
+\newcommand{\PMixTopKFiveDCRL}{=0.014}
+\newcommand{\PMixTopKFiveME}{=0.921}
+\newcommand{\PMixTopKFivePGA}{=0.410}
+\newcommand{\PMixTopKTenDCRL}{=0.310}
+\newcommand{\PMixTopKTenME}{=0.872}
+\newcommand{\PMixTopKTenPGA}{=0.422}
+\newcommand{\PMixTopKThreeDCRL}{<0.001}
+\newcommand{\PMixTopKThreeME}{=0.824}
+\newcommand{\PMixTopKThreePGA}{=0.301}
+\newcommand{\PResCheckedMin}{=0.030}
 \newcommand{\PResMEDCRL}{=0.996}
 \newcommand{\PResMEPGA}{=0.532}
 \newcommand{\PResMin}{=0.496}
@@ -98,11 +241,15 @@
 \newcommand{\QDDCRL}{1074k}
 \newcommand{\QDME}{814k}
 \newcommand{\QDPGA}{962k}
-\newcommand{\RLFinetuneEpisodes}{1264}
-\newcommand{\RLFinetuneReached}{3/8}
+\newcommand{\RLFinetuneEpisodes}{768}
+\newcommand{\RLFinetuneReached}{2/8}
 \newcommand{\RLMaxEpisodes}{2000}
+\newcommand{\RLPretrainedEpisodes}{400}
+\newcommand{\RLPretrainedReached}{8/8}
 \newcommand{\RLScratchEpisodes}{1264}
 \newcommand{\RLScratchReached}{3/8}
+\newcommand{\RLWarmupEpisodes}{448}
+\newcommand{\RLWarmupReached}{8/8}
 \newcommand{\RandomAbsFiveDCRL}{0.28}
 \newcommand{\RandomAbsFiveME}{0.07}
 \newcommand{\RandomAbsFivePGA}{0.47}
@@ -121,9 +268,21 @@
 \newcommand{\RandomAtFive}{16}
 \newcommand{\RandomAtThree}{9}
 \newcommand{\RandomAtTwenty}{33}
+\newcommand{\ResCheckedDCRL}{60}
+\newcommand{\ResCheckedME}{50}
+\newcommand{\ResCheckedPGA}{66}
 \newcommand{\ResDCRL}{64}
 \newcommand{\ResME}{54}
 \newcommand{\ResPGA}{73}
+\newcommand{\RobustBeatsITEDCRL}{10}
+\newcommand{\RobustBeatsITEPGA}{6}
+\newcommand{\RobustDamaged}{1.46}
+\newcommand{\RobustGapBeatsITEPGA}{7}
+\newcommand{\RobustGapDamaged}{1.40}
+\newcommand{\RobustGapIntact}{2.02}
+\newcommand{\RobustIntact}{2.06}
+\newcommand{\RobustNScenarios}{12}
+\newcommand{\RobustNSeeds}{2}
 \newcommand{\TopKAbsFiveDCRL}{0.37}
 \newcommand{\TopKAbsFiveME}{0.10}
 \newcommand{\TopKAbsFivePGA}{1.52}

@@ -1,0 +1,20 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[robust s1] 800 episodes: intact 923.3, damaged mean 935.0 (297 s)
+[robust s1] 1600 episodes: intact 1003.2, damaged mean 999.6 (565 s)
+[robust s1] 2400 episodes: intact 1035.9, damaged mean 1029.3 (833 s)
+[robust s1] 3200 episodes: intact 1036.1, damaged mean 1029.1 (1102 s)
+[robust s1] 4000 episodes: intact 1031.6, damaged mean 1024.7 (1372 s)
+[robust s1] 4800 episodes: intact 1153.6, damaged mean 1116.1 (1642 s)
+[robust s1] 5600 episodes: intact 1311.1, damaged mean 1193.3 (1912 s)
+[robust s1] 6400 episodes: intact 1525.8, damaged mean 1302.8 (2182 s)
+[robust s1] 7200 episodes: intact 1604.7, damaged mean 1326.7 (2452 s)
+[robust s1] 8000 episodes: intact 1632.8, damaged mean 1369.7 (2721 s)
+[robust s1] 8800 episodes: intact 1752.8, damaged mean 1400.4 (2991 s)
+[robust s1] 9600 episodes: intact 1784.9, damaged mean 1427.5 (3260 s)
+[robust s1] 10000 episodes: intact 1769.5, damaged mean 1418.5 (3396 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/rl_robust/seed1

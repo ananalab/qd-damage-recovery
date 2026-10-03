@@ -9,8 +9,8 @@ Plain numpy: there are at most a few dozen trials. Performances are normalised (
 parameters of Cully et al. (kappa, noise, length-scale) keep their meaning.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, List, Optional
 
 import numpy as np
 
@@ -56,7 +56,9 @@ class GaussianProcess:
         """log p(residuals | hyper-parameters), used to choose the hyper-parameters on development data."""
         self.fit(x, residuals)
         n = len(residuals)
-        return float(-0.5 * self.residuals @ self._alpha - np.log(np.diag(self._chol)).sum() - 0.5 * n * np.log(2 * np.pi))
+        return float(
+            -0.5 * self.residuals @ self._alpha - np.log(np.diag(self._chol)).sum() - 0.5 * n * np.log(2 * np.pi)
+        )
 
 
 @dataclass
@@ -80,9 +82,9 @@ class Normalizer:
 
 @dataclass
 class TrialHistory:
-    cells: List[int] = field(default_factory=list)
-    observed: List[float] = field(default_factory=list)  # raw fitness observed at each trial
-    stop_trial: Optional[int] = None  # number of trials when the stopping criterion was met (None: never)
+    cells: list[int] = field(default_factory=list)
+    observed: list[float] = field(default_factory=list)  # raw fitness observed at each trial
+    stop_trial: int | None = None  # number of trials when the stopping criterion was met (None: never)
 
     def best_cell(self, upto: int) -> int:
         """Cell recommended after `upto` trials: the best one observed so far."""

@@ -21,6 +21,7 @@ import html as html_lib
 import json
 import shutil
 from pathlib import Path
+from string import Template
 
 import imageio
 import jax
@@ -40,6 +41,7 @@ from qd_damage.envs import LEG_ACTIONS, make_env  # noqa: E402
 from qd_damage.repertoires import REPO_ROOT, git_commit, load_policy_params, make_policy_network  # noqa: E402
 
 VIEWER_JS = Path(__file__).parent / "assets" / "brax_viewer_v0.1.0_three_r135.js"
+TEMPLATES = Path(__file__).parent / "templates"
 # Font shipped with matplotlib: handles accents, unlike the default PIL font.
 _FONT_PATH = font_manager.findfont("DejaVu Sans")
 
@@ -54,7 +56,7 @@ CONDITION_COLORS = {"intact": "#2a78d6", "damaged": "#c8413b"}
 def _save(fig, stem: Path):
     """Save as PNG (200 dpi) and vector PDF."""
     fig.savefig(stem.with_suffix(".png"), dpi=200, bbox_inches="tight")
-    fig.savefig(stem.with_suffix(".pdf"), bbox_inches="tight")
+    fig.savefig(stem.with_suffix(".pdf"), bbox_inches="tight", metadata={"CreationDate": None})  # reproducible files
     plt.close(fig)
 
 
@@ -76,11 +78,17 @@ def plot_progress(runs: dict, stem: Path):
     for run_dir in runs.values():
         algo = _run_info(run_dir)["algo"]
         m = read_metrics(run_dir)
-        for ax, (key, _) in zip(axes, panels):
-            ax.plot(m["evaluations"], m[key], color=ALGO_COLORS[algo], lw=2, alpha=0.85,
-                    label=None if algo in labelled else ALGO_LABELS[algo])
+        for ax, (key, _) in zip(axes, panels, strict=False):
+            ax.plot(
+                m["evaluations"],
+                m[key],
+                color=ALGO_COLORS[algo],
+                lw=2,
+                alpha=0.85,
+                label=None if algo in labelled else ALGO_LABELS[algo],
+            )
         labelled.add(algo)
-    for ax, (_, title) in zip(axes, panels):
+    for ax, (_, title) in zip(axes, panels, strict=False):
         ax.set_title(title)
         ax.set_xlabel("Évaluations (épisodes)")
         ax.grid(alpha=0.3)
@@ -101,7 +109,7 @@ def plot_repertoire(run_dir: Path, stem: Path, title: str):
     pairs = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
     fig, axes = plt.subplots(2, 3, figsize=(11, 7.2), layout="constrained")
     order = np.argsort(fit)  # best gaits drawn last (on top)
-    for ax, (i, j) in zip(axes.flat, pairs):
+    for ax, (i, j) in zip(axes.flat, pairs, strict=False):
         sc = ax.scatter(desc[order, i], desc[order, j], c=fit[order], s=9, cmap="viridis")
         ax.set_xlim(-0.03, 1.03)
         ax.set_ylim(-0.03, 1.03)
@@ -117,7 +125,7 @@ def plot_trajectories(rollouts: dict, stem: Path, colors=None):
     """Torso path seen from above: the robot is rewarded for moving right (+x)."""
     colors = colors or [CONDITION_COLORS[key] for key in rollouts]
     fig, ax = plt.subplots(figsize=(6, 4.2))
-    for r, color in zip(rollouts.values(), colors):
+    for r, color in zip(rollouts.values(), colors, strict=False):
         xy = r["path_xy"]
         ax.plot(xy[:, 0], xy[:, 1], color=color, lw=2.2, label=f"{r['label']} ({r['distance']:.1f} m)")
         ax.plot(*xy[-1], "o", color=color, ms=7)
@@ -135,7 +143,7 @@ def plot_trajectories(rollouts: dict, stem: Path, colors=None):
 def plot_gait(rollouts: dict, stem: Path):
     """Feet-contact profile: one row per foot, black = the foot touches the ground."""
     fig, axes = plt.subplots(len(rollouts), 1, figsize=(10, 1.5 * len(rollouts)), sharex=True)
-    for ax, r in zip(np.atleast_1d(axes), rollouts.values()):
+    for ax, r in zip(np.atleast_1d(axes), rollouts.values(), strict=False):
         ax.imshow(r["contacts"].T, aspect="auto", cmap="Greys", interpolation="nearest", vmin=0, vmax=1)
         ax.set_yticks(range(4), [f"pied {k + 1}" for k in range(4)])
         ax.set_title(f"{r['label']} — avance de {r['distance']:.1f} m", loc="left", fontsize=10)
@@ -230,25 +238,24 @@ def write_gif(frames, path: Path, frame_duration_s: float):
 # --------------------------------------------------------------------------- 3D interactive
 
 
+def render(template: str, **values) -> str:
+    """Fill a page template of src/qd_damage/templates ($name placeholders)."""
+    return Template((TEMPLATES / template).read_text()).substitute(values)
+
+
 def write_interactive(env, qps, path: Path, title: str, caption: str):
     """Self-contained HTML page: trajectory and Brax 3D viewer inlined (no external resource)."""
     viewer_js = VIEWER_JS.read_text().replace("</script", "<\\/script")
     system_json = brax_dumps(env.sys, qps).replace("</script", "<\\/script")
-    path.write_text(f"""<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html_lib.escape(title)}</title>
-<style>
-  html, body {{ margin:0; height:100%; background:#fff; font:14px/1.4 system-ui, sans-serif; }}
-  #brax-viewer {{ position:relative; height:100vh; }}
-  #caption {{ position:absolute; left:10px; bottom:10px; z-index:10; background:rgba(255,255,255,.85);
-             padding:6px 10px; border-radius:6px; color:#222; max-width:70%; pointer-events:none; }}
-</style></head><body>
-<div id="brax-viewer"><div id="caption"><b>{html_lib.escape(title)}</b><br>{html_lib.escape(caption)}<br>
-<small>Souris : tourner · molette : zoomer · clic droit : déplacer</small></div></div>
-<script>var system = {system_json};</script>
-<script>{viewer_js}</script>
-<script>new BraxViewer(document.getElementById("brax-viewer"), system);</script>
-</body></html>""")
+    path.write_text(
+        render(
+            "interactive.html",
+            title=html_lib.escape(title),
+            caption=html_lib.escape(caption),
+            system_json=system_json,
+            viewer_js=viewer_js,
+        )
+    )
 
 
 # --------------------------------------------------------------------------- page and catalogue
@@ -269,8 +276,9 @@ def make_media(run_dirs, out_dir: Path, title: str) -> Path:
         d.mkdir(parents=True, exist_ok=True)
     # One run per name (e.g. dcrlme_seed0), fixed order: ME, PGA-ME, DCRL-ME, then seed.
     order = list(ALGO_LABELS)
-    run_dirs = sorted((Path(r) for r in run_dirs),
-                      key=lambda r: (order.index(_run_info(r)["algo"]), _run_info(r)["seed"]))
+    run_dirs = sorted(
+        (Path(r) for r in run_dirs), key=lambda r: (order.index(_run_info(r)["algo"]), _run_info(r)["seed"])
+    )
     runs = {r.name: r for r in run_dirs}
 
     # Repertoire figures
@@ -312,15 +320,20 @@ def make_media(run_dirs, out_dir: Path, title: str) -> Path:
     write_gif(small, dirs["videos"] / "intact_vs_patte4_camera_fixe.gif", 2 * dt)
     for key, r in rollouts.items():
         name = "intact" if key == "intact" else "patte4_paralysee"
-        write_mp4(render_frames(env, r["qps"], 768, 576, labels[key]), dirs["videos"] / f"{name}_camera_suiveuse.mp4", 1 / dt)
+        write_mp4(
+            render_frames(env, r["qps"], 768, 576, labels[key]), dirs["videos"] / f"{name}_camera_suiveuse.mp4", 1 / dt
+        )
 
     # Interactive 3D
     for key, r in rollouts.items():
         name = "intact" if key == "intact" else "patte4_paralysee"
         write_interactive(
-            env, r["qps"], dirs["interactive"] / f"{name}.html",
+            env,
+            r["qps"],
+            dirs["interactive"] / f"{name}.html",
             title=f"Ant — {r['label'].lower()}",
-            caption=f"Meilleure démarche {ALGO_LABELS[best_algo]} · avance de {r['distance']:.1f} m en {len(r['qps']) * dt:.1f} s",
+            caption=f"Meilleure démarche {ALGO_LABELS[best_algo]} · avance de {r['distance']:.1f} m "
+            f"en {len(r['qps']) * dt:.1f} s",
         )
 
     # Data and provenance
@@ -333,8 +346,13 @@ def make_media(run_dirs, out_dir: Path, title: str) -> Path:
         ),
         "best_policy": {"algo": best_algo, "run": best_name, "cell_index": best_idx, "repertoire_fitness": best_fit},
         "rollouts": {
-            k: {"label": r["label"], "distance_x_m": r["distance"], "fitness": r["fitness"],
-                "duration_s": len(r["qps"]) * dt, "paralysed_actions": list(LEG_ACTIONS["leg_4"]) if k == "damaged" else []}
+            k: {
+                "label": r["label"],
+                "distance_x_m": r["distance"],
+                "fitness": r["fitness"],
+                "duration_s": len(r["qps"]) * dt,
+                "paralysed_actions": list(LEG_ACTIONS["leg_4"]) if k == "damaged" else [],
+            }
             for k, r in rollouts.items()
         },
         "runs": {},
@@ -343,10 +361,17 @@ def make_media(run_dirs, out_dir: Path, title: str) -> Path:
         run_info = _run_info(r)
         m = read_metrics(r)
         summary["runs"][name] = {
-            "algo": run_info["algo"], "run_dir": _rel(r), "profile": run_info["profile"], "seed": run_info["seed"],
-            "run_commit": run_info["git_commit"], "total_evaluations": int(m["evaluations"][-1]), "iterations": int(m["iteration"][-1]),
-            "coverage_pct": float(m["coverage"][-1]), "max_fitness": float(m["max_fitness"][-1]),
-            "qd_score": float(m["qd_score"][-1]), "time_min": run_info["total_time_s"] / 60,
+            "algo": run_info["algo"],
+            "run_dir": _rel(r),
+            "profile": run_info["profile"],
+            "seed": run_info["seed"],
+            "run_commit": run_info["git_commit"],
+            "total_evaluations": int(m["evaluations"][-1]),
+            "iterations": int(m["iteration"][-1]),
+            "coverage_pct": float(m["coverage"][-1]),
+            "max_fitness": float(m["max_fitness"][-1]),
+            "qd_score": float(m["qd_score"][-1]),
+            "time_min": run_info["total_time_s"] / 60,
             "device": run_info["devices"][0],
         }
         shutil.copy(r / "metrics.csv", dirs["data"] / f"metrics_{name}.csv")
@@ -368,7 +393,10 @@ def _status(run: dict, machine: str = "") -> str:
     where = f" sur {machine}" if machine else ""
     if run["profile"] is None:
         return f"Runs complets{where} ({run['iterations']} itérations par run) : résultats finaux, avant blessure."
-    return f"Mini-entraînement{where} (profil « {run['profile']} », {run['iterations']} itérations) : démo, pas des résultats finaux."
+    return (
+        f"Mini-entraînement{where} (profil « {run['profile']} », {run['iterations']} itérations) : "
+        "démo, pas des résultats finaux."
+    )
 
 
 def _write_index(out_dir: Path, title: str, summary: dict, runs: dict):
@@ -379,65 +407,35 @@ def _write_index(out_dir: Path, title: str, summary: dict, runs: dict):
     machine = "le CPU du Mac" if on_cpu else f"un GPU {first['device'].split('(')[-1].rstrip(')')} sur Kaggle"
     dcrl_note = (
         " En profil local, DCRL-ME entraîne son critique 10× moins que prévu, pour tenir sur CPU."
-        if first["profile"] == "local" and any(s.get("algo", a) == "dcrlme" for a, s in summary["runs"].items()) else ""
+        if first["profile"] == "local" and any(s.get("algo", a) == "dcrlme" for a, s in summary["runs"].items())
+        else ""
     )
     rows = "".join(
-        f"<tr><td>{ALGO_LABELS[s.get('algo', a)]} (seed {s['seed']})</td><td>{s['total_evaluations']:,}</td><td>{s['coverage_pct']:.1f} %</td>"
+        f"<tr><td>{ALGO_LABELS[s.get('algo', a)]} (seed {s['seed']})</td><td>{s['total_evaluations']:,}</td>"
+        f"<td>{s['coverage_pct']:.1f} %</td>"
         f"<td>{s['max_fitness']:.0f}</td><td>{s['time_min']:.1f} min</td></tr>".replace(",", " ")
         for a, s in summary["runs"].items()
     )
     repertoires = "".join(
         f'<div class="card"><img src="figures/repertoire_{a}.png" alt="Répertoire {a}"></div>' for a in runs
     )
-    (out_dir / "index.html").write_text(f"""<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html_lib.escape(title)}</title>
-<style>
-  :root {{ --bg:#fbfaf7; --fg:#1d1d1b; --muted:#6b6b66; --card:#ffffff; --line:#e4e2dc; }}
-  @media (prefers-color-scheme: dark) {{ :root {{ --bg:#161614; --fg:#ecebe6; --muted:#a3a29b; --card:#1f1f1c; --line:#33332f; }} }}
-  body {{ background:var(--bg); color:var(--fg); font:16px/1.55 system-ui, sans-serif; margin:0; padding:24px 16px 64px; }}
-  main {{ max-width:1100px; margin:0 auto; }}
-  h1 {{ font-size:28px; margin:0 0 4px; }} h2 {{ font-size:20px; margin:40px 0 8px; }}
-  a {{ color:inherit; }}
-  .lead, .note {{ color:var(--muted); }} .note {{ font-size:14px; }}
-  .card {{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin:12px 0; overflow-x:auto; }}
-  img, video {{ max-width:100%; height:auto; background:#fff; border-radius:6px; display:block; }}
-  .grid {{ display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; }}
-  iframe {{ width:100%; height:420px; border:0; border-radius:8px; background:#fff; }}
-  table {{ border-collapse:collapse; width:100%; }} td, th {{ padding:6px 10px; border-bottom:1px solid var(--line); text-align:left; }}
-</style></head><body><main>
-<h1>{html_lib.escape(title)}</h1>
-<p class="lead">{_status(first, machine)} Tous les fichiers sont listés dans <a href="README.md">README.md</a>.</p>
-
-<h2>1. Le robot, avec sa meilleure démarche</h2>
-<p>Meilleure démarche trouvée ({ALGO_LABELS[best['algo']]}, fitness {best['repertoire_fitness']:.0f}). À gauche intact ; à droite <b>la même démarche avec la patte 4 paralysée</b>. C'est le problème que le projet va résoudre.</p>
-<div class="card"><video src="videos/intact_vs_patte4_camera_fixe.mp4" autoplay muted loop playsinline controls></video></div>
-<div class="grid">
-  <div class="card"><video src="videos/intact_camera_suiveuse.mp4" autoplay muted loop playsinline controls></video></div>
-  <div class="card"><video src="videos/patte4_paralysee_camera_suiveuse.mp4" autoplay muted loop playsinline controls></video></div>
-</div>
-<div class="card"><img src="figures/trajets_vus_de_dessus.png" alt="Trajets vus de dessus">
-<p class="note">Trajet vu de dessus pendant les {ro['intact']['duration_s']:.1f} s de l'épisode. La fitness récompense l'avancée selon x.</p></div>
-
-<h2>2. En 3D interactive</h2>
-<p>Tourne la caméra à la souris, zoome à la molette. Chaque vue est aussi une page autonome dans <code>interactive/</code>, qui marche hors ligne.</p>
-<div class="grid">
-  <div class="card"><b>Intact</b> — {ro['intact']['distance_x_m']:.1f} m <a href="interactive/intact.html">plein écran ↗</a><iframe src="interactive/intact.html" loading="lazy"></iframe></div>
-  <div class="card"><b>Patte 4 paralysée</b> — {ro['damaged']['distance_x_m']:.1f} m <a href="interactive/patte4_paralysee.html">plein écran ↗</a><iframe src="interactive/patte4_paralysee.html" loading="lazy"></iframe></div>
-</div>
-<div class="card"><img src="figures/contacts_pieds.png" alt="Profil de contact des pieds">
-<p class="note">Chaque ligne est un pied, noir = le pied touche le sol. C'est ce que mesure le descripteur (fraction du temps en noir, pour chaque pied).</p></div>
-
-<h2>3. L'album se remplit</h2>
-<div class="card"><img src="figures/progression_qd.png" alt="Progression QD"></div>
-<div class="card"><table><tr><th>Algo</th><th>Évaluations</th><th>Couverture</th><th>Meilleure fitness</th><th>Temps de calcul</th></tr>{rows}</table>
-<p class="note">Même robot, même réseau, même nombre d'évaluations pour les trois (vérifié par les tests).{dcrl_note}</p></div>
-
-<h2>4. À quoi ressemblent les albums</h2>
-{repertoires}
-<p class="note">Chaque point est une démarche. Les points près de 0 sur un axe n'utilisent presque pas ce pied : ce sont elles qui serviront après une blessure.</p>
-<p class="note">Généré le {summary['generated']} · code {summary['code_commit']}</p>
-</main></body></html>""")
+    (out_dir / "index.html").write_text(
+        render(
+            "repertoires_index.html",
+            title=html_lib.escape(title),
+            status=_status(first, machine),
+            best_algo=ALGO_LABELS[best["algo"]],
+            best_fitness=f"{best['repertoire_fitness']:.0f}",
+            duration=f"{ro['intact']['duration_s']:.1f}",
+            d_intact=f"{ro['intact']['distance_x_m']:.1f}",
+            d_damaged=f"{ro['damaged']['distance_x_m']:.1f}",
+            rows=rows,
+            dcrl_note=dcrl_note,
+            repertoires=repertoires,
+            generated=summary["generated"],
+            code=summary["code_commit"],
+        )
+    )
 
 
 def _write_readme(out_dir: Path, title: str, summary: dict):
@@ -445,41 +443,23 @@ def _write_readme(out_dir: Path, title: str, summary: dict):
         return "\n".join(f"- `{sub}/{p.name}`" for p in sorted((out_dir / sub).iterdir()))
 
     ro = summary["rollouts"]
-    (out_dir / "README.md").write_text(f"""# {title}
-
-Généré le {summary['generated']} (code `{summary['code_commit']}`). {_status(next(iter(summary['runs'].values())))}
-
-Régénérer : `{summary['command']}`
-
-Meilleure démarche : {ALGO_LABELS[summary['best_policy']['algo']]}, case {summary['best_policy']['cell_index']}.
-Intact : {ro['intact']['distance_x_m']:.2f} m vers l'avant en {ro['intact']['duration_s']:.1f} s.
-Patte 4 paralysée (actions {ro['damaged']['paralysed_actions']} à 0) : {ro['damaged']['distance_x_m']:.2f} m.
-
-## Pour quoi faire
-
-| Usage | Fichier |
-|---|---|
-| README GitHub | `videos/intact_vs_patte4_camera_fixe.gif` |
-| LinkedIn, slides | `videos/*.mp4` (H.264, temps réel, 20 i/s) |
-| Portfolio web (3D à la souris) | `interactive/*.html` : pages autonomes, à mettre en `<iframe>` ou en lien |
-| Rapport LaTeX | `figures/*.pdf` (vectoriel) |
-| Web, slides | `figures/*.png` (200 dpi) |
-| Chiffres et provenance | `data/summary.json`, `data/run_*.json`, `data/metrics_*.csv` |
-
-## Fichiers
-
-### figures/
-{listing('figures')}
-
-### videos/
-{listing('videos')}
-
-### interactive/
-{listing('interactive')}
-
-### data/
-{listing('data')}
-""")
+    (out_dir / "README.md").write_text(
+        render(
+            "repertoires_readme.md",
+            title=title,
+            generated=summary["generated"],
+            code=summary["code_commit"],
+            status=_status(next(iter(summary["runs"].values()))),
+            command=summary["command"],
+            best_algo=ALGO_LABELS[summary["best_policy"]["algo"]],
+            best_cell=summary["best_policy"]["cell_index"],
+            d_intact=f"{ro['intact']['distance_x_m']:.2f}",
+            duration=f"{ro['intact']['duration_s']:.1f}",
+            paralysed=ro["damaged"]["paralysed_actions"],
+            d_damaged=f"{ro['damaged']['distance_x_m']:.2f}",
+            **{sub: listing(sub) for sub in ("figures", "videos", "interactive", "data")},
+        )
+    )
 
 
 def main():

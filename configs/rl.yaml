@@ -19,10 +19,20 @@ updates_per_step: 16      # one gradient step per collected transition (standard
 buffer_size: 1000000
 max_episodes: 2000        # training episodes on the damaged robot
 eval_episodes: 8          # deterministic evaluation after each round (not counted on the x axis)
+warmup_episodes: 160      # finetune_warmup: actor frozen while the new critic learns (counted, 10 rounds)
+pretrain_episodes: 512    # finetune_pretrained: critic pre-trained on the intact robot in simulation (not counted)
+
+robust:                   # damage-robust TD3 policy, trained in simulation, evaluated without adaptation
+  p_damaged: 0.25         # each joint is paralysed or weakened (50/50) with this probability, at every episode
+  episodes: 10000         # simulated training episodes (5 x the re-training budget)
+  eval_every: 800
+  final_eval_episodes: 32
 
 variants:
   scratch: RL from scratch on the damaged robot
   finetune: RL from the best intact policy of the repertoire (new critic)
+  finetune_warmup: same, actor frozen during the first warmup_episodes
+  finetune_pretrained: same, critic pre-trained on the intact robot in simulation
 init_from_algo: dcrlme    # repertoire that provides the best intact policy (same seed as the RL run)
 seeds: [0, 1]
 
@@ -32,3 +42,6 @@ smoke:
   buffer_size: 5000
   max_episodes: 4
   eval_episodes: 2
+  warmup_episodes: 2
+  pretrain_episodes: 2
+  robust: {episodes: 4, eval_every: 2, final_eval_episodes: 2}

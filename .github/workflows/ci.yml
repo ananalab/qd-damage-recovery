@@ -1,0 +1,29 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      # Same installation as on Kaggle: the exact pinned versions, without pytinyrenderer (no Linux wheel for
+      # Python 3.12; only needed for video rendering) and without macOS-only packages.
+      - name: Install
+        run: |
+          grep -v -i -E "^(pytinyrenderer|appnope)==" requirements-lock.txt > requirements-ci.txt
+          pip install --no-deps -r requirements-ci.txt
+          pip install --no-deps -e .
+      - name: Lint
+        run: |
+          ruff check src tests kaggle contrib
+          ruff format --check src tests kaggle contrib
+      - name: Fast tests
+        run: pytest -m "not slow"

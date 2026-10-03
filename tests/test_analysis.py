@@ -11,10 +11,26 @@ def _trials(diff_dcrl: float) -> pd.DataFrame:
         for scenario in range(12):
             for rep in range(5):
                 base = 0.1 * scenario
-                rows += [{"algo": algo, "run": f"{algo}_seed0", "scenario": scenario, "rep": rep, "trial": 5,
-                          "method": "top_k", "perf_abs": base},
-                         {"algo": algo, "run": f"{algo}_seed0", "scenario": scenario, "rep": rep, "trial": 5,
-                          "method": "ite", "perf_abs": base + diff + 0.001 * (scenario % 3 - 1)}]
+                rows += [
+                    {
+                        "algo": algo,
+                        "run": f"{algo}_seed0",
+                        "scenario": scenario,
+                        "rep": rep,
+                        "trial": 5,
+                        "method": "top_k",
+                        "perf_abs": base,
+                    },
+                    {
+                        "algo": algo,
+                        "run": f"{algo}_seed0",
+                        "scenario": scenario,
+                        "rep": rep,
+                        "trial": 5,
+                        "method": "ite",
+                        "perf_abs": base + diff + 0.001 * (scenario % 3 - 1),
+                    },
+                ]
     return pd.DataFrame(rows)
 
 

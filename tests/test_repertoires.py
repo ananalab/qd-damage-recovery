@@ -19,7 +19,9 @@ def test_same_env_and_network(setups):
     for algo, (cfg, env, net, _) in setups.items():
         assert cfg["common"] == ref_cfg["common"], algo
         assert (env.observation_size, env.action_size, env.descriptor_length) == (
-            ref_env.observation_size, ref_env.action_size, ref_env.descriptor_length
+            ref_env.observation_size,
+            ref_env.action_size,
+            ref_env.descriptor_length,
         ), algo
         assert net.layer_sizes == ref_net.layer_sizes, algo
 

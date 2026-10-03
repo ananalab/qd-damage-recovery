@@ -25,6 +25,26 @@ ite:
   max_trials: 20
   n_repeats: 5            # episodes are noisy: 5 repetitions per (repertoire, damage)
 
+# Descriptor ablation: ITE with the Gaussian process on joint usage (mean |action| of each of the 8 actuators,
+# qd_damage.joint_usage) instead of feet contact. Hyper-parameters fitted the same way, on the same development
+# repertoires (results/calibration_joint_usage.txt), then frozen; kappa, alpha and the trial budget are unchanged.
+ite_joint_usage:
+  lengthscale: 0.2
+  signal_variance: 0.1
+  noise_variance: 0.003
+
+# Simulated reality gap, fixed before running the experiment: the repertoire and the ITE prior come from the nominal
+# simulator, but trials happen on a robot whose physics differ (less ground friction, heavier torso, weaker motors).
+reality_gap:
+  friction: 0.7           # nominal 1.0
+  torso_mass: 12.0        # nominal 10.0 kg
+  gear_scale: 0.9         # actuator strength x 0.9
+
+# Re-evaluation of the oracle's best cell on fresh episodes (the 4-episode maximum is biased upwards).
+oracle_check:
+  n_episodes: 16
+  seed: 4321
+
 baselines:
   best_intact: {}                   # only tries the best intact gait
   top_k: {max_trials: 20}           # cells in decreasing order of intact fitness, no GP

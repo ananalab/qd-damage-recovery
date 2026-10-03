@@ -14,24 +14,29 @@ gait found by ITE in 6 trials.*
 - Built gait repertoires at equal budget with **MAP-Elites**, **PGA-ME** and **DCRL-ME** (3 seeds each,
   512,256 episodes per run) using JAX, QDax and Brax on Kaggle GPUs.
 - Damaged the robot in 12 ways (paralysed or weakened legs, ankles, two legs).
-- Adapted with **Intelligent Trial & Error** (Cully et al., *Nature* 2015), compared with simple baselines and with
-  **TD3 re-training**, counting every episode played on the damaged robot.
+- Adapted with **Intelligent Trial & Error** (Cully et al., *Nature* 2015), compared with simple baselines, with
+  **TD3 re-training** and with a **damage-robust TD3 policy**, counting every episode played on the damaged robot.
+- Checked the conclusions against oracle bias, dependence between units (mixed models), the choice of descriptor
+  and a simulated reality gap.
 
 ## Results
 
 | | MAP-Elites | PGA-ME | DCRL-ME |
 |---|---|---|---|
 | Coverage | 72 % | 77 % | **84 %** |
-| Best gait left after damage (p, 1 ≈ 15 m) | 0.23 | **1.84** | 1.14 |
-| Gait found by ITE (p) | 0.11 | **1.47** | 0.59 |
+| Best gait left after damage (v, 1 ≈ 15 m) | 0.23 | **1.84** | 1.14 |
+| Gait found by ITE (v) | 0.11 | **1.47** | 0.59 |
 
-- Repertoires built with RL are as resilient as MAP-Elites in relative terms (no significant difference) and much
-  better in absolute terms.
+- Repertoires built with RL are at least as resilient as MAP-Elites in relative terms and much better in absolute
+  terms (rank tests and mixed models, oracle bias checked on fresh episodes).
 - ITE stops after a median of **5 trials** and recovers 33 % of the intact progress (18 % without adaptation).
   Simply trying gaits by decreasing intact performance does almost as well: ITE's small edge after 3 trials is
-  gone after 5. The quality of the repertoire matters more than the adaptation algorithm.
-- TD3 matches ITE in only 6 of 16 runs, after more than 1,000 episodes (except one run where the intact policy
-  was already good enough).
+  gone after 5. This holds with a descriptor that models the damage three times better, and with a gap between
+  the simulator and the robot. The quality of the repertoire matters more than the adaptation algorithm.
+- Re-training with TD3 takes hundreds of episodes on the damaged robot. Fine-tuning the intact policy collapses
+  unless its critic is warmed up or pre-trained; then it matches ITE in 8 of 8 runs, after a median of 400 to 450 episodes.
+- A TD3 policy trained in simulation on random damages matches ITE on the best repertoires **without any trial**
+  (better on 6 of 12 damages), but only for damages it was trained on, and it fails when two legs are paralysed.
 - Letting ITE search the gaits of DCRL-ME's descriptor-conditioned actor instead of the repertoire is clearly worse.
 
 Full report: [`report/report.pdf`](report/report.pdf). Every number in it is generated from `results/`.

@@ -1,0 +1,10 @@
+,Quantity,Comparison,Difference [95\% CI],$p$-value
+0,Resilience,PGA-ME $-$ MAP-Elites,"\ensuremath{+0.04\ [-0.04, +0.12]}",0.357
+1,Resilience,DCRL-ME $-$ MAP-Elites,"\ensuremath{+0.01\ [-0.08, +0.09]}",0.888
+2,Resilience,DCRL-ME $-$ PGA-ME,"\ensuremath{-0.03\ [-0.11, +0.05]}",0.435
+3,Best gait after damage ($v$),PGA-ME $-$ MAP-Elites,"\ensuremath{+1.31\ [+1.10, +1.51]}",<0.001
+4,Best gait after damage ($v$),DCRL-ME $-$ MAP-Elites,"\ensuremath{+0.74\ [+0.53, +0.94]}",<0.001
+5,Best gait after damage ($v$),DCRL-ME $-$ PGA-ME,"\ensuremath{-0.57\ [-0.78, -0.37]}",<0.001
+6,Gait found by ITE ($v$),PGA-ME $-$ MAP-Elites,"\ensuremath{+1.16\ [+0.97, +1.36]}",<0.001
+7,Gait found by ITE ($v$),DCRL-ME $-$ MAP-Elites,"\ensuremath{+0.48\ [+0.29, +0.68]}",<0.001
+8,Gait found by ITE ($v$),DCRL-ME $-$ PGA-ME,"\ensuremath{-0.68\ [-0.88, -0.48]}",<0.001

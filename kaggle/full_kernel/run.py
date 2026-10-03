@@ -24,9 +24,20 @@ import kernel_utils as ku  # noqa: E402
 
 env = ku.install(CODE)
 jobs = [
-    (f"{algo}_seed{seed}",
-     [sys.executable, "-m", "qd_damage.repertoires", "--algo", algo, "--seed", str(seed),
-      "--out", "/kaggle/working/outputs"])
+    (
+        f"{algo}_seed{seed}",
+        [
+            ku.PYTHON,
+            "-m",
+            "qd_damage.repertoires",
+            "--algo",
+            algo,
+            "--seed",
+            str(seed),
+            "--out",
+            "/kaggle/working/outputs",
+        ],
+    )
     for algo in ["dcrlme", "pgame", "me"]  # longest first
     for seed in [0, 1, 2]
 ]

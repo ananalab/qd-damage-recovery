@@ -23,6 +23,7 @@ dependencies = [
     "numpy==1.26.4",
     "tensorflow-probability==0.24.0",
     "scipy",
+    "statsmodels",  # mixed models of the analysis
     "pandas",
     "pyyaml",
     "matplotlib",
@@ -34,7 +35,7 @@ dependencies = [
 [project.optional-dependencies]
 # NVIDIA GPU (Kaggle / Colab T4): jax with CUDA 12.
 cuda12 = ["jax[cuda12]==0.4.28"]
-dev = ["pytest", "jupyter", "ipykernel"]
+dev = ["pytest", "ruff", "jupyter", "ipykernel"]
 # Video rendering (qd_damage.viz), local only: pytinyrenderer has no Linux wheel for Python 3.12
 # and does not build on Kaggle.
 viz = ["pytinyrenderer", "imageio-ffmpeg"]
@@ -43,8 +44,20 @@ viz = ["pytinyrenderer", "imageio-ffmpeg"]
 where = ["src"]
 
 [tool.setuptools.package-data]
-qd_damage = ["assets/*"]
+qd_damage = ["assets/*", "templates/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["slow: tests that run a simulation (even a tiny one)"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E731"]
+
+[tool.ruff.lint.per-file-ignores]
+"contrib/qdax/build_notebook.py" = ["E501"]  # notebook cells kept as written in the notebook

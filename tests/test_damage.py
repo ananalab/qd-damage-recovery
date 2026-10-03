@@ -22,7 +22,7 @@ def test_damage_scale():
     by_name = {s["name"]: s for s in damages["scenarios"]}
     np.testing.assert_array_equal(damage_scale(by_name["intact"], damages), np.ones(8))
     np.testing.assert_array_equal(damage_scale(by_name["leg4_paralysed"], damages), [1, 1, 1, 1, 1, 1, 0, 0])
-    np.testing.assert_array_equal(damage_scale(by_name["leg2_weak"], damages), [1, 1, .5, .5, 1, 1, 1, 1])
+    np.testing.assert_array_equal(damage_scale(by_name["leg2_weak"], damages), [1, 1, 0.5, 0.5, 1, 1, 1, 1])
     np.testing.assert_array_equal(damage_scale(by_name["ankle1_paralysed"], damages), [1, 0, 1, 1, 1, 1, 1, 1])
 
 
@@ -64,8 +64,7 @@ def test_adaptation_end_to_end(tmp_path):
 
     run_dir = build("me", seed=0, profile="smoke", out_root=tmp_path / "rep")
     run_oracle(run_dir, tmp_path / "oracle", n_episodes=1, scenarios=["intact", "leg4_paralysed"])
-    out = run_adaptation(run_dir, tmp_path / "oracle", tmp_path / "adapt",
-                         scenarios=["leg4_paralysed"], n_repeats=1)
+    out = run_adaptation(run_dir, tmp_path / "oracle", tmp_path / "adapt", scenarios=["leg4_paralysed"], n_repeats=1)
     summary = list(csv.DictReader(open(out / "summary.csv")))
     assert sorted(r["method"] for r in summary) == sorted(METHODS)
     for r in summary:
@@ -81,8 +80,9 @@ def test_continuous_ite_end_to_end(tmp_path):
     from qd_damage.repertoires import build
 
     run_dir = build("dcrlme", seed=0, profile="smoke", out_root=tmp_path / "rep")
-    out = run_continuous(run_dir, n_candidates=64, n_episodes=1, scenarios=["leg4_paralysed"], n_repeats=1,
-                         out_root=tmp_path / "cont")
+    out = run_continuous(
+        run_dir, n_candidates=64, n_episodes=1, scenarios=["leg4_paralysed"], n_repeats=1, out_root=tmp_path / "cont"
+    )
     data = np.load(out / "candidates.npz")
     assert data["fitness"].shape == (2, 64, 1) and data["achieved"].shape == (64, 4)
     rows = list(csv.DictReader(open(out / "summary.csv")))

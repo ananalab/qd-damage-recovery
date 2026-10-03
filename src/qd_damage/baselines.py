@@ -5,7 +5,7 @@
 - random: try cells drawn at random, without replacement.
 """
 
-from typing import Callable
+from collections.abc import Callable
 
 import numpy as np
 
@@ -28,5 +28,7 @@ def run_top_k(prior_fitness: np.ndarray, trial_fn: Callable[[int], float], max_t
     return _run_order(np.argsort(-prior_fitness), trial_fn, max_trials)
 
 
-def run_random(n_cells: int, trial_fn: Callable[[int], float], max_trials: int, rng: np.random.Generator) -> TrialHistory:
+def run_random(
+    n_cells: int, trial_fn: Callable[[int], float], max_trials: int, rng: np.random.Generator
+) -> TrialHistory:
     return _run_order(rng.permutation(n_cells), trial_fn, max_trials)

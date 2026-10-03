@@ -44,8 +44,7 @@ def test_gp_interpolates_and_is_uncertain_far_away():
 def test_ite_finds_new_optimum_quickly():
     x, prior, true = synthetic_problem()
     rng = np.random.default_rng(0)
-    history = run_ite(x, prior, lambda i: true[i] + 0.01 * rng.normal(), Normalizer(0.0, 1.0),
-                      max_trials=20, **PARAMS)
+    history = run_ite(x, prior, lambda i: true[i] + 0.01 * rng.normal(), Normalizer(0.0, 1.0), max_trials=20, **PARAMS)
     assert history.stop_trial is not None and history.stop_trial <= 15
     found = true[history.best_cell(history.stop_trial)]
     assert found >= 0.9 * true.max()

@@ -24,6 +24,21 @@ import kernel_utils as ku  # noqa: E402
 
 env = ku.install(CODE)
 for algo in ["me", "pgame", "dcrlme"]:
-    ku.sh([sys.executable, "-m", "qd_damage.repertoires", "--algo", algo, "--seed", "0",
-           "--profile", "demo", "--out", "/kaggle/working/outputs"], cwd=CODE, env=env)
+    ku.sh(
+        [
+            ku.PYTHON,
+            "-m",
+            "qd_damage.repertoires",
+            "--algo",
+            algo,
+            "--seed",
+            "0",
+            "--profile",
+            "demo",
+            "--out",
+            "/kaggle/working/outputs",
+        ],
+        cwd=CODE,
+        env=env,
+    )
 print("ALL_DONE", flush=True)
