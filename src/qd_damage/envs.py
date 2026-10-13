@@ -1,4 +1,4 @@
-"""ant_uni environment, damage wrapper and damage scenarios.
+"""Environments (Ant, Walker2d, HalfCheetah), damage wrappers and damage scenarios.
 
 Uses `qdax.tasks.brax.v1`, like the three official QDax 0.5.0 notebooks.
 """
@@ -28,7 +28,8 @@ def make_env(common: dict, physics: dict | None = None):
     """Environment shared by the three algorithms, built from common.yaml only.
 
     `physics` optionally changes the simulator (e.g. {"friction": 0.7, "torso_mass": 12.0}); it stands for the
-    gap between the simulator used to build the repertoire and the robot it is deployed on.
+    gap between the simulator used to build the repertoire and the robot it is deployed on, or for a physical
+    damage (a slippery or heavier foot).
     """
     name = common["env"]["name"]
     env = qdax_envs.create(name, episode_length=common["env"]["episode_length"])
@@ -56,9 +57,18 @@ def _set_physics(env, physics: dict):
                     collider.material.friction = value
         elif key == "torso_mass":
             next(b for b in config.bodies if b.name == "$ Torso").mass = value
+        elif key == "torso_mass_scale":  # the torso is the first body of every robot used here
+            config.bodies[0].mass *= value
         elif key == "gear_scale":
             for actuator in config.actuators:
                 actuator.strength *= value
+        elif key == "body_friction":  # {body name: friction}, e.g. a worn, slippery foot
+            for name, friction in value.items():
+                for collider in next(b for b in config.bodies if b.name == name).colliders:
+                    collider.material.friction = friction
+        elif key == "body_mass_scale":  # {body name: factor}, e.g. a foot dragging a load
+            for name, factor in value.items():
+                next(b for b in config.bodies if b.name == name).mass *= factor
         else:
             raise ValueError(f"unknown physics parameter {key!r}")
     inner.sys = QDSystem(config)
@@ -84,6 +94,30 @@ class DamageWrapper:
 
     def step(self, state, action):
         return self.env.step(state, action * self.action_scale)
+
+    def __getattr__(self, name):
+        return getattr(self.env, name)
+
+
+class ConditionWrapper:
+    """General damage: action -> action x scale + offset, and observation -> observation x obs_mask.
+
+    scale = 0 paralyses a joint, 0.5 weakens it, -1 inverts it (miswired motor); scale = 0 with an offset makes a
+    jammed motor that keeps pushing; obs_mask = 0 on the angle and velocity of a joint models a broken sensor.
+    The three arrays can be traced arguments, so one compilation serves every condition with the same physics.
+    """
+
+    def __init__(self, env, scale, offset, obs_mask):
+        self.env = env
+        self.scale, self.offset, self.obs_mask = scale, offset, obs_mask
+
+    def reset(self, rng):
+        state = self.env.reset(rng)
+        return state.replace(obs=state.obs * self.obs_mask)
+
+    def step(self, state, action):
+        state = self.env.step(state, action * self.scale + self.offset)
+        return state.replace(obs=state.obs * self.obs_mask)
 
     def __getattr__(self, name):
         return getattr(self.env, name)

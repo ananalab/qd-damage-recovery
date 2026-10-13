@@ -49,3 +49,24 @@ baselines:
   best_intact: {}                   # only tries the best intact gait
   top_k: {max_trials: 20}           # cells in decreasing order of intact fitness, no GP
   random: {max_trials: 20, n_repeats: 5}
+
+# Offline replay of adaptation from the condition banks (qd_damage.offline). Performance in u = share of the progress
+# of the best intact gait. Gaussian-process hyper-parameters fitted by maximum marginal likelihood on the
+# DEVELOPMENT repertoires of each robot (python -m qd_damage.tune --gp), kappa and the ITE-SD settings chosen on the
+# same development repertoires (python -m qd_damage.tune --search); then frozen before the final runs.
+offline:
+  max_trials: 20
+  n_repeats: 20
+  methods: [best_intact, random, top_k, ite, ite_norep, ite_joint, robust_top_k, aprol, itesd]
+  kappa: {ite: 0.05}
+  gp:                                   # PROVISIONAL, replaced by the development fit
+    ant:
+      feet: {lengthscale: 0.4, variance: 0.05, noise: 0.02}
+      joint: {lengthscale: 0.2, variance: 0.1, noise: 0.003}
+    walker2d:
+      feet: {lengthscale: 0.4, variance: 0.05, noise: 0.02}
+      joint: {lengthscale: 0.2, variance: 0.1, noise: 0.003}
+    halfcheetah:
+      feet: {lengthscale: 0.4, variance: 0.05, noise: 0.02}
+      joint: {lengthscale: 0.2, variance: 0.1, noise: 0.003}
+  itesd: {kappa: 1.0, nugget: 0.005, noise: 0.005, prior_mean: true}

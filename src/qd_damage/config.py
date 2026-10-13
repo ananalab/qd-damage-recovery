@@ -32,15 +32,21 @@ def load_yaml(name: str) -> dict:
         return yaml.safe_load(f)
 
 
-def load_run_config(algo: str, profile: str | None = None) -> dict:
-    """Full config of a run: {"common": ..., "algo": ..., "profile": ...}.
+def load_run_config(algo: str, profile: str | None = None, robot: str = "ant") -> dict:
+    """Full config of a run: {"common": ..., "algo": ..., "profile": ..., "robot": ...}.
 
     profile=None is a full run; "smoke" is tiny (CPU tests); "local" and "demo" are 200-iteration demos.
+    `robot` (configs/robots.yaml) sets the environment and the episode length; everything else is shared.
     """
     if algo not in ALGOS:
         raise ValueError(f"unknown algo {algo!r}, expected one of {ALGOS}")
     common = load_yaml("common")
     profiles = common.pop("profiles")
+    robots = load_yaml("robots")
+    if robot not in robots:
+        raise ValueError(f"unknown robot {robot!r}, expected one of {tuple(robots)}")
+    common["env"]["name"] = robots[robot]["env"]
+    common["env"]["episode_length"] = robots[robot]["episode_length"]
     algo_cfg = load_yaml(f"algos/{algo}")
     algo_overrides = algo_cfg.pop("profile_overrides", {})
 
@@ -52,7 +58,18 @@ def load_run_config(algo: str, profile: str | None = None) -> dict:
         for key, value in algo_overrides.get(profile, {}).items():
             algo_cfg[_ALGO_RL_SECTION[algo]][key] = value
 
-    return {"common": common, "algo": algo_cfg, "profile": profile}
+    return {"common": common, "algo": algo_cfg, "profile": profile, "robot": robot}
+
+
+def run_name(algo: str, seed: int, profile: str | None = None, robot: str = "ant") -> str:
+    """Folder name of a run. Ant runs keep the names of the first campaign (no robot prefix)."""
+    prefix = "" if robot == "ant" else f"{robot}_"
+    return f"{prefix}{algo}_seed{seed}" + (f"_{profile}" if profile else "")
+
+
+def run_config(run: dict) -> dict:
+    """Common config of a finished run (from its run.json); runs of the first campaign are Ant runs."""
+    return load_run_config(run["algo"], run["profile"], run.get("robot", "ant"))["common"]
 
 
 def performance_reference(episode_length: int) -> tuple:

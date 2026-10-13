@@ -286,11 +286,29 @@ def retrain(
     return out_dir
 
 
-def train_robust(seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "results" / "rl_robust"):
-    """TD3 from scratch with a random damage at every episode, then zero-shot evaluation on every scenario."""
+def _robust_scenarios(robot: str, action_size: int) -> list:
+    """(name, action scale) of the intact robot and of the named damages of `robot` (qd_damage.conditions)."""
+    from qd_damage.conditions import named_damages
+
+    out = [("intact", np.ones(action_size, np.float32))]
+    for name, factors in named_damages(robot, load_yaml("robots")[robot]):
+        scale = np.ones(action_size, np.float32)
+        scale[list(factors)] = list(factors.values())
+        out.append((name, scale))
+    return out
+
+
+def train_robust(
+    seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "results" / "rl_robust", robot: str = "ant"
+):
+    """TD3 from scratch with a random damage at every episode, then zero-shot evaluation on every scenario.
+
+    Every robot gets the same number of simulated transitions as Ant (robust.episodes episodes of 250 steps).
+    """
     cfg = load_rl_config(smoke)
-    common = load_run_config("me", "smoke" if smoke else None)["common"]
+    common = load_run_config("me", "smoke" if smoke else None, robot)["common"]
     episode_length = common["env"]["episode_length"]
+    n_episodes = cfg["robust"]["episodes"] if smoke else cfg["robust"]["episodes"] * 250 // episode_length
     env = RandomDamageWrapper(make_env(common), cfg["robust"]["p_damaged"])
     venv = _BatchedEnv(env)
     td3 = make_td3(cfg, common, env.action_size)
@@ -302,23 +320,24 @@ def train_robust(seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "r
     env_state = venv.reset(jax.random.split(subkey, cfg["n_envs"]))
     train_round = make_train_round(td3, venv, cfg, episode_length)
 
-    damages = load_damages()
+    scenarios = _robust_scenarios(robot, env.action_size)
     _, _, evaluate = make_evaluator(common)
 
-    def evaluate_on(policy_params, scenario, key):
+    def evaluate_on(policy_params, scale, key):
         batch = jax.tree.map(lambda x: jnp.repeat(x[None], cfg["eval_episodes"], axis=0), policy_params)
-        fitnesses, _ = evaluate(batch, key, jnp.asarray(damage_scale(scenario, damages)))
+        fitnesses, _ = evaluate(batch, key, jnp.asarray(scale))
         return float(fitnesses.mean())
 
-    rows, t0, episodes, every = [], time.time(), 0, cfg["robust"]["eval_every"]
-    while episodes < cfg["robust"]["episodes"]:
+    rows, t0, episodes = [], time.time(), 0
+    every = max(cfg["n_envs"], cfg["robust"]["eval_every"] * n_episodes // cfg["robust"]["episodes"])
+    while episodes < n_episodes:
         env_state, state, buffer = train_round(env_state, state, buffer)
         episodes += cfg["n_envs"]
-        if episodes % every < cfg["n_envs"] or episodes >= cfg["robust"]["episodes"]:
+        if episodes % every < cfg["n_envs"] or episodes >= n_episodes:
             key, subkey = jax.random.split(key)
             fits = [
-                evaluate_on(state.policy_params, s, k)
-                for s, k in zip(damages["scenarios"], jax.random.split(subkey, len(damages["scenarios"])), strict=False)
+                evaluate_on(state.policy_params, scale, k)
+                for (_, scale), k in zip(scenarios, jax.random.split(subkey, len(scenarios)), strict=True)
             ]
             rows.append(
                 {
@@ -329,7 +348,7 @@ def train_robust(seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "r
                 }
             )
             print(
-                f"[robust s{seed}] {episodes} episodes: intact {fits[0]:.1f}, damaged mean "
+                f"[robust {robot} s{seed}] {episodes} episodes: intact {fits[0]:.1f}, damaged mean "
                 f"{rows[-1]['damaged_mean']:.1f} ({rows[-1]['time_s']:.0f} s)",
                 flush=True,
             )
@@ -337,22 +356,25 @@ def train_robust(seed: int, smoke: bool = False, out_root: Path = REPO_ROOT / "r
     # Final zero-shot evaluation, more episodes per scenario.
     key, subkey = jax.random.split(key)
     final = []
-    for s, k in zip(damages["scenarios"], jax.random.split(subkey, len(damages["scenarios"])), strict=False):
+    for (name, scale), k in zip(scenarios, jax.random.split(subkey, len(scenarios)), strict=True):
         batch = jax.tree.map(
             lambda x: jnp.repeat(x[None], cfg["robust"]["final_eval_episodes"], axis=0), state.policy_params
         )
-        fits, _ = evaluate(batch, k, jnp.asarray(damage_scale(s, damages)))
+        fits, _ = evaluate(batch, k, jnp.asarray(scale))
         final.append(
             {
                 "seed": seed,
-                "scenario": s["name"],
+                "scenario": name,
                 "fitness": float(fits.mean()),
                 "std": float(fits.std()),
                 "n_episodes": cfg["robust"]["final_eval_episodes"],
             }
         )
-    out_dir = Path(out_root) / (f"seed{seed}" + ("_smoke" if smoke else ""))
-    write_curve(out_dir, rows, {"variant": "robust", "seed": seed, "config": cfg, "time_s": time.time() - t0})
+    prefix = "" if robot == "ant" else f"{robot}_"
+    out_dir = Path(out_root) / (f"{prefix}seed{seed}" + ("_smoke" if smoke else ""))
+    write_curve(
+        out_dir, rows, {"variant": "robust", "robot": robot, "seed": seed, "config": cfg, "time_s": time.time() - t0}
+    )
     with open(out_dir / "zero_shot.csv", "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(final[0]))
         writer.writeheader()
@@ -409,13 +431,14 @@ def main():
     parser.add_argument("--repertoire", type=Path, default=None, help="required for the finetune variants")
     parser.add_argument("--oracle-root", type=Path, default=REPO_ROOT / "results" / "oracle")
     parser.add_argument("--smoke", action="store_true")
+    parser.add_argument("--robot", default="ant", help="with --robust: robot of configs/robots.yaml")
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
     if args.evaluate_robust:
         physics = load_yaml("adaptation")["reality_gap"] if args.reality_gap else None
         print(evaluate_robust(args.evaluate_robust, physics))
     elif args.robust:
-        print(train_robust(args.seed, args.smoke, args.out or REPO_ROOT / "results" / "rl_robust"))
+        print(train_robust(args.seed, args.smoke, args.out or REPO_ROOT / "results" / "rl_robust", args.robot))
     else:
         if not (args.scenario and args.variant):
             parser.error("--scenario and --variant are required unless --robust")

@@ -44,7 +44,7 @@ from qdax.tasks.brax.v1 import reward_offset
 from qdax.tasks.brax.v1.env_creators import scoring_function_brax_envs
 from qdax.utils.metrics import default_qd_metrics
 
-from qd_damage.config import ALGOS, load_run_config
+from qd_damage.config import ALGOS, load_run_config, load_yaml, run_name
 from qd_damage.envs import descriptor_extractor, make_env
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -158,9 +158,9 @@ def make_emitter(algo: str, algo_cfg: dict, common: dict, env, policy_network):
     raise ValueError(f"unknown algo {algo!r}")
 
 
-def setup(algo: str, profile=None):
+def setup(algo: str, profile=None, robot: str = "ant"):
     """Build environment, network and MAP-Elites for one algorithm; also return the config used."""
-    cfg = load_run_config(algo, profile)
+    cfg = load_run_config(algo, profile, robot)
     common = cfg["common"]
     env = make_env(common)
     policy_network = make_policy_network(common, env.action_size)
@@ -236,13 +236,14 @@ def build(
     profile=None,
     out_root: Path = REPO_ROOT / "results" / "repertoires",
     stop_after=None,
+    robot: str = "ant",
 ):
     """Build a repertoire, write repertoire.npz, metrics.csv and run.json, and return the output folder.
 
     Resumes from <out>/checkpoint.pkl when it exists (interrupted session).
     `stop_after` (iterations) stops the run on purpose after a checkpoint; used by the resume test.
     """
-    cfg, env, policy_network, map_elites = setup(algo, profile)
+    cfg, env, policy_network, map_elites = setup(algo, profile, robot)
     common = cfg["common"]
     budget, rep = common["budget"], common["repertoire"]
     if budget["num_iterations"] is None:
@@ -252,8 +253,8 @@ def build(
     if budget["num_iterations"] % log_period or checkpoint_every % log_period:
         raise ValueError("budget.num_iterations and budget.checkpoint_every must be multiples of budget.log_period")
 
-    run_name = f"{algo}_seed{seed}" + (f"_{profile}" if profile else "")
-    out_dir = Path(out_root) / run_name
+    name = run_name(algo, seed, profile, robot)
+    out_dir = Path(out_root) / name
     out_dir.mkdir(parents=True, exist_ok=True)
 
     key = jax.random.key(seed)
@@ -293,9 +294,9 @@ def build(
         repertoire, emitter_state, key = _to_device(ckpt["carry"])
         rows, previous_elapsed = ckpt["rows"], ckpt["elapsed_s"]
         start_loop = ckpt["iteration"] // log_period
-        print(f"[{run_name}] resuming from iteration {ckpt['iteration']}", flush=True)
+        print(f"[{name}] resuming from iteration {ckpt['iteration']}", flush=True)
     else:
-        print(f"[{run_name}] init : {rows[-1]}", flush=True)
+        print(f"[{name}] init : {rows[-1]}", flush=True)
 
     # Compiled once. Calling jax.lax.scan(map_elites.scan_update, ...) directly in the loop recompiles at
     # every block, because `map_elites.scan_update` is a new bound-method object at each access.
@@ -316,7 +317,7 @@ def build(
                 "time_s": time.time() - start,  # the first block includes JIT compilation
             }
         )
-        print(f"[{run_name}] {rows[-1]}", flush=True)
+        print(f"[{name}] {rows[-1]}", flush=True)
         if iteration % checkpoint_every == 0 and iteration < budget["num_iterations"]:
             _save_checkpoint(
                 checkpoint_path,
@@ -326,7 +327,7 @@ def build(
                 previous_elapsed + time.time() - t0,
             )
             if stop_after is not None and iteration >= stop_after:
-                print(f"[{run_name}] stopped on purpose at iteration {iteration}", flush=True)
+                print(f"[{name}] stopped on purpose at iteration {iteration}", flush=True)
                 return out_dir
     total_time = previous_elapsed + time.time() - t0
 
@@ -351,6 +352,7 @@ def build(
 
     run_info = {
         "algo": algo,
+        "robot": robot,
         "seed": seed,
         "profile": profile,
         "config": cfg,
@@ -363,7 +365,7 @@ def build(
     with open(out_dir / "run.json", "w") as f:
         json.dump(run_info, f, indent=2)
     checkpoint_path.unlink(missing_ok=True)  # the run is complete: the (large) checkpoint is no longer needed
-    print(f"[{run_name}] done in {total_time:.0f} s -> {out_dir}", flush=True)
+    print(f"[{name}] done in {total_time:.0f} s -> {out_dir}", flush=True)
     return out_dir
 
 
@@ -398,9 +400,10 @@ def main():
     parser.add_argument("--algo", choices=ALGOS, required=True)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--profile", choices=["smoke", "local", "demo"], default=None)
+    parser.add_argument("--robot", choices=tuple(load_yaml("robots")), default="ant")
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "results" / "repertoires")
     args = parser.parse_args()
-    build(args.algo, args.seed, args.profile, args.out)
+    build(args.algo, args.seed, args.profile, args.out, robot=args.robot)
 
 
 if __name__ == "__main__":

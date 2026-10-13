@@ -1,0 +1,28 @@
+# Bank of conditions under which every policy of a repertoire is played (qd_damage.bank). Fixed before the
+# final campaign; see docs/protocol.md.
+#
+# - intact: the prior of every adaptation method (the repertoire is re-evaluated in simulation before damage).
+# - train: damages simulated BEFORE the real damage, drawn from the family of the damage-robust TD3 policy
+#   (configs/rl.yaml): each joint independently paralysed or weakened (50/50) with probability p_damaged.
+#   Only the methods that learn from simulated damages see them.
+# - id: named damages of that family (paralysed / weakened limbs and joints), never drawn as such in train.
+# - ood: damages outside that family: a jammed motor that keeps pushing, a miswired (inverted) motor, the
+#   joint sensors of a limb reading zero, a slippery foot, a heavier foot.
+# - gap: the trials happen on a robot whose physics differ from the simulator (no damage, then each id damage).
+seed: 2026
+episodes:
+  intact: 8
+  train: 2
+  test: 8            # the first half simulates trials, the second half measures the recommended gait
+train:
+  n: 64
+  p_damaged: 0.25
+  levels: [0.0, 0.5]
+ood:
+  jammed_offsets: [0.5, -0.5]   # action of every joint of a limb replaced by this constant
+  inverted_scale: -1.0           # first joint of a limb (hip / thigh)
+  slippery_friction: 0.05
+  heavy_foot_scale: 4.0
+gap:
+  gap1: {friction: 0.7, torso_mass_scale: 1.2, gear_scale: 0.9}   # the reality gap of the first campaign
+  gap2: {friction: 0.5, torso_mass_scale: 1.4, gear_scale: 0.8}

@@ -1,0 +1,26 @@
+# Robots used for the repertoires. Joint indices follow the actuator order of each Brax v1 system, which is also
+# the order of the joint angles and velocities in the observation (checked in tests/test_damage.py).
+# `joint_obs` gives the index of the first joint angle and of the first joint velocity in the observation;
+# `feet` are the bodies whose ground contact defines the descriptor (QDax feet-contact wrapper), also the bodies
+# shortened by the "broken foot" damage.
+
+ant:
+  env: ant_uni
+  episode_length: 250         # 12.5 s
+  limbs: {leg_1: [0, 1], leg_2: [2, 3], leg_3: [4, 5], leg_4: [6, 7]}   # FL, HL, HR, FR; (hip, ankle)
+  joint_obs: {angle: 5, velocity: 19}
+  feet: ["$ Body 4", "$ Body 7", "$ Body 10", "$ Body 13"]
+
+walker2d:
+  env: walker2d_uni
+  episode_length: 1000        # 8 s (dt = 0.008 s), the usual Gym length
+  limbs: {right: [0, 1, 2], left: [3, 4, 5]}                            # (thigh, knee, foot)
+  joint_obs: {angle: 2, velocity: 11}
+  feet: [foot, foot_left]
+
+halfcheetah:
+  env: halfcheetah_uni
+  episode_length: 250         # 12.5 s (dt = 0.05 s)
+  limbs: {back: [0, 1, 2], front: [3, 4, 5]}                            # (thigh, shin, foot)
+  joint_obs: {angle: 3, velocity: 12}
+  feet: [bfoot, ffoot]
