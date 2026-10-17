@@ -34,12 +34,32 @@ def replay(bank_dir: Path, n_repeats: int) -> pd.DataFrame:
     ite = load_yaml("adaptation")["ite"]
     cfg = copy.deepcopy(offline_config())
     k = (scale / progress) ** 2  # variance in v -> variance in u
-    cfg["gp"]["ant"]["feet"] = {"lengthscale": ite["lengthscale"], "variance": ite["signal_variance"] * k,
-                                "noise": ite["noise_variance"] * k}
+    cfg["gp"]["ant"]["feet"] = {
+        "lengthscale": ite["lengthscale"],
+        "variance": ite["signal_variance"] * k,
+        "noise": ite["noise_variance"] * k,
+    }
     cfg["kappa"]["ite"] = ite["kappa"]  # kappa multiplies a standard deviation: same in both units
     rows = adapt_bank(bank_dir, METHODS, n_repeats, cfg, groups=("id",))
-    df = pd.DataFrame(rows, columns=["run", "robot", "algo", "seed", "condition", "group", "method", "rep", "trial",
-                                     "u_true", "u_observed", "stop_trial", "distinct_cells", "u_oracle"])
+    df = pd.DataFrame(
+        rows,
+        columns=[
+            "run",
+            "robot",
+            "algo",
+            "seed",
+            "condition",
+            "group",
+            "method",
+            "rep",
+            "trial",
+            "u_true",
+            "u_observed",
+            "stop_trial",
+            "distinct_cells",
+            "u_oracle",
+        ],
+    )
     df["v"] = df.u_true * progress / scale
     del bank
     return df
@@ -69,9 +89,14 @@ def main():
     args.out.mkdir(parents=True, exist_ok=True)
     df.to_csv(args.out / "replay_check.csv", index=False)
     summary = df.groupby(["method", "trial"]).apply(
-        lambda g: pd.Series({"replay": g.replay.mean(), "real": g.real.mean(),
-                             "corr": np.corrcoef(g.replay, g.real)[0, 1] if g.real.std() > 0 else np.nan,
-                             "mean_abs_diff": (g.replay - g.real).abs().mean()}),
+        lambda g: pd.Series(
+            {
+                "replay": g.replay.mean(),
+                "real": g.real.mean(),
+                "corr": np.corrcoef(g.replay, g.real)[0, 1] if g.real.std() > 0 else np.nan,
+                "mean_abs_diff": (g.replay - g.real).abs().mean(),
+            }
+        ),
         include_groups=False,
     )
     print(summary.round(3))

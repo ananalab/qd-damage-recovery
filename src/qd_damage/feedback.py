@@ -107,12 +107,29 @@ def run_feedback(run_dir: Path, out_root: Path = OUT, n_episodes: int = 4, seed:
 
     out_dir = Path(out_root) / run_dir.name
     out_dir.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(out_dir / "feedback.npz", names=np.array([c["name"] for c in conds]),
-                        groups=np.array([c["group"] for c in conds]), closed=closed, open=opened, filled=filled)
-    (out_dir / "feedback.json").write_text(json.dumps({
-        "run_dir": str(run_dir), "robot": robot, "algo": run["algo"], "seed": run["seed"], "n_episodes": n_episodes,
-        "intact_replay_max_abs_diff": float(np.nanmax(np.abs(closed[0] - opened[0]))),
-        "code_commit": git_commit(), "time_s": time.time() - t0}, indent=2))
+    np.savez_compressed(
+        out_dir / "feedback.npz",
+        names=np.array([c["name"] for c in conds]),
+        groups=np.array([c["group"] for c in conds]),
+        closed=closed,
+        open=opened,
+        filled=filled,
+    )
+    (out_dir / "feedback.json").write_text(
+        json.dumps(
+            {
+                "run_dir": str(run_dir),
+                "robot": robot,
+                "algo": run["algo"],
+                "seed": run["seed"],
+                "n_episodes": n_episodes,
+                "intact_replay_max_abs_diff": float(np.nanmax(np.abs(closed[0] - opened[0]))),
+                "code_commit": git_commit(),
+                "time_s": time.time() - t0,
+            },
+            indent=2,
+        )
+    )
     return out_dir
 
 

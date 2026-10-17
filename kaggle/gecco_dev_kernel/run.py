@@ -48,15 +48,23 @@ jobs.append(("bank_ant_robust", ["bash", "-c", f"{py} -m qd_damage.bank --robust
 for robot in ("walker2d", "halfcheetah"):
     steps = []
     for algo in ("dcrlme", "pgame", "me"):
-        steps.append(f"{py} -m qd_damage.repertoires --algo {algo} --seed 0 --profile demo --robot {robot} "
-                     f"--out {OUT}/repertoires")
+        steps.append(
+            f"{py} -m qd_damage.repertoires --algo {algo} --seed 0 --profile demo --robot {robot} "
+            f"--out {OUT}/repertoires"
+        )
         steps.append(f"{py} -m qd_damage.bank --runs {OUT}/repertoires/{robot}_{algo}_seed0_demo --out {OUT}/bank")
     jobs.append((f"dev_{robot}", ["bash", "-c", " && ".join(steps)]))
 for robot in ("walker2d", "halfcheetah"):
     for seed in (0, 1):
-        jobs.append((
-            f"robust_{robot}_s{seed}",
-            ["bash", "-c", f"{py} -m qd_damage.rl_retrain --robust --robot {robot} --seed {seed} --out {OUT}/rl_robust"
-                           f" && {py} -m qd_damage.bank --robust {OUT}/rl_robust/{robot}_seed{seed} --out {OUT}/bank"],
-        ))
+        jobs.append(
+            (
+                f"robust_{robot}_s{seed}",
+                [
+                    "bash",
+                    "-c",
+                    f"{py} -m qd_damage.rl_retrain --robust --robot {robot} --seed {seed} --out {OUT}/rl_robust"
+                    f" && {py} -m qd_damage.bank --robust {OUT}/rl_robust/{robot}_seed{seed} --out {OUT}/bank",
+                ],
+            )
+        )
 ku.run_jobs(jobs, CODE, env, log_dir="/kaggle/working/logs")

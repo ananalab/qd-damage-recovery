@@ -29,13 +29,30 @@ COLORS = {
 STYLES = {"itesd_hybrid": (0, (4, 2)), "best_intact": (0, (1, 2)), "random": (0, (1, 2))}
 MAIN = ["top_k", "ite", "ite_norep", "robust_top_k", "aprol", "itesd"]
 
-plt.rcParams.update({
-    "font.family": "serif", "font.size": 8, "axes.titlesize": 8.5, "axes.labelsize": 8, "legend.fontsize": 7,
-    "xtick.labelsize": 7, "ytick.labelsize": 7, "axes.edgecolor": INK_2, "axes.labelcolor": INK,
-    "xtick.color": INK_2, "ytick.color": INK_2, "axes.spines.top": False, "axes.spines.right": False,
-    "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6, "lines.linewidth": 1.6, "pdf.fonttype": 42,
-    "svg.hashsalt": "qd", "savefig.dpi": 200,
-})
+plt.rcParams.update(
+    {
+        "font.family": "serif",
+        "font.size": 8,
+        "axes.titlesize": 8.5,
+        "axes.labelsize": 8,
+        "legend.fontsize": 7,
+        "xtick.labelsize": 7,
+        "ytick.labelsize": 7,
+        "axes.edgecolor": INK_2,
+        "axes.labelcolor": INK,
+        "xtick.color": INK_2,
+        "ytick.color": INK_2,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "axes.grid": True,
+        "grid.color": GRID,
+        "grid.linewidth": 0.6,
+        "lines.linewidth": 1.6,
+        "pdf.fonttype": 42,
+        "svg.hashsalt": "qd",
+        "savefig.dpi": 200,
+    }
+)
 
 
 def _save(fig, out: Path, name: str):
@@ -45,8 +62,14 @@ def _save(fig, out: Path, name: str):
     plt.close(fig)
 
 
-def anytime(curves: pd.DataFrame, robust: pd.DataFrame | None, out: Path, families=("id", "ood", "gap"),
-            methods=MAIN, name="anytime"):
+def anytime(
+    curves: pd.DataFrame,
+    robust: pd.DataFrame | None,
+    out: Path,
+    families=("id", "ood", "gap"),
+    methods=MAIN,
+    name="anytime",
+):
     """IQM of u after k trials, one panel per condition family; shaded 95 % bootstrap interval."""
     fig, axes = plt.subplots(1, len(families), figsize=(7.0, 2.3), sharey=True)
     for ax, fam in zip(np.atleast_1d(axes), families, strict=True):

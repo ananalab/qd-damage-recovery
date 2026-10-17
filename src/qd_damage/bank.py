@@ -74,8 +74,11 @@ def signature_extractor(robot: str):
         count = jnp.sum(valid, axis=1)
         obs = data.obs[..., :n_state]
         return jnp.concatenate(
-            [jnp.sum(obs * valid, 1) / count, jnp.sum(jnp.abs(obs) * valid, 1) / count,
-             jnp.sum(data.state_desc * valid, 1) / count],
+            [
+                jnp.sum(obs * valid, 1) / count,
+                jnp.sum(jnp.abs(obs) * valid, 1) / count,
+                jnp.sum(data.state_desc * valid, 1) / count,
+            ],
             axis=-1,
         )
 
@@ -86,8 +89,9 @@ def _physics_key(physics) -> str:
     return json.dumps(physics, sort_keys=True)
 
 
-def play_conditions(common: dict, robot: str, params, n_policies: int, key, episodes_override=None,
-                    signatures: bool = False):
+def play_conditions(
+    common: dict, robot: str, params, n_policies: int, key, episodes_override=None, signatures: bool = False
+):
     """Fitness (conditions, n_policies, max episodes) of a stacked pytree of policies under every condition, and
     with `signatures` the per-episode signatures (conditions, n_policies, max episodes, d) as float16.
 
@@ -228,8 +232,17 @@ def run_bank_robust(robust_dir: Path, out_root: Path = OUT, n_episodes: int = 32
         fitness=fitness[:, :, 0],  # (conditions, episodes)
     )
     (out_dir / "bank.json").write_text(
-        json.dumps({"robust_dir": str(robust_dir), "robot": robot, "seed": info["seed"], "n_episodes": n_episodes,
-                    "code_commit": git_commit(), "time_s": time.time() - t0}, indent=2)
+        json.dumps(
+            {
+                "robust_dir": str(robust_dir),
+                "robot": robot,
+                "seed": info["seed"],
+                "n_episodes": n_episodes,
+                "code_commit": git_commit(),
+                "time_s": time.time() - t0,
+            },
+            indent=2,
+        )
     )
     return out_dir
 

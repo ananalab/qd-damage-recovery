@@ -356,8 +356,16 @@ def method_runner(method: str, bank: dict, cfg: dict, robot: str):
     if method.startswith("itesig"):
         sg = cfg["itesig"]
         check = None if method.endswith("nocheck") else sg["p_check"]
-        model = LatentDamageModel(prior, bank["train"], bank["signatures"], cfg["itesd"]["nugget"],
-                                  cfg["itesd"]["noise"], sg["n_components"], sg["weight"], check)
+        model = LatentDamageModel(
+            prior,
+            bank["train"],
+            bank["signatures"],
+            cfg["itesd"]["nugget"],
+            cfg["itesd"]["noise"],
+            sg["n_components"],
+            sg["weight"],
+            check,
+        )
         return lambda trial, rng: model.search(trial, max_trials, cfg["itesd"]["kappa"])
     if method.startswith("itesd"):
         sd = dict(cfg["itesd"])
@@ -404,8 +412,9 @@ def adapt_bank(bank_dir: Path, methods, n_repeats: int, cfg: dict, groups=TEST_G
         for rep in range(n_repeats):
             sig = bank["signatures"]
             sig_cond = None if sig is None or c not in sig["by_condition"] else sig["test"][sig["by_condition"][c]]
-            trials = Trials(bank["u"][c], np.random.default_rng(_seed(bank["name"], name, rep)), cfg["max_trials"],
-                            sig_cond)
+            trials = Trials(
+                bank["u"][c], np.random.default_rng(_seed(bank["name"], name, rep)), cfg["max_trials"], sig_cond
+            )
             for method, run in runners.items():
                 trials.reset()
                 tried, y, stop = run(trials, np.random.default_rng(_seed(bank["name"], name, rep, method)))
@@ -414,15 +423,42 @@ def adapt_bank(bank_dir: Path, methods, n_repeats: int, cfg: dict, groups=TEST_G
                 for t in range(cfg["max_trials"]):
                     k = min(t, len(rec) - 1)  # one-trial methods keep their gait
                     rows.append(
-                        (bank["name"], robot, bank["info"]["algo"], bank["info"]["seed"], name, group, method, rep,
-                         t + 1, float(trials.truth[rec[k]]), float(best[k]), stop or 0,
-                         len(set(tried[: k + 1])), float(trials.truth.max()))
+                        (
+                            bank["name"],
+                            robot,
+                            bank["info"]["algo"],
+                            bank["info"]["seed"],
+                            name,
+                            group,
+                            method,
+                            rep,
+                            t + 1,
+                            float(trials.truth[rec[k]]),
+                            float(best[k]),
+                            stop or 0,
+                            len(set(tried[: k + 1])),
+                            float(trials.truth.max()),
+                        )
                     )
     return rows
 
 
-COLUMNS = ("run", "robot", "algo", "seed", "condition", "group", "method", "rep", "trial", "u_true", "u_observed",
-           "stop_trial", "distinct_cells", "u_oracle")
+COLUMNS = (
+    "run",
+    "robot",
+    "algo",
+    "seed",
+    "condition",
+    "group",
+    "method",
+    "rep",
+    "trial",
+    "u_true",
+    "u_observed",
+    "stop_trial",
+    "distinct_cells",
+    "u_oracle",
+)
 
 
 def main():

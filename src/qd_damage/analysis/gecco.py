@@ -76,7 +76,9 @@ def units(df: pd.DataFrame, trials=TRIALS) -> pd.DataFrame:
     keys = ["run", "robot", "algo", "seed", "condition", "group", "family", "method", "trial"]
     sel = df[df.trial.isin(trials)]
     return sel.groupby(keys, as_index=False).agg(
-        u=("u_true", "mean"), oracle=("u_oracle", "mean"), distinct=("distinct_cells", "mean"),
+        u=("u_true", "mean"),
+        oracle=("u_oracle", "mean"),
+        distinct=("distinct_cells", "mean"),
         stop=("stop_trial", "median"),
     )
 
@@ -91,9 +93,7 @@ def bootstrap_iqm(values: pd.DataFrame, n_boot: int = 2000, seed: int = 0) -> tu
     strata = values.groupby("robot").run.unique()
     stats = []
     for _ in range(n_boot):
-        sample = np.concatenate(
-            [by_run[r] for runs in strata for r in rng.choice(runs, size=len(runs), replace=True)]
-        )
+        sample = np.concatenate([by_run[r] for runs in strata for r in rng.choice(runs, size=len(runs), replace=True)])
         stats.append(iqm(sample))
     return iqm(values.u), float(np.percentile(stats, 2.5)), float(np.percentile(stats, 97.5))
 
@@ -102,8 +102,16 @@ def aggregate(u: pd.DataFrame, by=("family", "method", "trial"), n_boot: int = 2
     rows = []
     for key, g in u.groupby(list(by)):
         est, lo, hi = bootstrap_iqm(g, n_boot)
-        rows.append({**dict(zip(by, key, strict=True)), "iqm": est, "ci_low": lo, "ci_high": hi,
-                     "mean": g.u.mean(), "n_units": len(g)})
+        rows.append(
+            {
+                **dict(zip(by, key, strict=True)),
+                "iqm": est,
+                "ci_low": lo,
+                "ci_high": hi,
+                "mean": g.u.mean(),
+                "n_units": len(g),
+            }
+        )
     return pd.DataFrame(rows)
 
 
@@ -131,10 +139,19 @@ def paired(u: pd.DataFrame, a: str, b: str, trial: int, subset: pd.Series | None
     est, lo, hi, p_mixed = _mixed_mean(d) if d.run.nunique() > 2 else (d.d.mean(), np.nan, np.nan, np.nan)
     nonzero = d.d[d.d != 0]
     return {
-        "a": a, "b": b, "trial": trial, "n": len(d), "mean_diff": d.d.mean(), "median_diff": d.d.median(),
-        "a_better": int((d.d > 0).sum()), "a_worse": int((d.d < 0).sum()),
+        "a": a,
+        "b": b,
+        "trial": trial,
+        "n": len(d),
+        "mean_diff": d.d.mean(),
+        "median_diff": d.d.median(),
+        "a_better": int((d.d > 0).sum()),
+        "a_worse": int((d.d < 0).sum()),
         "p_wilcoxon": float(wilcoxon(nonzero).pvalue) if len(nonzero) > 0 else 1.0,
-        "mixed_est": est, "mixed_low": lo, "mixed_high": hi, "p_mixed": p_mixed,
+        "mixed_est": est,
+        "mixed_low": lo,
+        "mixed_high": hi,
+        "p_mixed": p_mixed,
     }
 
 
@@ -196,12 +213,18 @@ def bank_features(bank_root: Path, runs) -> tuple:
             proj = vt.T @ (vt @ resp)
             order = np.argsort(-prior)
             rank = int(np.flatnonzero(order == np.argmax(truth))[0])
-            rows.append({
-                "run": run, "condition": name, "group": group, "family": family(group),
-                "rho": float(spearmanr(prior, truth).statistic), "best_rank": rank,
-                "r2_sd": float(1 - ((resp - proj) ** 2).sum() / (resp**2).sum()),
-                "oracle_gain": float(truth.max() - truth[order[0]]),
-            })
+            rows.append(
+                {
+                    "run": run,
+                    "condition": name,
+                    "group": group,
+                    "family": family(group),
+                    "rho": float(spearmanr(prior, truth).statistic),
+                    "best_rank": rank,
+                    "r2_sd": float(1 - ((resp - proj) ** 2).sum() / (resp**2).sum()),
+                    "oracle_gain": float(truth.max() - truth[order[0]]),
+                }
+            )
     return pd.DataFrame(rows), spectra
 
 
@@ -210,8 +233,18 @@ def bank_features(bank_root: Path, runs) -> tuple:
 
 def macro_name(*parts) -> str:
     """LaTeX macro name from parts (letters only)."""
-    words = {"0": "Zero", "1": "One", "2": "Two", "3": "Three", "4": "Four", "5": "Five", "6": "Six",
-             "7": "Seven", "8": "Eight", "9": "Nine"}
+    words = {
+        "0": "Zero",
+        "1": "One",
+        "2": "Two",
+        "3": "Three",
+        "4": "Four",
+        "5": "Five",
+        "6": "Six",
+        "7": "Seven",
+        "8": "Eight",
+        "9": "Nine",
+    }
     out = ""
     for p in parts:
         for chunk in str(p).replace("-", "_").split("_"):

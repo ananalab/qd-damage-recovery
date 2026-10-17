@@ -47,6 +47,7 @@ def fit_gp(banks: list, descriptor: str, n_cells: int = 300, seed: int = 0) -> d
         ll = sum(gp.log_marginal_likelihood(x, r) for x, r in data) / len(data)
         if best is None or ll > best[0]:
             best = (ll, {"lengthscale": ls, "variance": var, "noise": noise})
+
     # Independent cells (no correlation, one global variance like the GP) as a reference: what the kernel adds.
     def iid(v):
         return np.mean([-0.5 * (r @ r / v + len(r) * np.log(2 * np.pi * v)) for _, r in data])

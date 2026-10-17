@@ -27,8 +27,19 @@ env = ku.install(CODE)
 jobs = [
     (
         f"{robot}_{algo}_seed{seed}",
-        [ku.PYTHON, "-m", "qd_damage.repertoires", "--algo", algo, "--seed", str(seed), "--robot", robot,
-         "--out", "/kaggle/working/outputs"],
+        [
+            ku.PYTHON,
+            "-m",
+            "qd_damage.repertoires",
+            "--algo",
+            algo,
+            "--seed",
+            str(seed),
+            "--robot",
+            robot,
+            "--out",
+            "/kaggle/working/outputs",
+        ],
     )
     for algo in ("dcrlme", "pgame", "me")  # longest first
     for robot, seeds in ROBOTS_SEEDS.items()

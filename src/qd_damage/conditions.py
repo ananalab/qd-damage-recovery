@@ -72,8 +72,14 @@ def build_conditions(robot: str, action_size: int, obs_size: int) -> list:
         for j, f in factors.items():
             c["scale"][j] = f
         id_conds.append(c)
-    train = train_damages(cfg["train"]["n"], cfg["train"]["p_damaged"], cfg["train"]["levels"], action_size, rng,
-                          exclude=[c["scale"] for c in id_conds])
+    train = train_damages(
+        cfg["train"]["n"],
+        cfg["train"]["p_damaged"],
+        cfg["train"]["levels"],
+        action_size,
+        rng,
+        exclude=[c["scale"] for c in id_conds],
+    )
     for i, scale in enumerate(train):
         c = _condition(f"train_{i:03d}", "train", robot_cfg, action_size, obs_size, ep["train"])
         c["scale"] = scale
@@ -99,10 +105,28 @@ def build_conditions(robot: str, action_size: int, obs_size: int) -> list:
             c["obs_mask"][velocity + j] = 0.0
         conds.append(c)
     for limb, foot in zip(limbs, robot_cfg["feet"], strict=True):
-        conds.append(_condition(f"{limb}_slippery", "ood_slippery", robot_cfg, action_size, obs_size, ep["test"],
-                                {"body_friction": {foot: ood["slippery_friction"]}}))
-        conds.append(_condition(f"{limb}_heavy", "ood_heavy", robot_cfg, action_size, obs_size, ep["test"],
-                                {"body_mass_scale": {foot: ood["heavy_foot_scale"]}}))
+        conds.append(
+            _condition(
+                f"{limb}_slippery",
+                "ood_slippery",
+                robot_cfg,
+                action_size,
+                obs_size,
+                ep["test"],
+                {"body_friction": {foot: ood["slippery_friction"]}},
+            )
+        )
+        conds.append(
+            _condition(
+                f"{limb}_heavy",
+                "ood_heavy",
+                robot_cfg,
+                action_size,
+                obs_size,
+                ep["test"],
+                {"body_mass_scale": {foot: ood["heavy_foot_scale"]}},
+            )
+        )
 
     for gap_name, physics in cfg["gap"].items():
         conds.append(_condition(f"{gap_name}_intact", "gap", robot_cfg, action_size, obs_size, ep["test"], physics))
