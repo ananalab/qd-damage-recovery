@@ -1,0 +1,34 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[robust walker2d s1] 208 episodes: intact 988.7, damaged mean 710.7 (170 s)
+[robust walker2d s1] 400 episodes: intact 809.1, damaged mean 760.4 (305 s)
+[robust walker2d s1] 608 episodes: intact 904.3, damaged mean 797.2 (451 s)
+[robust walker2d s1] 800 episodes: intact 1304.1, damaged mean 879.5 (586 s)
+[robust walker2d s1] 1008 episodes: intact 1408.2, damaged mean 984.4 (732 s)
+[robust walker2d s1] 1200 episodes: intact 1135.0, damaged mean 967.3 (868 s)
+[robust walker2d s1] 1408 episodes: intact 1322.4, damaged mean 987.6 (1015 s)
+[robust walker2d s1] 1600 episodes: intact 1329.4, damaged mean 1055.2 (1151 s)
+[robust walker2d s1] 1808 episodes: intact 1362.6, damaged mean 1204.8 (1298 s)
+[robust walker2d s1] 2000 episodes: intact 1272.1, damaged mean 1273.6 (1433 s)
+[robust walker2d s1] 2208 episodes: intact 1230.9, damaged mean 1125.3 (1580 s)
+[robust walker2d s1] 2400 episodes: intact 1400.6, damaged mean 1388.9 (1716 s)
+[robust walker2d s1] 2512 episodes: intact 1409.1, damaged mean 1405.2 (1797 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/rl_robust/walker2d_seed1
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (51 s)
+[bank] physics {"body_friction": {"foot": 0.05}}: done (59 s)
+[bank] physics {"body_mass_scale": {"foot": 4.0}}: done (66 s)
+[bank] physics {"body_friction": {"foot_left": 0.05}}: done (73 s)
+[bank] physics {"body_mass_scale": {"foot_left": 4.0}}: done (80 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (92 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (106 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/bank/robust_walker2d_walker2d_seed1

@@ -1,0 +1,13 @@
+{
+  "run_dir": "/kaggle/working/outputs/repertoires/walker2d_dcrlme_seed0_demo",
+  "robot": "walker2d",
+  "algo": "dcrlme",
+  "seed": 0,
+  "profile": "demo",
+  "code_commit": "5508ecb-dirty",
+  "devices": [
+    "cuda:0"
+  ],
+  "f0": 917.43505859375,
+  "time_s": 567.6660003662109
+}

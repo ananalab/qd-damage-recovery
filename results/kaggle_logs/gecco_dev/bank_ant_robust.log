@@ -1,0 +1,32 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (38 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (47 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (55 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (63 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (71 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (78 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (86 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (94 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (101 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (113 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (125 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/bank/robust_ant_seed0
+[bank] physics null: done (35 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (43 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (50 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (58 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (66 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (73 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (81 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (88 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (97 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (108 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (119 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/bank/robust_ant_seed1

@@ -1,0 +1,129 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[walker2d_dcrlme_seed0_demo] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 18267.0234375, 'coverage': 5.37109375, 'max_fitness': 1177.33740234375, 'time_s': 14.359310388565063}
+[walker2d_dcrlme_seed0_demo] {'iteration': 10, 'evaluations': 2816, 'qd_score': 315645.6875, 'coverage': 48.33984375, 'max_fitness': 2519.4189453125, 'time_s': 45.79326844215393}
+[walker2d_dcrlme_seed0_demo] {'iteration': 20, 'evaluations': 5376, 'qd_score': 582065.875, 'coverage': 57.91015625, 'max_fitness': 2595.5810546875, 'time_s': 24.390448808670044}
+[walker2d_dcrlme_seed0_demo] {'iteration': 30, 'evaluations': 7936, 'qd_score': 813859.75, 'coverage': 63.28125, 'max_fitness': 2618.20361328125, 'time_s': 23.762548685073853}
+[walker2d_dcrlme_seed0_demo] {'iteration': 40, 'evaluations': 10496, 'qd_score': 1021210.125, 'coverage': 66.40625, 'max_fitness': 2713.6826171875, 'time_s': 23.923280477523804}
+[walker2d_dcrlme_seed0_demo] {'iteration': 50, 'evaluations': 13056, 'qd_score': 1180673.5, 'coverage': 67.87109375, 'max_fitness': 2880.29931640625, 'time_s': 24.200682640075684}
+[walker2d_dcrlme_seed0_demo] {'iteration': 60, 'evaluations': 15616, 'qd_score': 1342223.875, 'coverage': 69.3359375, 'max_fitness': 3012.419189453125, 'time_s': 24.161149978637695}
+[walker2d_dcrlme_seed0_demo] {'iteration': 70, 'evaluations': 18176, 'qd_score': 1475508.75, 'coverage': 70.21484375, 'max_fitness': 3012.419189453125, 'time_s': 24.09445285797119}
+[walker2d_dcrlme_seed0_demo] {'iteration': 80, 'evaluations': 20736, 'qd_score': 1617333.25, 'coverage': 71.484375, 'max_fitness': 3097.981689453125, 'time_s': 23.964561700820923}
+[walker2d_dcrlme_seed0_demo] {'iteration': 90, 'evaluations': 23296, 'qd_score': 1728737.75, 'coverage': 73.33984375, 'max_fitness': 3097.981689453125, 'time_s': 24.039679527282715}
+[walker2d_dcrlme_seed0_demo] {'iteration': 100, 'evaluations': 25856, 'qd_score': 1828902.75, 'coverage': 74.31640625, 'max_fitness': 3106.15625, 'time_s': 24.121180534362793}
+[walker2d_dcrlme_seed0_demo] {'iteration': 110, 'evaluations': 28416, 'qd_score': 1904658.75, 'coverage': 74.609375, 'max_fitness': 3213.638671875, 'time_s': 24.11577820777893}
+[walker2d_dcrlme_seed0_demo] {'iteration': 120, 'evaluations': 30976, 'qd_score': 1974201.625, 'coverage': 75.29296875, 'max_fitness': 3213.638671875, 'time_s': 24.02915334701538}
+[walker2d_dcrlme_seed0_demo] {'iteration': 130, 'evaluations': 33536, 'qd_score': 2024269.75, 'coverage': 75.68359375, 'max_fitness': 3272.1953125, 'time_s': 24.005772590637207}
+[walker2d_dcrlme_seed0_demo] {'iteration': 140, 'evaluations': 36096, 'qd_score': 2066417.75, 'coverage': 76.171875, 'max_fitness': 3367.833740234375, 'time_s': 24.032634735107422}
+[walker2d_dcrlme_seed0_demo] {'iteration': 150, 'evaluations': 38656, 'qd_score': 2104754.0, 'coverage': 76.3671875, 'max_fitness': 3500.16064453125, 'time_s': 24.073160886764526}
+[walker2d_dcrlme_seed0_demo] {'iteration': 160, 'evaluations': 41216, 'qd_score': 2146394.0, 'coverage': 76.7578125, 'max_fitness': 3500.16064453125, 'time_s': 24.10288977622986}
+[walker2d_dcrlme_seed0_demo] {'iteration': 170, 'evaluations': 43776, 'qd_score': 2179546.75, 'coverage': 77.05078125, 'max_fitness': 3500.16064453125, 'time_s': 24.11754012107849}
+[walker2d_dcrlme_seed0_demo] {'iteration': 180, 'evaluations': 46336, 'qd_score': 2207992.25, 'coverage': 77.1484375, 'max_fitness': 3500.16064453125, 'time_s': 24.04705286026001}
+[walker2d_dcrlme_seed0_demo] {'iteration': 190, 'evaluations': 48896, 'qd_score': 2235273.0, 'coverage': 77.1484375, 'max_fitness': 3556.58740234375, 'time_s': 24.001888513565063}
+[walker2d_dcrlme_seed0_demo] {'iteration': 200, 'evaluations': 51456, 'qd_score': 2266197.0, 'coverage': 77.44140625, 'max_fitness': 3599.71240234375, 'time_s': 24.054279565811157}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[walker2d_dcrlme_seed0_demo] done in 517 s -> /kaggle/working/outputs/repertoires/walker2d_dcrlme_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (296 s)
+[bank] physics {"body_friction": {"foot": 0.05}}: done (311 s)
+[bank] physics {"body_mass_scale": {"foot": 4.0}}: done (326 s)
+[bank] physics {"body_friction": {"foot_left": 0.05}}: done (340 s)
+[bank] physics {"body_mass_scale": {"foot_left": 4.0}}: done (355 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (452 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (549 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank walker2d_dcrlme_seed0_demo] done in 568 s
+/kaggle/working/outputs/bank/walker2d_dcrlme_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[walker2d_pgame_seed0_demo] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 18266.994140625, 'coverage': 5.37109375, 'max_fitness': 1177.338623046875, 'time_s': 10.449930191040039}
+[walker2d_pgame_seed0_demo] {'iteration': 10, 'evaluations': 2816, 'qd_score': 178881.453125, 'coverage': 44.62890625, 'max_fitness': 1607.1441650390625, 'time_s': 34.38518762588501}
+[walker2d_pgame_seed0_demo] {'iteration': 20, 'evaluations': 5376, 'qd_score': 286872.125, 'coverage': 53.61328125, 'max_fitness': 2331.423095703125, 'time_s': 15.456060647964478}
+[walker2d_pgame_seed0_demo] {'iteration': 30, 'evaluations': 7936, 'qd_score': 367235.375, 'coverage': 57.91015625, 'max_fitness': 2387.8251953125, 'time_s': 15.465933084487915}
+[walker2d_pgame_seed0_demo] {'iteration': 40, 'evaluations': 10496, 'qd_score': 452298.375, 'coverage': 61.03515625, 'max_fitness': 2405.4619140625, 'time_s': 16.184877634048462}
+[walker2d_pgame_seed0_demo] {'iteration': 50, 'evaluations': 13056, 'qd_score': 554392.75, 'coverage': 64.2578125, 'max_fitness': 2455.947021484375, 'time_s': 16.623375415802002}
+[walker2d_pgame_seed0_demo] {'iteration': 60, 'evaluations': 15616, 'qd_score': 638383.625, 'coverage': 66.015625, 'max_fitness': 2455.947021484375, 'time_s': 16.43463897705078}
+[walker2d_pgame_seed0_demo] {'iteration': 70, 'evaluations': 18176, 'qd_score': 708567.0625, 'coverage': 66.9921875, 'max_fitness': 2455.947021484375, 'time_s': 16.088326692581177}
+[walker2d_pgame_seed0_demo] {'iteration': 80, 'evaluations': 20736, 'qd_score': 765469.375, 'coverage': 67.87109375, 'max_fitness': 2482.04248046875, 'time_s': 15.954955101013184}
+[walker2d_pgame_seed0_demo] {'iteration': 90, 'evaluations': 23296, 'qd_score': 819952.0, 'coverage': 69.3359375, 'max_fitness': 2604.226806640625, 'time_s': 16.03652548789978}
+[walker2d_pgame_seed0_demo] {'iteration': 100, 'evaluations': 25856, 'qd_score': 875093.125, 'coverage': 69.82421875, 'max_fitness': 2604.226806640625, 'time_s': 16.14287805557251}
+[walker2d_pgame_seed0_demo] {'iteration': 110, 'evaluations': 28416, 'qd_score': 925450.25, 'coverage': 70.21484375, 'max_fitness': 2604.226806640625, 'time_s': 16.18842625617981}
+[walker2d_pgame_seed0_demo] {'iteration': 120, 'evaluations': 30976, 'qd_score': 963961.0, 'coverage': 70.5078125, 'max_fitness': 2604.226806640625, 'time_s': 16.24268651008606}
+[walker2d_pgame_seed0_demo] {'iteration': 130, 'evaluations': 33536, 'qd_score': 998892.3125, 'coverage': 71.09375, 'max_fitness': 2604.226806640625, 'time_s': 16.22243905067444}
+[walker2d_pgame_seed0_demo] {'iteration': 140, 'evaluations': 36096, 'qd_score': 1050769.875, 'coverage': 71.19140625, 'max_fitness': 2604.226806640625, 'time_s': 16.174779176712036}
+[walker2d_pgame_seed0_demo] {'iteration': 150, 'evaluations': 38656, 'qd_score': 1103654.75, 'coverage': 71.58203125, 'max_fitness': 2604.226806640625, 'time_s': 16.078896522521973}
+[walker2d_pgame_seed0_demo] {'iteration': 160, 'evaluations': 41216, 'qd_score': 1149936.125, 'coverage': 71.77734375, 'max_fitness': 2622.171875, 'time_s': 16.091389656066895}
+[walker2d_pgame_seed0_demo] {'iteration': 170, 'evaluations': 43776, 'qd_score': 1192202.375, 'coverage': 71.875, 'max_fitness': 2622.171875, 'time_s': 16.118910551071167}
+[walker2d_pgame_seed0_demo] {'iteration': 180, 'evaluations': 46336, 'qd_score': 1237629.5, 'coverage': 71.97265625, 'max_fitness': 2702.26171875, 'time_s': 16.12906241416931}
+[walker2d_pgame_seed0_demo] {'iteration': 190, 'evaluations': 48896, 'qd_score': 1268708.0, 'coverage': 72.0703125, 'max_fitness': 2702.26171875, 'time_s': 16.130109786987305}
+[walker2d_pgame_seed0_demo] {'iteration': 200, 'evaluations': 51456, 'qd_score': 1306838.0, 'coverage': 72.265625, 'max_fitness': 2702.26171875, 'time_s': 16.153442859649658}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[walker2d_pgame_seed0_demo] done in 351 s -> /kaggle/working/outputs/repertoires/walker2d_pgame_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (296 s)
+[bank] physics {"body_friction": {"foot": 0.05}}: done (311 s)
+[bank] physics {"body_mass_scale": {"foot": 4.0}}: done (326 s)
+[bank] physics {"body_friction": {"foot_left": 0.05}}: done (340 s)
+[bank] physics {"body_mass_scale": {"foot_left": 4.0}}: done (354 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (452 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (549 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank walker2d_pgame_seed0_demo] done in 568 s
+/kaggle/working/outputs/bank/walker2d_pgame_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[walker2d_me_seed0_demo] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 18267.01953125, 'coverage': 5.37109375, 'max_fitness': 1177.336669921875, 'time_s': 8.747053861618042}
+[walker2d_me_seed0_demo] {'iteration': 10, 'evaluations': 2816, 'qd_score': 195480.78125, 'coverage': 34.375, 'max_fitness': 2411.58056640625, 'time_s': 14.903605461120605}
+[walker2d_me_seed0_demo] {'iteration': 20, 'evaluations': 5376, 'qd_score': 282935.4375, 'coverage': 43.45703125, 'max_fitness': 2411.58056640625, 'time_s': 3.9087328910827637}
+[walker2d_me_seed0_demo] {'iteration': 30, 'evaluations': 7936, 'qd_score': 339995.0, 'coverage': 47.65625, 'max_fitness': 2595.47216796875, 'time_s': 3.9073891639709473}
+[walker2d_me_seed0_demo] {'iteration': 40, 'evaluations': 10496, 'qd_score': 380773.03125, 'coverage': 51.07421875, 'max_fitness': 2595.47216796875, 'time_s': 3.8930461406707764}
+[walker2d_me_seed0_demo] {'iteration': 50, 'evaluations': 13056, 'qd_score': 428931.25, 'coverage': 55.078125, 'max_fitness': 2595.47216796875, 'time_s': 3.898850917816162}
+[walker2d_me_seed0_demo] {'iteration': 60, 'evaluations': 15616, 'qd_score': 483542.9375, 'coverage': 58.59375, 'max_fitness': 2595.47216796875, 'time_s': 3.898357391357422}
+[walker2d_me_seed0_demo] {'iteration': 70, 'evaluations': 18176, 'qd_score': 532651.5625, 'coverage': 60.83984375, 'max_fitness': 2595.47216796875, 'time_s': 3.898231029510498}
+[walker2d_me_seed0_demo] {'iteration': 80, 'evaluations': 20736, 'qd_score': 570003.25, 'coverage': 61.71875, 'max_fitness': 2595.47216796875, 'time_s': 3.913937568664551}
+[walker2d_me_seed0_demo] {'iteration': 90, 'evaluations': 23296, 'qd_score': 595866.875, 'coverage': 62.3046875, 'max_fitness': 2595.47216796875, 'time_s': 3.9127614498138428}
+[walker2d_me_seed0_demo] {'iteration': 100, 'evaluations': 25856, 'qd_score': 621980.75, 'coverage': 63.37890625, 'max_fitness': 2595.47216796875, 'time_s': 3.909451484680176}
+[walker2d_me_seed0_demo] {'iteration': 110, 'evaluations': 28416, 'qd_score': 640195.75, 'coverage': 63.8671875, 'max_fitness': 2595.47216796875, 'time_s': 3.908771514892578}
+[walker2d_me_seed0_demo] {'iteration': 120, 'evaluations': 30976, 'qd_score': 664130.875, 'coverage': 64.2578125, 'max_fitness': 2595.47216796875, 'time_s': 3.893648862838745}
+[walker2d_me_seed0_demo] {'iteration': 130, 'evaluations': 33536, 'qd_score': 683725.9375, 'coverage': 64.74609375, 'max_fitness': 2595.47216796875, 'time_s': 3.893237829208374}
+[walker2d_me_seed0_demo] {'iteration': 140, 'evaluations': 36096, 'qd_score': 700880.6875, 'coverage': 64.94140625, 'max_fitness': 2595.47216796875, 'time_s': 3.8938403129577637}
+[walker2d_me_seed0_demo] {'iteration': 150, 'evaluations': 38656, 'qd_score': 719711.875, 'coverage': 65.52734375, 'max_fitness': 2595.47216796875, 'time_s': 3.893665075302124}
+[walker2d_me_seed0_demo] {'iteration': 160, 'evaluations': 41216, 'qd_score': 734225.125, 'coverage': 65.8203125, 'max_fitness': 2595.47216796875, 'time_s': 3.895854949951172}
+[walker2d_me_seed0_demo] {'iteration': 170, 'evaluations': 43776, 'qd_score': 749434.75, 'coverage': 66.015625, 'max_fitness': 2595.47216796875, 'time_s': 3.8940794467926025}
+[walker2d_me_seed0_demo] {'iteration': 180, 'evaluations': 46336, 'qd_score': 761921.5625, 'coverage': 66.30859375, 'max_fitness': 2595.47216796875, 'time_s': 3.910154104232788}
+[walker2d_me_seed0_demo] {'iteration': 190, 'evaluations': 48896, 'qd_score': 778249.625, 'coverage': 66.6015625, 'max_fitness': 2595.47216796875, 'time_s': 3.9096524715423584}
+[walker2d_me_seed0_demo] {'iteration': 200, 'evaluations': 51456, 'qd_score': 792066.0625, 'coverage': 66.6015625, 'max_fitness': 2595.47216796875, 'time_s': 3.894338369369507}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[walker2d_me_seed0_demo] done in 98 s -> /kaggle/working/outputs/repertoires/walker2d_me_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (296 s)
+[bank] physics {"body_friction": {"foot": 0.05}}: done (311 s)
+[bank] physics {"body_mass_scale": {"foot": 4.0}}: done (325 s)
+[bank] physics {"body_friction": {"foot_left": 0.05}}: done (340 s)
+[bank] physics {"body_mass_scale": {"foot_left": 4.0}}: done (354 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (451 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (549 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank walker2d_me_seed0_demo] done in 568 s
+/kaggle/working/outputs/bank/walker2d_me_seed0_demo

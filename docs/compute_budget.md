@@ -38,3 +38,12 @@ DCRL-ME is the slowest algorithm, so it sets the budget.
 About 4 hours for the 9 runs with two in parallel (`results/repertoires/*/run.json`, logs in
 `results/kaggle_logs/full/`). The evaluation campaign (oracle, adaptation and 16 TD3 runs) took about 2.5 hours
 more, and the continuous-ITE experiment about 97 minutes per seed.
+
+## Second campaign (limit: 30 hours of computation in total, Kaggle and laptop)
+
+Time counted = wall-clock time of each Kaggle session (2 x T4) plus laptop computation.
+
+| Session | Content | Duration |
+|---|---|---|
+| Kaggle gecco-dev | banks of the 12 first-campaign Ant repertoires, Walker2d / HalfCheetah development repertoires and banks, 4 damage-robust TD3 policies (32-36 min each) | 2.84 h |
+| Laptop | pilots on the first-campaign oracle data, CPU signature banks of two development repertoires (37 min, in parallel) | 0.8 h |

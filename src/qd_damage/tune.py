@@ -12,19 +12,24 @@ of settings and reports the mean u after 3, 5 and 10 trials. The chosen values a
 configs/adaptation.yaml (section offline) and frozen.
 """
 
-import argparse
-import itertools
-from collections import defaultdict
-from pathlib import Path
+import os
 
-import numpy as np
+for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
+    os.environ.setdefault(_var, "1")  # many small matrices: one thread per process (see qd_damage.offline)
 
-from qd_damage.ite import GaussianProcess
-from qd_damage.offline import adapt_bank, load_bank, offline_config
+import argparse  # noqa: E402
+import itertools  # noqa: E402
+from collections import defaultdict  # noqa: E402
+from pathlib import Path  # noqa: E402
 
-LENGTHSCALES = (0.05, 0.1, 0.2, 0.4, 0.8)
-VARIANCES = (0.01, 0.03, 0.1, 0.3)
-NOISES = (0.001, 0.003, 0.01, 0.03, 0.1)
+import numpy as np  # noqa: E402
+
+from qd_damage.ite import GaussianProcess  # noqa: E402
+from qd_damage.offline import adapt_bank, load_bank, offline_config  # noqa: E402
+
+LENGTHSCALES = (0.05, 0.1, 0.2, 0.4, 0.8, 1.6)
+VARIANCES = (0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0)
+NOISES = (0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0)
 
 
 def fit_gp(banks: list, descriptor: str, n_cells: int = 300, seed: int = 0) -> dict:
@@ -42,8 +47,11 @@ def fit_gp(banks: list, descriptor: str, n_cells: int = 300, seed: int = 0) -> d
         ll = sum(gp.log_marginal_likelihood(x, r) for x, r in data) / len(data)
         if best is None or ll > best[0]:
             best = (ll, {"lengthscale": ls, "variance": var, "noise": noise})
-    # Independent cells (no correlation) as a reference: how much the kernel explains.
-    indep = np.mean([-0.5 * (r @ r / r.var() + len(r) * np.log(2 * np.pi * r.var())) for _, r in data])
+    # Independent cells (no correlation, one global variance like the GP) as a reference: what the kernel adds.
+    def iid(v):
+        return np.mean([-0.5 * (r @ r / v + len(r) * np.log(2 * np.pi * v)) for _, r in data])
+
+    indep = max(iid(v) for v in np.geomspace(1e-3, 10, 41))
     return {**best[1], "loglik": round(best[0], 1), "loglik_independent": round(float(indep), 1)}
 
 

@@ -1,0 +1,8 @@
+{
+  "robust_dir": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-rl/outputs/rl_robust/seed1",
+  "robot": "ant",
+  "seed": 1,
+  "n_episodes": 32,
+  "code_commit": "5508ecb-dirty",
+  "time_s": 119.43329405784607
+}

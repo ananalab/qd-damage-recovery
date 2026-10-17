@@ -1,0 +1,42 @@
+% GECCO paper. Build from report/gecco/: latexmk -pdf main.tex
+% Every result number comes from generated/ (python -m qd_damage.analysis.gecco); none is typed by hand.
+% For the double-blind submission, use \documentclass[sigconf,review,anonymous]{acmart}.
+\documentclass[sigconf]{acmart}
+
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\settopmatter{printacmref=false}
+\setcopyright{none}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\acmConference[GECCO '27]{Genetic and Evolutionary Computation Conference}{July 2027}{}
+
+\input{generated/numbers}
+\graphicspath{{../../media/gecco/}}
+\newcommand{\itesd}{ITE-SD}
+
+\begin{document}
+
+\title{\input{generated/title}}
+
+\author{Ana\"is Azouaoui}
+\email{danaepira@gmail.com}
+
+\input{sections/abstract}
+
+\keywords{Quality-Diversity, damage recovery, Bayesian optimisation, Intelligent Trial and Error, MAP-Elites}
+
+\maketitle
+
+\input{sections/intro}
+\input{sections/related}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/discussion}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

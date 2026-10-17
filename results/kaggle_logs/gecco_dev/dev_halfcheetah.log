@@ -1,0 +1,129 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[halfcheetah_dcrlme_seed0_demo] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 358096.8125, 'coverage': 15.91796875, 'max_fitness': 2762.7333984375, 'time_s': 16.653372526168823}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 10, 'evaluations': 2816, 'qd_score': 1578107.5, 'coverage': 66.796875, 'max_fitness': 3187.333251953125, 'time_s': 47.37999200820923}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 20, 'evaluations': 5376, 'qd_score': 2069021.75, 'coverage': 84.08203125, 'max_fitness': 3187.333251953125, 'time_s': 24.209512948989868}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 30, 'evaluations': 7936, 'qd_score': 2320691.5, 'coverage': 91.40625, 'max_fitness': 3187.333251953125, 'time_s': 24.319331407546997}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 40, 'evaluations': 10496, 'qd_score': 2452865.0, 'coverage': 93.26171875, 'max_fitness': 3225.08837890625, 'time_s': 24.748886346817017}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 50, 'evaluations': 13056, 'qd_score': 2538329.0, 'coverage': 94.82421875, 'max_fitness': 3238.642578125, 'time_s': 24.741424798965454}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 60, 'evaluations': 15616, 'qd_score': 2583974.0, 'coverage': 95.3125, 'max_fitness': 3302.52001953125, 'time_s': 24.644853115081787}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 70, 'evaluations': 18176, 'qd_score': 2620431.25, 'coverage': 95.60546875, 'max_fitness': 3302.52001953125, 'time_s': 24.58735489845276}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 80, 'evaluations': 20736, 'qd_score': 2665212.25, 'coverage': 96.38671875, 'max_fitness': 3466.5302734375, 'time_s': 24.658756494522095}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 90, 'evaluations': 23296, 'qd_score': 2705654.75, 'coverage': 97.0703125, 'max_fitness': 3466.5302734375, 'time_s': 24.697208404541016}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 100, 'evaluations': 25856, 'qd_score': 2740640.5, 'coverage': 97.55859375, 'max_fitness': 3510.3662109375, 'time_s': 24.676870584487915}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 110, 'evaluations': 28416, 'qd_score': 2772515.0, 'coverage': 97.94921875, 'max_fitness': 3510.3662109375, 'time_s': 24.573792457580566}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 120, 'evaluations': 30976, 'qd_score': 2802995.0, 'coverage': 98.33984375, 'max_fitness': 3574.2802734375, 'time_s': 24.660557746887207}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 130, 'evaluations': 33536, 'qd_score': 2825196.25, 'coverage': 98.33984375, 'max_fitness': 3633.504150390625, 'time_s': 24.60543942451477}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 140, 'evaluations': 36096, 'qd_score': 2842873.75, 'coverage': 98.4375, 'max_fitness': 3633.504150390625, 'time_s': 24.667482614517212}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 150, 'evaluations': 38656, 'qd_score': 2859881.25, 'coverage': 98.53515625, 'max_fitness': 3633.504150390625, 'time_s': 24.630800485610962}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 160, 'evaluations': 41216, 'qd_score': 2874912.5, 'coverage': 98.6328125, 'max_fitness': 3633.504150390625, 'time_s': 24.673566341400146}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 170, 'evaluations': 43776, 'qd_score': 2886828.75, 'coverage': 98.73046875, 'max_fitness': 3633.504150390625, 'time_s': 24.56943106651306}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 180, 'evaluations': 46336, 'qd_score': 2896669.5, 'coverage': 98.73046875, 'max_fitness': 3633.504150390625, 'time_s': 24.615313053131104}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 190, 'evaluations': 48896, 'qd_score': 2904808.25, 'coverage': 98.73046875, 'max_fitness': 3633.504150390625, 'time_s': 24.57373070716858}
+[halfcheetah_dcrlme_seed0_demo] {'iteration': 200, 'evaluations': 51456, 'qd_score': 2913915.5, 'coverage': 98.73046875, 'max_fitness': 3633.504150390625, 'time_s': 24.877189874649048}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[halfcheetah_dcrlme_seed0_demo] done in 532 s -> /kaggle/working/outputs/repertoires/halfcheetah_dcrlme_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (315 s)
+[bank] physics {"body_friction": {"bfoot": 0.05}}: done (334 s)
+[bank] physics {"body_mass_scale": {"bfoot": 4.0}}: done (352 s)
+[bank] physics {"body_friction": {"ffoot": 0.05}}: done (370 s)
+[bank] physics {"body_mass_scale": {"ffoot": 4.0}}: done (389 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (494 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (600 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank halfcheetah_dcrlme_seed0_demo] done in 625 s
+/kaggle/working/outputs/bank/halfcheetah_dcrlme_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[halfcheetah_pgame_seed0_demo] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 349362.21875, 'coverage': 15.625, 'max_fitness': 2885.015869140625, 'time_s': 14.018621444702148}
+[halfcheetah_pgame_seed0_demo] {'iteration': 10, 'evaluations': 2816, 'qd_score': 1359908.125, 'coverage': 55.95703125, 'max_fitness': 3137.23681640625, 'time_s': 37.47029519081116}
+[halfcheetah_pgame_seed0_demo] {'iteration': 20, 'evaluations': 5376, 'qd_score': 1811297.25, 'coverage': 72.8515625, 'max_fitness': 3137.23681640625, 'time_s': 15.53751277923584}
+[halfcheetah_pgame_seed0_demo] {'iteration': 30, 'evaluations': 7936, 'qd_score': 2090341.25, 'coverage': 82.03125, 'max_fitness': 3137.23681640625, 'time_s': 15.703581094741821}
+[halfcheetah_pgame_seed0_demo] {'iteration': 40, 'evaluations': 10496, 'qd_score': 2251836.5, 'coverage': 87.20703125, 'max_fitness': 3161.08349609375, 'time_s': 15.882002353668213}
+[halfcheetah_pgame_seed0_demo] {'iteration': 50, 'evaluations': 13056, 'qd_score': 2327293.0, 'coverage': 89.16015625, 'max_fitness': 3279.972412109375, 'time_s': 15.946630716323853}
+[halfcheetah_pgame_seed0_demo] {'iteration': 60, 'evaluations': 15616, 'qd_score': 2392779.75, 'coverage': 90.91796875, 'max_fitness': 3279.972412109375, 'time_s': 15.922735691070557}
+[halfcheetah_pgame_seed0_demo] {'iteration': 70, 'evaluations': 18176, 'qd_score': 2445164.0, 'coverage': 92.48046875, 'max_fitness': 3279.972412109375, 'time_s': 15.930185556411743}
+[halfcheetah_pgame_seed0_demo] {'iteration': 80, 'evaluations': 20736, 'qd_score': 2470694.5, 'coverage': 92.96875, 'max_fitness': 3279.972412109375, 'time_s': 15.93659520149231}
+[halfcheetah_pgame_seed0_demo] {'iteration': 90, 'evaluations': 23296, 'qd_score': 2484595.0, 'coverage': 93.06640625, 'max_fitness': 3279.972412109375, 'time_s': 15.977301120758057}
+[halfcheetah_pgame_seed0_demo] {'iteration': 100, 'evaluations': 25856, 'qd_score': 2497068.5, 'coverage': 93.1640625, 'max_fitness': 3279.972412109375, 'time_s': 16.005014896392822}
+[halfcheetah_pgame_seed0_demo] {'iteration': 110, 'evaluations': 28416, 'qd_score': 2511235.0, 'coverage': 93.45703125, 'max_fitness': 3279.972412109375, 'time_s': 16.000596523284912}
+[halfcheetah_pgame_seed0_demo] {'iteration': 120, 'evaluations': 30976, 'qd_score': 2526647.5, 'coverage': 93.84765625, 'max_fitness': 3279.972412109375, 'time_s': 16.055500507354736}
+[halfcheetah_pgame_seed0_demo] {'iteration': 130, 'evaluations': 33536, 'qd_score': 2538689.75, 'coverage': 94.04296875, 'max_fitness': 3279.972412109375, 'time_s': 16.06302046775818}
+[halfcheetah_pgame_seed0_demo] {'iteration': 140, 'evaluations': 36096, 'qd_score': 2553782.25, 'coverage': 94.43359375, 'max_fitness': 3279.972412109375, 'time_s': 16.16840958595276}
+[halfcheetah_pgame_seed0_demo] {'iteration': 150, 'evaluations': 38656, 'qd_score': 2561769.0, 'coverage': 94.53125, 'max_fitness': 3279.972412109375, 'time_s': 16.288564443588257}
+[halfcheetah_pgame_seed0_demo] {'iteration': 160, 'evaluations': 41216, 'qd_score': 2570276.25, 'coverage': 94.7265625, 'max_fitness': 3279.972412109375, 'time_s': 16.840843439102173}
+[halfcheetah_pgame_seed0_demo] {'iteration': 170, 'evaluations': 43776, 'qd_score': 2578860.5, 'coverage': 94.921875, 'max_fitness': 3279.972412109375, 'time_s': 17.315738677978516}
+[halfcheetah_pgame_seed0_demo] {'iteration': 180, 'evaluations': 46336, 'qd_score': 2587386.5, 'coverage': 95.1171875, 'max_fitness': 3279.972412109375, 'time_s': 16.653764724731445}
+[halfcheetah_pgame_seed0_demo] {'iteration': 190, 'evaluations': 48896, 'qd_score': 2595623.75, 'coverage': 95.3125, 'max_fitness': 3279.972412109375, 'time_s': 16.139608144760132}
+[halfcheetah_pgame_seed0_demo] {'iteration': 200, 'evaluations': 51456, 'qd_score': 2599443.75, 'coverage': 95.3125, 'max_fitness': 3372.609619140625, 'time_s': 15.971572875976562}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[halfcheetah_pgame_seed0_demo] done in 358 s -> /kaggle/working/outputs/repertoires/halfcheetah_pgame_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (316 s)
+[bank] physics {"body_friction": {"bfoot": 0.05}}: done (335 s)
+[bank] physics {"body_mass_scale": {"bfoot": 4.0}}: done (354 s)
+[bank] physics {"body_friction": {"ffoot": 0.05}}: done (372 s)
+[bank] physics {"body_mass_scale": {"ffoot": 4.0}}: done (391 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (497 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (602 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank halfcheetah_pgame_seed0_demo] done in 627 s
+/kaggle/working/outputs/bank/halfcheetah_pgame_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[halfcheetah_me_seed0_demo] init : {'iteration': 0, 'evaluations': 256, 'qd_score': 372604.3125, 'coverage': 16.6015625, 'max_fitness': 2871.22216796875, 'time_s': 12.245667934417725}
+[halfcheetah_me_seed0_demo] {'iteration': 10, 'evaluations': 2816, 'qd_score': 1711885.375, 'coverage': 72.0703125, 'max_fitness': 2968.761962890625, 'time_s': 18.357646465301514}
+[halfcheetah_me_seed0_demo] {'iteration': 20, 'evaluations': 5376, 'qd_score': 2062131.0, 'coverage': 84.47265625, 'max_fitness': 3025.475830078125, 'time_s': 4.419744253158569}
+[halfcheetah_me_seed0_demo] {'iteration': 30, 'evaluations': 7936, 'qd_score': 2192891.0, 'coverage': 88.28125, 'max_fitness': 3110.79638671875, 'time_s': 4.419087648391724}
+[halfcheetah_me_seed0_demo] {'iteration': 40, 'evaluations': 10496, 'qd_score': 2275475.0, 'coverage': 90.625, 'max_fitness': 3160.843017578125, 'time_s': 4.4208128452301025}
+[halfcheetah_me_seed0_demo] {'iteration': 50, 'evaluations': 13056, 'qd_score': 2325019.25, 'coverage': 91.50390625, 'max_fitness': 3160.843017578125, 'time_s': 4.41896653175354}
+[halfcheetah_me_seed0_demo] {'iteration': 60, 'evaluations': 15616, 'qd_score': 2365940.5, 'coverage': 92.08984375, 'max_fitness': 3188.03125, 'time_s': 4.417091131210327}
+[halfcheetah_me_seed0_demo] {'iteration': 70, 'evaluations': 18176, 'qd_score': 2419062.5, 'coverage': 93.26171875, 'max_fitness': 3246.48876953125, 'time_s': 4.418172597885132}
+[halfcheetah_me_seed0_demo] {'iteration': 80, 'evaluations': 20736, 'qd_score': 2466037.25, 'coverage': 94.23828125, 'max_fitness': 3246.48876953125, 'time_s': 4.423360586166382}
+[halfcheetah_me_seed0_demo] {'iteration': 90, 'evaluations': 23296, 'qd_score': 2504694.5, 'coverage': 94.921875, 'max_fitness': 3246.48876953125, 'time_s': 4.4240336418151855}
+[halfcheetah_me_seed0_demo] {'iteration': 100, 'evaluations': 25856, 'qd_score': 2530883.25, 'coverage': 95.21484375, 'max_fitness': 3246.48876953125, 'time_s': 4.421043872833252}
+[halfcheetah_me_seed0_demo] {'iteration': 110, 'evaluations': 28416, 'qd_score': 2554429.5, 'coverage': 95.5078125, 'max_fitness': 3246.48876953125, 'time_s': 4.420443773269653}
+[halfcheetah_me_seed0_demo] {'iteration': 120, 'evaluations': 30976, 'qd_score': 2565843.0, 'coverage': 95.5078125, 'max_fitness': 3246.48876953125, 'time_s': 4.4205451011657715}
+[halfcheetah_me_seed0_demo] {'iteration': 130, 'evaluations': 33536, 'qd_score': 2582053.0, 'coverage': 95.60546875, 'max_fitness': 3246.48876953125, 'time_s': 4.420680046081543}
+[halfcheetah_me_seed0_demo] {'iteration': 140, 'evaluations': 36096, 'qd_score': 2596142.5, 'coverage': 95.80078125, 'max_fitness': 3246.48876953125, 'time_s': 4.4185097217559814}
+[halfcheetah_me_seed0_demo] {'iteration': 150, 'evaluations': 38656, 'qd_score': 2611263.75, 'coverage': 95.8984375, 'max_fitness': 3246.48876953125, 'time_s': 4.418436288833618}
+[halfcheetah_me_seed0_demo] {'iteration': 160, 'evaluations': 41216, 'qd_score': 2620437.25, 'coverage': 95.8984375, 'max_fitness': 3246.48876953125, 'time_s': 4.419478178024292}
+[halfcheetah_me_seed0_demo] {'iteration': 170, 'evaluations': 43776, 'qd_score': 2635560.5, 'coverage': 96.19140625, 'max_fitness': 3259.118896484375, 'time_s': 4.419368267059326}
+[halfcheetah_me_seed0_demo] {'iteration': 180, 'evaluations': 46336, 'qd_score': 2645146.25, 'coverage': 96.2890625, 'max_fitness': 3259.118896484375, 'time_s': 4.419837951660156}
+[halfcheetah_me_seed0_demo] {'iteration': 190, 'evaluations': 48896, 'qd_score': 2656915.75, 'coverage': 96.484375, 'max_fitness': 3259.118896484375, 'time_s': 4.419213771820068}
+[halfcheetah_me_seed0_demo] {'iteration': 200, 'evaluations': 51456, 'qd_score': 2674956.0, 'coverage': 96.97265625, 'max_fitness': 3259.118896484375, 'time_s': 4.419598579406738}
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[halfcheetah_me_seed0_demo] done in 115 s -> /kaggle/working/outputs/repertoires/halfcheetah_me_seed0_demo
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (315 s)
+[bank] physics {"body_friction": {"bfoot": 0.05}}: done (334 s)
+[bank] physics {"body_mass_scale": {"bfoot": 4.0}}: done (353 s)
+[bank] physics {"body_friction": {"ffoot": 0.05}}: done (370 s)
+[bank] physics {"body_mass_scale": {"ffoot": 4.0}}: done (390 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (495 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (601 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank halfcheetah_me_seed0_demo] done in 626 s
+/kaggle/working/outputs/bank/halfcheetah_me_seed0_demo

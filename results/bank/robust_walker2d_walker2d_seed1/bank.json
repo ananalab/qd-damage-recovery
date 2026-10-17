@@ -1,0 +1,8 @@
+{
+  "robust_dir": "/kaggle/working/outputs/rl_robust/walker2d_seed1",
+  "robot": "walker2d",
+  "seed": 1,
+  "n_episodes": 32,
+  "code_commit": "5508ecb-dirty",
+  "time_s": 105.76554346084595
+}

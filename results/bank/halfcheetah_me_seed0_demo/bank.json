@@ -1,0 +1,13 @@
+{
+  "run_dir": "/kaggle/working/outputs/repertoires/halfcheetah_me_seed0_demo",
+  "robot": "halfcheetah",
+  "algo": "me",
+  "seed": 0,
+  "profile": "demo",
+  "code_commit": "5508ecb-dirty",
+  "devices": [
+    "cuda:0"
+  ],
+  "f0": 2305.06005859375,
+  "time_s": 625.9631912708282
+}

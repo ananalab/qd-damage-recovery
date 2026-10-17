@@ -1,0 +1,94 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (224 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (237 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (249 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (261 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (274 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (286 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (298 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (310 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (322 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (391 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (460 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank dcrlme_seed0] done in 483 s
+/kaggle/working/outputs/bank/dcrlme_seed0
+[bank] physics null: done (222 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (235 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (247 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (259 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (271 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (283 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (296 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (307 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (319 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (388 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (457 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank dcrlme_seed0_demo] done in 476 s
+/kaggle/working/outputs/bank/dcrlme_seed0_demo
+[bank] physics null: done (224 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (236 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (248 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (260 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (273 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (285 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (296 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (308 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (321 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (389 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (457 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank dcrlme_seed1] done in 477 s
+/kaggle/working/outputs/bank/dcrlme_seed1
+[bank] physics null: done (224 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (236 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (248 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (260 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (272 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (284 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (297 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (309 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (321 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (389 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (457 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank dcrlme_seed2] done in 478 s
+/kaggle/working/outputs/bank/dcrlme_seed2
+[bank] physics null: done (223 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (235 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (247 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (259 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (271 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (282 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (295 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (307 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (319 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (387 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (456 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank me_seed0] done in 475 s
+/kaggle/working/outputs/bank/me_seed0
+[bank] physics null: done (223 s)
+[bank] physics {"body_friction": {"$ Body 4": 0.05}}: done (237 s)
+[bank] physics {"body_mass_scale": {"$ Body 4": 4.0}}: done (249 s)
+[bank] physics {"body_friction": {"$ Body 7": 0.05}}: done (261 s)
+[bank] physics {"body_mass_scale": {"$ Body 7": 4.0}}: done (273 s)
+[bank] physics {"body_friction": {"$ Body 10": 0.05}}: done (285 s)
+[bank] physics {"body_mass_scale": {"$ Body 10": 4.0}}: done (297 s)
+[bank] physics {"body_friction": {"$ Body 13": 0.05}}: done (309 s)
+[bank] physics {"body_mass_scale": {"$ Body 13": 4.0}}: done (320 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (389 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (458 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[bank me_seed0_demo] done in 476 s
+/kaggle/working/outputs/bank/me_seed0_demo

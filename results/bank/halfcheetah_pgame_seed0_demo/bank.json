@@ -1,0 +1,13 @@
+{
+  "run_dir": "/kaggle/working/outputs/repertoires/halfcheetah_pgame_seed0_demo",
+  "robot": "halfcheetah",
+  "algo": "pgame",
+  "seed": 0,
+  "profile": "demo",
+  "code_commit": "5508ecb-dirty",
+  "devices": [
+    "cuda:0"
+  ],
+  "f0": 2305.06787109375,
+  "time_s": 627.0264227390289
+}

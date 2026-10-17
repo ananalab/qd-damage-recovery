@@ -20,7 +20,7 @@ Methods (configs/adaptation.yaml, section `offline`):
 - aprol: one prior per simulated damage (and the intact one); after each trial, the prior that best explains the
   trials (Gaussian-process marginal likelihood) is used (after Kaushik et al. 2020);
 - itesd: proposed. Prior = intact + mean simulated response; kernel = empirical covariance of the simulated
-  responses between cells (+ a nugget), no repeated cell.
+  responses between cells (+ a nugget), no repeated cell; itesd_hybrid adds a Matern kernel on the descriptor.
 """
 
 import os
@@ -71,13 +71,26 @@ def load_bank(bank_dir: Path) -> dict:
         "descriptors": data["descriptors"][filled],
         "joint_usage": data["joint_usage"][filled],
         "filled": filled,
+        "signatures": _load_signatures(bank_dir, names, filled),
     }
+
+
+def _load_signatures(bank_dir: Path, names: list, filled: np.ndarray):
+    """signatures.npz of the bank, if it was recorded (bank --signatures), indexed like the bank conditions."""
+    path = Path(bank_dir) / "signatures.npz"
+    if not path.exists():
+        return None
+    data = np.load(path)
+    if not np.array_equal(data["filled"], filled):
+        raise ValueError(f"{path}: cells differ from bank.npz")
+    by_condition = {int(c): k for k, c in enumerate(data["test_index"])}
+    return {"intact": data["intact"], "train": data["train"], "test": data["test"], "by_condition": by_condition}
 
 
 class Trials:
     """Trials and ground truth of one test condition, with common random numbers across methods."""
 
-    def __init__(self, u_cond: np.ndarray, rng: np.random.Generator, max_trials: int):
+    def __init__(self, u_cond: np.ndarray, rng: np.random.Generator, max_trials: int, sig_cond=None):
         n_eps = int(np.isfinite(u_cond[0]).sum())
         half = n_eps // 2
         self.pool = u_cond[:, :half]
@@ -85,11 +98,17 @@ class Trials:
         # draws[i, k]: episode returned by the k-th trial of cell i
         self.draws = rng.integers(half, size=(u_cond.shape[0], max_trials))
         self.count = np.zeros(u_cond.shape[0], dtype=int)
+        self.sig = None if sig_cond is None else sig_cond[:, :half]  # signature of the same trial episodes
 
     def __call__(self, i: int) -> float:
         k = self.count[i]
         self.count[i] += 1
         return float(self.pool[i, self.draws[i, k]])
+
+    def with_signature(self, i: int):
+        """Performance and proprioceptive signature of the same episode."""
+        e = self.draws[i, self.count[i]]
+        return self(i), self.sig[i, e]
 
     def reset(self):
         self.count[:] = 0
@@ -121,6 +140,17 @@ class LowRank:
 
     def diag(self):
         return (self.u**2).sum(1) + self.nugget
+
+
+class Sum:
+    def __init__(self, a, b):
+        self.a, self.b = a, b
+
+    def __call__(self, x, y):
+        return self.a(x, y) + self.b(x, y)
+
+    def diag(self):
+        return self.a.diag() + self.b.diag()
 
 
 def empirical_kernel(train: np.ndarray, prior: np.ndarray, nugget: float, n_damages=None, rng=None):
@@ -190,6 +220,99 @@ def aprol_search(priors, kernel, noise, trial, max_trials, kappa, alpha=0.9):
     return tried, y, stop
 
 
+class LatentDamageModel:
+    """Linear-Gaussian model of a damage learned from simulated damages, observed through performance AND
+    proprioception (ITE-Sig).
+
+    Each simulated damage k gives, for every gait i, a change of performance R[k, i] and a change of proprioceptive
+    signature (what the robot measures during the episode). Signatures are whitened with the episode-to-episode
+    noise of the INTACT robot and projected on the K directions where simulated damages differ most from each other
+    relative to that noise. The real damage is a latent z ~ N(0, I_N):
+        u_i = m_i + U_i z + e,      e ~ N(0, nugget + noise)
+        s_i = c_i + V_i z + e',     e' ~ N(0, I_K / weight)        (whitened, projected signature)
+    One trial informs z through 1 + K numbers instead of 1. With weight = 0 this is exactly ITE-SD.
+
+    Familiarity check: under the model, the squared Mahalanobis distance of an observed signature to its prediction
+    follows a chi-square law with K degrees of freedom. When the sum over the trials so far exceeds its 1 - p_check
+    quantile, the damage is declared unlike the simulated ones and the signatures are ignored from then on (the
+    posterior is recomputed from the performances only).
+    """
+
+    def __init__(self, prior, train_u, sig, nugget, noise, n_components, weight, p_check=None):
+        from scipy.stats import chi2
+
+        n_dmg = len(train_u)
+        r = train_u - prior
+        self.mean_u = prior + r.mean(0)
+        self.w_u = (r - r.mean(0)).T / np.sqrt(n_dmg - 1)  # (n, N)
+        self.nugget, self.noise, self.weight = nugget, noise, weight
+        self.check = None if p_check is None else (lambda dof, x: chi2.sf(x, dof) < p_check)
+        if sig is None or weight == 0:
+            self.weight = 0.0
+            return
+        intact = sig["intact"].astype(float)  # (n, E, d)
+        centre = np.nanmean(intact, 1)
+        resid = (intact - centre[:, None]).reshape(-1, intact.shape[-1])
+        resid = resid[np.isfinite(resid).all(1)]
+        e = intact.shape[1]
+        cov = np.cov(resid.T) * e / (e - 1) + 1e-6 * np.eye(resid.shape[1])
+        self.whiten = np.linalg.inv(np.linalg.cholesky(cov)).T  # x @ whiten has identity noise covariance
+        q = (sig["train"].astype(float) - centre) @ self.whiten  # (N, n, d)
+        qc = q - q.mean(0)
+        between = np.einsum("kid,kie->de", qc, qc) / (qc.shape[0] * qc.shape[1])
+        val, vec = np.linalg.eigh(between)
+        self.proj = vec[:, np.argsort(-val)[:n_components]]  # (d, K)
+        qk = q @ self.proj
+        self.mean_s = (centre @ self.whiten) @ self.proj + qk.mean(0)  # (n, K)
+        self.w_s = np.transpose(qk - qk.mean(0), (1, 2, 0)) / np.sqrt(n_dmg - 1)  # (n, K, N)
+        # The simulated responses come from 2-episode means: their own noise adds to that of one trial.
+        self.sig_noise = 1.0 + 1.0 / sig.get("train_episodes", 2)
+
+    def _posterior(self, obs, use_sig):
+        n_dmg = self.w_u.shape[1]
+        precision, info = np.eye(n_dmg), np.zeros(n_dmg)
+        var_u = self.nugget + self.noise
+        for i, u, s in obs:
+            precision += np.outer(self.w_u[i], self.w_u[i]) / var_u
+            info += self.w_u[i] * (u - self.mean_u[i]) / var_u
+            if use_sig:
+                v = self.w_s[i]
+                precision += self.weight * v.T @ v / self.sig_noise
+                info += self.weight * v.T @ (s - self.mean_s[i]) / self.sig_noise
+        cov = np.linalg.inv(precision)
+        return cov @ info, cov
+
+    def search(self, trial, max_trials, kappa, alpha=0.9):
+        obs, tried, y, stop = [], [], [], None
+        use_sig, distance, familiar_until = self.weight > 0, 0.0, None
+        mz, cov = np.zeros(self.w_u.shape[1]), np.eye(self.w_u.shape[1])
+        for t in range(max_trials):
+            mean = self.mean_u + self.w_u @ mz
+            var = np.einsum("ij,jk,ik->i", self.w_u, cov, self.w_u) + self.nugget
+            score = mean + kappa * np.sqrt(var)
+            if tried:
+                score[tried] = -np.inf
+            i = int(np.argmax(score))
+            u, s = trial.with_signature(i) if use_sig else (trial(i), None)
+            if use_sig:
+                s = (s.astype(float) @ self.whiten) @ self.proj
+                if self.check is not None:
+                    v = self.w_s[i]
+                    pred_cov = v @ cov @ v.T + np.eye(len(s)) * self.sig_noise / self.weight
+                    r = s - self.mean_s[i] - v @ mz
+                    distance += float(r @ np.linalg.solve(pred_cov, r)) * self.weight
+                    if self.check(len(s) * (t + 1), distance):
+                        use_sig, familiar_until = False, t
+            tried.append(i)
+            y.append(u)
+            obs.append((i, u, s))
+            mz, cov = self._posterior(obs, use_sig)
+            if stop is None and max(y) >= alpha * (self.mean_u + self.w_u @ mz).max():
+                stop = t + 1
+        self.flagged_at = familiar_until
+        return tried, y, stop
+
+
 def order_search(order, trial, max_trials):
     tried = [int(i) for i in order[:max_trials]]
     return tried, [trial(i) for i in tried], None
@@ -230,16 +353,26 @@ def method_runner(method: str, bank: dict, cfg: dict, robot: str):
         priors = [prior] + list(bank["train"])
         noise, kappa = gp["feet"]["noise"], cfg["kappa"]["ite"]
         return lambda trial, rng: aprol_search(priors, kern, noise, trial, max_trials, kappa)
+    if method.startswith("itesig"):
+        sg = cfg["itesig"]
+        check = None if method.endswith("nocheck") else sg["p_check"]
+        model = LatentDamageModel(prior, bank["train"], bank["signatures"], cfg["itesd"]["nugget"],
+                                  cfg["itesd"]["noise"], sg["n_components"], sg["weight"], check)
+        return lambda trial, rng: model.search(trial, max_trials, cfg["itesd"]["kappa"])
     if method.startswith("itesd"):
         sd = dict(cfg["itesd"])
-        # Ablations: itesd_N16 (16 simulated damages), itesd_nomean (intact prior), itesd_ucbk<kappa>.
-        n_damages = None
+        # Variants: itesd_N16 (16 simulated damages), itesd_nomean (intact prior), itesd_hybrid (+ Matern kernel on
+        # the feet-contact descriptor, for damages unlike the simulated ones).
+        n_damages, hybrid = None, False
         for part in method.split("_")[1:]:
             if part.startswith("N"):
                 n_damages = int(part[1:])
             elif part == "nomean":
                 sd["prior_mean"] = False
+            elif part == "hybrid":
+                hybrid = True
         mean_prior, kern = empirical_kernel(bank["train"], prior, sd["nugget"])
+        feet = Matern(bank["descriptors"], gp["feet"]["lengthscale"], sd["hybrid_variance"])
 
         def run(trial, rng):
             p, k = mean_prior, kern
@@ -247,6 +380,8 @@ def method_runner(method: str, bank: dict, cfg: dict, robot: str):
                 p, k = empirical_kernel(bank["train"], prior, sd["nugget"], n_damages, rng)
             if not sd["prior_mean"]:
                 p = prior
+            if hybrid:
+                k = Sum(k, feet)
             return gp_search(p, k, sd["noise"], trial, max_trials, sd["kappa"])
 
         return run
@@ -267,7 +402,10 @@ def adapt_bank(bank_dir: Path, methods, n_repeats: int, cfg: dict, groups=TEST_G
         if group not in groups:
             continue
         for rep in range(n_repeats):
-            trials = Trials(bank["u"][c], np.random.default_rng(_seed(bank["name"], name, rep)), cfg["max_trials"])
+            sig = bank["signatures"]
+            sig_cond = None if sig is None or c not in sig["by_condition"] else sig["test"][sig["by_condition"][c]]
+            trials = Trials(bank["u"][c], np.random.default_rng(_seed(bank["name"], name, rep)), cfg["max_trials"],
+                            sig_cond)
             for method, run in runners.items():
                 trials.reset()
                 tried, y, stop = run(trials, np.random.default_rng(_seed(bank["name"], name, rep, method)))

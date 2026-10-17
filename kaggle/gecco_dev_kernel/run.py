@@ -38,13 +38,13 @@ ant_robust = {os.path.basename(d): d for d in find_dirs("outputs/rl_robust/seed[
 print("ant repertoires:", sorted(ant_runs), "robust:", sorted(ant_robust), flush=True)
 
 jobs = []
-for robot in ("walker2d", "halfcheetah"):
-    for seed in (0, 1):
-        jobs.append((
-            f"robust_{robot}_s{seed}",
-            ["bash", "-c", f"{py} -m qd_damage.rl_retrain --robust --robot {robot} --seed {seed} --out {OUT}/rl_robust"
-                           f" && {py} -m qd_damage.bank --robust {OUT}/rl_robust/{robot}_seed{seed} --out {OUT}/bank"],
-        ))
+# Ant banks first: they are needed to validate the offline replay and to tune the methods.
+names = sorted(ant_runs)
+for half in (names[: len(names) // 2], names[len(names) // 2 :]):
+    runs = " ".join(ant_runs[n] for n in half)
+    jobs.append((f"bank_ant_{half[0]}", ["bash", "-c", f"{py} -m qd_damage.bank --runs {runs} --out {OUT}/bank"]))
+robust = " ".join(ant_robust.values())
+jobs.append(("bank_ant_robust", ["bash", "-c", f"{py} -m qd_damage.bank --robust {robust} --out {OUT}/bank"]))
 for robot in ("walker2d", "halfcheetah"):
     steps = []
     for algo in ("dcrlme", "pgame", "me"):
@@ -52,10 +52,11 @@ for robot in ("walker2d", "halfcheetah"):
                      f"--out {OUT}/repertoires")
         steps.append(f"{py} -m qd_damage.bank --runs {OUT}/repertoires/{robot}_{algo}_seed0_demo --out {OUT}/bank")
     jobs.append((f"dev_{robot}", ["bash", "-c", " && ".join(steps)]))
-names = sorted(ant_runs)
-for half in (names[: len(names) // 2], names[len(names) // 2 :]):
-    runs = " ".join(ant_runs[n] for n in half)
-    jobs.append((f"bank_ant_{half[0]}", ["bash", "-c", f"{py} -m qd_damage.bank --runs {runs} --out {OUT}/bank"]))
-robust = " ".join(ant_robust.values())
-jobs.append(("bank_ant_robust", ["bash", "-c", f"{py} -m qd_damage.bank --robust {robust} --out {OUT}/bank"]))
+for robot in ("walker2d", "halfcheetah"):
+    for seed in (0, 1):
+        jobs.append((
+            f"robust_{robot}_s{seed}",
+            ["bash", "-c", f"{py} -m qd_damage.rl_retrain --robust --robot {robot} --seed {seed} --out {OUT}/rl_robust"
+                           f" && {py} -m qd_damage.bank --robust {OUT}/rl_robust/{robot}_seed{seed} --out {OUT}/bank"],
+        ))
 ku.run_jobs(jobs, CODE, env, log_dir="/kaggle/working/logs")

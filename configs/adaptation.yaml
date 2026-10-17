@@ -57,7 +57,8 @@ baselines:
 offline:
   max_trials: 20
   n_repeats: 20
-  methods: [best_intact, random, top_k, ite, ite_norep, ite_joint, robust_top_k, aprol, itesd]
+  methods: [best_intact, random, top_k, ite, ite_norep, ite_joint, robust_top_k, aprol, itesd, itesd_hybrid,
+            itesd_nomean, itesd_N4, itesd_N16]
   kappa: {ite: 0.05}
   gp:                                   # PROVISIONAL, replaced by the development fit
     ant:
@@ -69,4 +70,5 @@ offline:
     halfcheetah:
       feet: {lengthscale: 0.4, variance: 0.05, noise: 0.02}
       joint: {lengthscale: 0.2, variance: 0.1, noise: 0.003}
-  itesd: {kappa: 1.0, nugget: 0.005, noise: 0.005, prior_mean: true}
+  itesd: {kappa: 1.0, nugget: 0.005, noise: 0.005, prior_mean: true, hybrid_variance: 0.02}
+  itesig: {n_components: 16, weight: 1.0, p_check: 0.01}   # PROVISIONAL

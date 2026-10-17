@@ -1,0 +1,44 @@
+\section{Experimental setup}\label{sec:setup}
+
+\paragraph{Robots and repertoires} We use three Brax robots of QDax \cite{chalumeau2023qdax,freeman2021brax}: Ant
+(four legs, 8 motors, episodes of 12.5\,s), Walker2d (two legs, 6 motors, 8\,s, the episode ends when it falls) and
+HalfCheetah (6 motors, 12.5\,s). The task is to run forward; the descriptor is the fraction of time each foot touches
+the ground. For each robot, repertoires of 1024 cells are built with MAP-Elites, PGA-ME and DCRL-ME at equal budget
+(2000 iterations of 256 episodes), with the hyper-parameters of the official QDax notebooks and the same policy network
+(two hidden layers of 128 units): \NSeedsAnt{} seeds per algorithm for Ant and \NSeedsOther{} for the two other robots,
+\NRepertoires{} repertoires in total. One shorter run per algorithm and robot (200 iterations) serves as development
+set: every hyper-parameter of the adaptation methods is chosen on it, and it is never used for the results.
+
+\paragraph{Conditions} Every gait of every repertoire is played under (i) the intact robot (8 episodes), which gives
+the prior; (ii) $N=64$ \emph{simulated} damages drawn from the family of \cref{sec:method} (2 episodes each), which
+only ITE-SD, the simulated-prior baselines and APROL may use; and (iii) test conditions, 8 episodes each. The test
+conditions are: the \emph{in-family} damages, each limb paralysed or weakened and single joints paralysed (12 for
+Ant, among which two-leg damages, 10 for the others), redrawn from the simulated set whenever they appear in it;
+\emph{out-of-family} damages, which act differently from a loss of torque: a jammed motor that keeps pushing
+($\pm0.5$), a miswired motor whose command is inverted, the joint sensors of a limb reading zero, a slippery foot
+(friction 0.05) and a foot four times heavier; and a \emph{reality gap} at two levels (ground friction $\times0.7$,
+torso mass $\times1.2$, motor strength $\times0.9$; then $\times0.5$, $\times1.4$, $\times0.8$), alone or combined with
+each in-family damage. In total, \NTestConditions{} test conditions per Ant repertoire.
+
+\paragraph{Replaying adaptation} Since every gait has been played under every condition, adaptation can be replayed
+offline: a trial returns one of the first four episodes of the chosen gait, drawn at random, and the gait recommended
+after $k$ trials is scored with the mean of the other four, which no method sees. All methods share the same draws.
+On the Ant repertoires, replayed ITE and top-$k$ match their counterparts run with fresh simulated episodes in a
+previous study (\cref{sec:validation}). Each method is repeated \NRepeats{} times per (repertoire, condition) pair,
+for up to 20 trials.
+
+\paragraph{Methods} \emph{Best intact} replays the best intact gait; \emph{random} and \emph{top-$k$} try cells at random
+or in decreasing order of intact performance. \emph{ITE} is M-BOA with the Mat\'ern kernel on the descriptor, with the
+GP hyper-parameters fitted by marginal likelihood on the development repertoires; \emph{ITE, no repeat} forbids trying
+a cell twice; \emph{ITE, joint usage} uses as descriptor the mean absolute command of each motor. Three methods use the
+simulated damages: \emph{top-$k$ on the simulated prior} ranks cells by $m_i$; \emph{APROL-like} adapts the prior
+selection of \citet{kaushik2020adaptive}: each simulated damage provides a prior, and after every trial ITE uses the
+one with the highest GP marginal likelihood; and \itesd{}. Finally, a \emph{damage-robust TD3} policy
+\cite{fujimoto2018addressing}, trained for the same number of simulated transitions on random damages of the same
+family (2 seeds per robot), is played without any trial.
+
+\paragraph{Statistics} The unit is a (repertoire, condition) pair, whose repetitions are averaged. We report
+interquartile means (IQM) with 95\,\% stratified bootstrap intervals over repertoires \cite{agarwal2021deep}. Paired
+comparisons use two-sided Wilcoxon signed-rank tests on units and, as a check for the dependence between units of a
+repertoire, linear mixed models with a random intercept per repertoire. The hypotheses below were written before the
+final runs; their p-values are Holm-corrected together.

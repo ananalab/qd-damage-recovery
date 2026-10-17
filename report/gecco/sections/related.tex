@@ -1,0 +1,28 @@
+\section{Related work}\label{sec:related}
+
+\paragraph{Repertoire-based damage recovery} ITE \cite{cully2015robots} combines a MAP-Elites repertoire
+\cite{mouret2015illuminating} with Bayesian optimisation over its cells, using the intact performance as prior.
+Follow-ups removed resets between trials \cite{chatzilygeroudis2018reset}, added safety constraints with simulated
+priors \cite{papaspyros2016safety}, selected among priors computed for several situations, either for direct policy
+search \cite{pautrat2018bayesian} or among several repertoires \cite{kaushik2020adaptive}, meta-learned embeddings of
+simulated dynamics models \cite{kaushik2020fast}, and used hierarchical repertoires on a physical hexapod
+\cite{allard2022online}. Closest to our question, \citet{bossens2020learning} meta-evolve the behaviour space of the map
+so that it adapts better to damage, which requires a costly outer loop of repertoire building. We keep the repertoire
+fixed and only learn, cheaply, the model used to search it.
+
+\paragraph{QD with reinforcement learning} PGA-ME \cite{nilsson2021policy} improves half of the offspring with the
+gradient of a TD3 critic \cite{fujimoto2018addressing}; DCRL-ME \cite{faldor2024synergizing} conditions critic and
+actor on the descriptor. These methods, run in the QDax library \cite{chalumeau2023qdax} on Brax
+\cite{freeman2021brax}, produce much better gaits than MAP-Elites, and are evaluated on adaptation tasks by an oracle
+that tries every policy after the perturbation \cite{chalumeau2023neuroevolution}: the number of trials is not measured.
+
+\paragraph{Learned similarity for Bayesian optimisation} Kernels learned from simulation make Bayesian optimisation of
+locomotion controllers more sample-efficient on hardware \cite{antonova2017deep,rai2019using}, and priors meta-learned
+from related tasks speed up (safe) Bayesian optimisation \cite{swersky2013multi,feurer2018scalable,rothfuss2022meta}. We
+bring this idea to QD repertoires, where the candidates are a finite set of policies and the related tasks are
+simulated damages, so that the kernel is a plain empirical covariance between policies, without a neural network.
+
+\paragraph{Adaptation without a repertoire} Domain randomisation trains one policy that works under many conditions
+\cite{tobin2017domain,peng2018sim}; other approaches identify the condition online from the recent history
+\cite{kumar2021rma,yu2019policy} or meta-learn fast adaptation \cite{nagabandi2019learning}. We compare with a
+damage-robust TD3 policy trained on the same damage family as our simulated damages, which needs no trial at all.

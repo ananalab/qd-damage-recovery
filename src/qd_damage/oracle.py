@@ -67,10 +67,11 @@ def load_genotypes(run_dir: Path, policy_network, observation_size: int):
     return params, filled, data
 
 
-def evaluate_all(evaluate, params, scale, key, n_episodes: int):
+def evaluate_all(evaluate, params, scale, key, n_episodes: int, per_episode: bool = False):
     """Fitness (N, n_episodes) and mean descriptors (N, d) of N policies (a stacked pytree) under one damage.
 
     `scale` is the damage vector, or a tuple of arguments passed after the key (see qd_damage.bank).
+    With per_episode=True the descriptors are returned for every episode, shape (N, n_episodes, d).
     """
     condition = scale if isinstance(scale, tuple) else (scale,)
     n = jax.tree.leaves(params)[0].shape[0]
@@ -87,6 +88,8 @@ def evaluate_all(evaluate, params, scale, key, n_episodes: int):
             d_ep.append(np.asarray(d))
         fits.append(np.concatenate(f_ep)[:n])
         descs.append(np.concatenate(d_ep)[:n])
+    if per_episode:
+        return np.stack(fits, axis=1), np.stack(descs, axis=1)
     return np.stack(fits, axis=1), np.mean(descs, axis=0)
 
 

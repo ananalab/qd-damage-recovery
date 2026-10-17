@@ -1,0 +1,48 @@
+\section{Learning the adaptation model from simulated damages}\label{sec:method}
+
+\paragraph{Setting} A repertoire $\mathcal{R}=\{\pi_1,\dots,\pi_n\}$ of $n$ policies (gaits) has been built in
+simulation by a QD algorithm, each with a behaviour descriptor $\mathbf{d}_i$. After an unknown damage, the robot can
+play \emph{trials}: one episode with a chosen policy, which returns a noisy measure of its performance. The goal is to
+find a good policy in as few trials as possible. We express performance as the share of the progress of the best intact
+gait, $u = (F - F_0)/(F^\star_{\text{intact}} - F_0)$, where $F_0$ is the return of a robot that does not move; $u$ is
+comparable across robots.
+
+\paragraph{Intelligent Trial and Error} ITE \cite{cully2015robots} places a Gaussian process (GP) on the performance of
+the gaits after damage, with the intact performance $p_i$ as prior mean and a Mat\'ern kernel on descriptors,
+$k(i,j)=\sigma^2 \kappa_{5/2}(\lVert\mathbf{d}_i-\mathbf{d}_j\rVert/\ell)$. After each trial, the posterior is updated
+and the next gait maximises $\mu_t(i)+\beta\sigma_t(i)$; ITE stops when the best observed performance reaches
+$\alpha \max_i \mu_t(i)$. Two assumptions are built in: the intact ranking is a good starting point, and gaits that are
+close in \emph{descriptor} space react similarly to the damage.
+
+\paragraph{Simulated damage responses} Before any damage, the simulator that built the repertoire can also break it.
+We draw $N$ damages $\delta_1,\dots,\delta_N$ from a family of plausible damages (here: each joint independently
+paralysed or weakened with probability $0.25$, the family used to train damage-robust RL policies) and play every gait
+of the repertoire under each of them. This gives a response matrix
+\[
+  R \in \mathbb{R}^{N\times n}, \qquad R_{ki} = u_i(\delta_k) - p_i ,
+\]
+the change of performance of gait $i$ under damage $\delta_k$. It costs $2Nn$ simulated episodes, a few minutes on one
+GPU for $N=64$ and $n\approx 1000$; no trial on the robot is involved.
+
+\paragraph{ITE-SD} We keep the GP and the acquisition of ITE and change only its prior mean and kernel, which are now
+estimated from $R$:
+\begin{align}
+  m_i &= p_i + \bar r_i, & \bar r &= \tfrac{1}{N}\textstyle\sum_k R_{k\cdot},\\
+  k_{\text{SD}}(i,j) &= \tfrac{1}{N-1}\textstyle\sum_k (R_{ki}-\bar r_i)(R_{kj}-\bar r_j) + \tau^2\,\mathbb{1}[i=j].
+\end{align}
+The prior mean is the expected performance under a random damage; the kernel says that two gaits are similar when
+\emph{they react in the same way to damages}, whatever their descriptors. The nugget $\tau^2$ keeps some independent
+uncertainty per gait. A gait is never tried twice, and the recommended gait is the best one observed.
+
+\paragraph{Interpretation} Writing the centred responses as $U = (R-\bar r)^\top/\sqrt{N-1}\in\mathbb{R}^{n\times N}$,
+the GP of ITE-SD is the Bayesian linear model
+\[
+  u(\delta) = m + U\mathbf{z} + \boldsymbol{\epsilon}, \qquad \mathbf{z}\sim\mathcal{N}(0,I_N),\;
+  \boldsymbol{\epsilon}\sim\mathcal{N}(0,\tau^2 I_n).
+\]
+A trial is thus a measurement that identifies the damage in the space spanned by the simulated responses, and the
+repertoire itself is the probe. If the effect of a damage on the repertoire is low-dimensional, as we find in
+\cref{sec:structure}, a few trials pin down $\mathbf{z}$ and predict all gaits. Choosing among $N$ simulated priors
+\cite{kaushik2020adaptive} is the special case where $\mathbf{z}$ is restricted to the vertices of the simplex;
+ITE-SD can combine responses, for instance to represent a two-leg damage from one-leg damages. For damages unlike the
+simulated ones, we also test a hybrid kernel $k_{\text{SD}}+k_{\text{Mat\'ern}}$.

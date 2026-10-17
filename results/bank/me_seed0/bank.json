@@ -1,0 +1,13 @@
+{
+  "run_dir": "/kaggle/input/notebooks/anaisazouaoui/qd-damage-recovery-full/outputs/me_seed0",
+  "robot": "ant",
+  "algo": "me",
+  "seed": 0,
+  "profile": null,
+  "code_commit": "5508ecb-dirty",
+  "devices": [
+    "cuda:0"
+  ],
+  "f0": 1058.849853515625,
+  "time_s": 474.5090470314026
+}

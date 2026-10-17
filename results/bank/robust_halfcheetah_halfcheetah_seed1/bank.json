@@ -1,0 +1,8 @@
+{
+  "robust_dir": "/kaggle/working/outputs/rl_robust/halfcheetah_seed1",
+  "robot": "halfcheetah",
+  "seed": 1,
+  "n_episodes": 32,
+  "code_commit": "5508ecb-dirty",
+  "time_s": 134.2139229774475
+}

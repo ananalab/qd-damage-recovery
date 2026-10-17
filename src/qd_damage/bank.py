@@ -12,6 +12,11 @@ Outputs in results/bank/<run>/: bank.npz (fitness of shape (conditions, cells, e
 missing episodes), conditions.json and bank.json. Also stored: the return of a standing robot (zero action,
 f0) and the joint usage of each gait on the intact robot (mean |action| per actuator, the alternative ITE
 descriptor).
+
+With --signatures, every episode also records a proprioceptive signature of what the robot did, i.e. what a real
+robot measures during a trial with its encoders, IMU and foot contacts (see `signature_extractor`), stored in
+signatures.npz: per episode for the test conditions, averaged over episodes for the intact robot and the simulated
+damages.
 """
 
 import argparse
@@ -26,7 +31,7 @@ from jax.flatten_util import ravel_pytree
 from qdax.tasks.brax.v1.env_creators import scoring_function_brax_envs
 
 from qd_damage.conditions import build_conditions
-from qd_damage.config import load_run_config, run_config
+from qd_damage.config import load_run_config, load_yaml, run_config
 from qd_damage.envs import ConditionWrapper, descriptor_extractor, make_env
 from qd_damage.joint_usage import mean_abs_action
 from qd_damage.oracle import evaluate_all, load_genotypes
@@ -54,12 +59,37 @@ def make_condition_evaluator(common: dict, physics=None, extractor=None):
     return base_env, policy_network, evaluate
 
 
+def signature_extractor(robot: str):
+    """QDax descriptor extractor returning a proprioceptive signature of an episode.
+
+    Mean and mean absolute value, over the steps the robot is alive, of the observation of the torso and the joints
+    (positions and velocities, without the contact forces of Ant), followed by the fraction of time each foot touches
+    the ground. With a sensor damage the robot sees, and records, the corrupted observation.
+    """
+    cfg = load_yaml("robots")[robot]
+    n_state = cfg["joint_obs"]["velocity"] + len(sum(cfg["limbs"].values(), []))
+
+    def extract(data, mask):
+        valid = jnp.expand_dims(1.0 - mask, -1)
+        count = jnp.sum(valid, axis=1)
+        obs = data.obs[..., :n_state]
+        return jnp.concatenate(
+            [jnp.sum(obs * valid, 1) / count, jnp.sum(jnp.abs(obs) * valid, 1) / count,
+             jnp.sum(data.state_desc * valid, 1) / count],
+            axis=-1,
+        )
+
+    return extract
+
+
 def _physics_key(physics) -> str:
     return json.dumps(physics, sort_keys=True)
 
 
-def play_conditions(common: dict, robot: str, params, n_policies: int, key, episodes_override=None):
-    """Fitness (conditions, n_policies, max episodes) of a stacked pytree of policies under every condition.
+def play_conditions(common: dict, robot: str, params, n_policies: int, key, episodes_override=None,
+                    signatures: bool = False):
+    """Fitness (conditions, n_policies, max episodes) of a stacked pytree of policies under every condition, and
+    with `signatures` the per-episode signatures (conditions, n_policies, max episodes, d) as float16.
 
     Conditions sharing the same physics share one compiled function.
     """
@@ -67,18 +97,24 @@ def play_conditions(common: dict, robot: str, params, n_policies: int, key, epis
     conds = build_conditions(robot, env.action_size, env.observation_size)
     n_eps = [episodes_override or c["n_episodes"] for c in conds]
     fitness = np.full((len(conds), n_policies, max(n_eps)), np.nan, dtype=np.float32)
+    sigs = None
+    extractor = signature_extractor(robot) if signatures else None
     t0 = time.time()
     for physics_key in dict.fromkeys(_physics_key(c["physics"]) for c in conds):
         physics = json.loads(physics_key)
-        _, _, evaluate = make_condition_evaluator(common, physics)
+        _, _, evaluate = make_condition_evaluator(common, physics, extractor)
         for i, c in enumerate(conds):
             if _physics_key(c["physics"]) != physics_key:
                 continue
             key, subkey = jax.random.split(key)
             args = (jnp.asarray(c["scale"]), jnp.asarray(c["offset"]), jnp.asarray(c["obs_mask"]))
-            fitness[i, :, : n_eps[i]], _ = evaluate_all(evaluate, params, args, subkey, n_eps[i])
+            fitness[i, :, : n_eps[i]], d = evaluate_all(evaluate, params, args, subkey, n_eps[i], per_episode=True)
+            if signatures:
+                if sigs is None:
+                    sigs = np.full(fitness.shape + (d.shape[-1],), np.nan, dtype=np.float16)
+                sigs[i, :, : n_eps[i]] = d
         print(f"[bank] physics {physics_key[:60]}: done ({time.time() - t0:.0f} s)", flush=True)
-    return conds, fitness
+    return (conds, fitness, sigs) if signatures else (conds, fitness)
 
 
 def _conditions_json(conds) -> list:
@@ -96,7 +132,7 @@ def _conditions_json(conds) -> list:
     ]
 
 
-def run_bank(run_dir: Path, out_root: Path = OUT, seed: int = 2027) -> Path:
+def run_bank(run_dir: Path, out_root: Path = OUT, seed: int = 2027, signatures: bool = False) -> Path:
     run_dir = Path(run_dir)
     run = json.loads((run_dir / "run.json").read_text())
     robot = run.get("robot", "ant")
@@ -107,7 +143,8 @@ def run_bank(run_dir: Path, out_root: Path = OUT, seed: int = 2027) -> Path:
     env, policy_network, evaluate = make_condition_evaluator(common)
     params, filled, data = load_genotypes(run_dir, policy_network, env.observation_size)
     n_cells = data["fitnesses"].shape[0]
-    conds, fit_filled = play_conditions(common, robot, params, len(filled), key)
+    played = play_conditions(common, robot, params, len(filled), key, signatures=signatures)
+    conds, fit_filled = played[:2]
     fitness = np.full((len(conds), n_cells, fit_filled.shape[2]), np.nan, dtype=np.float32)
     fitness[:, filled] = fit_filled
 
@@ -136,6 +173,18 @@ def run_bank(run_dir: Path, out_root: Path = OUT, seed: int = 2027) -> Path:
         joint_usage=joint_usage,
     )
     (out_dir / "conditions.json").write_text(json.dumps(_conditions_json(conds)))
+    if signatures:
+        sig = played[2]  # (conditions, filled cells, episodes, d)
+        groups = np.array([c["group"] for c in conds])
+        test = np.flatnonzero(~np.isin(groups, ["intact", "train"]))
+        np.savez_compressed(
+            out_dir / "signatures.npz",
+            intact=sig[groups == "intact"][0],  # (cells, episodes, d): the noise model comes from the intact robot
+            train=np.nanmean(sig[groups == "train"].astype(np.float32), axis=2),
+            test=sig[test],
+            test_index=test,
+            filled=filled,
+        )
     (out_dir / "bank.json").write_text(
         json.dumps(
             {
@@ -190,9 +239,10 @@ def main():
     parser.add_argument("--runs", nargs="*", default=[])
     parser.add_argument("--robust", nargs="*", default=[], help="folders of damage-robust TD3 policies")
     parser.add_argument("--out", type=Path, default=OUT)
+    parser.add_argument("--signatures", action="store_true", help="also record proprioceptive signatures")
     args = parser.parse_args()
     for run_dir in args.runs:
-        print(run_bank(run_dir, args.out))
+        print(run_bank(run_dir, args.out, signatures=args.signatures))
     for robust_dir in args.robust:
         print(run_bank_robust(robust_dir, args.out))
 

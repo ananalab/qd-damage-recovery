@@ -1,0 +1,34 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[robust halfcheetah s0] 800 episodes: intact 2525.9, damaged mean 2357.9 (177 s)
+[robust halfcheetah s0] 1600 episodes: intact 2453.9, damaged mean 2404.6 (333 s)
+[robust halfcheetah s0] 2400 episodes: intact 2793.1, damaged mean 2586.7 (489 s)
+[robust halfcheetah s0] 3200 episodes: intact 2996.2, damaged mean 2723.5 (646 s)
+[robust halfcheetah s0] 4000 episodes: intact 3192.5, damaged mean 2774.6 (803 s)
+[robust halfcheetah s0] 4800 episodes: intact 3155.8, damaged mean 2819.7 (960 s)
+[robust halfcheetah s0] 5600 episodes: intact 3202.0, damaged mean 2855.9 (1117 s)
+[robust halfcheetah s0] 6400 episodes: intact 3269.4, damaged mean 2865.2 (1275 s)
+[robust halfcheetah s0] 7200 episodes: intact 3158.4, damaged mean 2860.1 (1431 s)
+[robust halfcheetah s0] 8000 episodes: intact 3267.2, damaged mean 2883.3 (1589 s)
+[robust halfcheetah s0] 8800 episodes: intact 3342.3, damaged mean 2914.0 (1746 s)
+[robust halfcheetah s0] 9600 episodes: intact 3335.9, damaged mean 2928.7 (1903 s)
+[robust halfcheetah s0] 10000 episodes: intact 3335.2, damaged mean 2941.3 (1983 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/rl_robust/halfcheetah_seed0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[bank] physics null: done (58 s)
+[bank] physics {"body_friction": {"bfoot": 0.05}}: done (68 s)
+[bank] physics {"body_mass_scale": {"bfoot": 4.0}}: done (79 s)
+[bank] physics {"body_friction": {"ffoot": 0.05}}: done (90 s)
+[bank] physics {"body_mass_scale": {"ffoot": 4.0}}: done (101 s)
+[bank] physics {"friction": 0.7, "gear_scale": 0.9, "torso_mass_scale": 1.2: done (118 s)
+[bank] physics {"friction": 0.5, "gear_scale": 0.8, "torso_mass_scale": 1.4: done (134 s)
+fatal: not a git repository (or any parent up to mount point /kaggle)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/kaggle/working/outputs/bank/robust_halfcheetah_halfcheetah_seed0
