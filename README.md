@@ -67,3 +67,7 @@ report/          report and its generated tables
 docs/            protocol, development notes, compute budget
 contrib/qdax/    standalone ITE example notebook for QDax
 ```
+
+---
+
+*Commit history reconstructed in October 2026 from the final code; the code itself is unchanged.*
